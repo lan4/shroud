@@ -16,32 +16,31 @@ namespace Shroud.Entities
     {
         #region Fields
 
-        // Here you'd define things that your Entity contains, like Sprites
-        // or Circles:
-        private Sprite mVisibleRepresentation;
+        // Basic Entity Properties
+        private Sprite mAppearance;
         private Circle mCollision;
 
         // Keep the ContentManager for easy access:
         string mContentManagerName;
 
-        private string mID;
-
         #endregion
 
         #region Properties
 
-
-        // Here you'd define properties for things
-        // you want to give other Entities and game code
-        // access to, like your Collision property:
         public Circle Collision
         {
             get { return mCollision; }
         }
 
-        public string ID
+        public bool On
         {
-            get { return mID; }
+            get { return mAppearance.CurrentChainName == "ON"; }
+        }
+
+        public bool Visible
+        {
+            get { return mAppearance.Visible; }
+            set { mAppearance.Visible = value; }
         }
 
         #endregion
@@ -49,76 +48,68 @@ namespace Shroud.Entities
         #region Methods
 
         // Constructor
-        public Button(string contentManagerName, string id)
+        public Button(string contentManagerName, string assetname)
         {
             // Set the ContentManagerName and call Initialize:
             mContentManagerName = contentManagerName;
 
-            mID = id;
-
             // If you don't want to add to managers, make an overriding constructor
-            Initialize(true);
+            Initialize(true, assetname);
         }
 
-        protected virtual void Initialize(bool addToManagers)
+        protected virtual void Initialize(bool addToManagers, string assetname)
         {
-            // Here you can preload any content you will be using
-            // like .scnx files or texture files.
 
             if (addToManagers)
             {
-                AddToManagers(null);
+                AddToManagers(null, assetname);
             }
         }
 
-        public virtual void AddToManagers(Layer layerToAddTo)
+        public virtual void AddToManagers(Layer layerToAddTo, string assetname)
         {
             SpriteManager.AddPositionedObject(this);
-            /*
-            mVisibleRepresentation = SpriteManager.AddSprite("redball.png", mContentManagerName);
-            mVisibleRepresentation.AttachTo(this, false);
-            mVisibleRepresentation.RelativeRotationZ = GameProperties.WorldRotation;*/
 
-            InitializeSprites();
+            InitializeSprites(assetname);
 
             mCollision = ShapeManager.AddCircle();
             mCollision.AttachTo(this, false);
             mCollision.Radius = 2.0f;
         }
 
-        private void InitializeSprites()
+        private void InitializeSprites(string assetname)
         {
             AnimationChainList buttonSprites = new AnimationChainList();
 
             AnimationChain buttonOn = new AnimationChain();
 
-            buttonOn.Add(new AnimationFrame(@"Content/Entities/Button/bow_btn_2", 0.0833f, mContentManagerName));
+            buttonOn.Add(new AnimationFrame(@"Content/Entities/Button/" + assetname + "_ON", 0.0833f, mContentManagerName));
 
             buttonOn.Name = "ON";
 
             AnimationChain buttonOff = new AnimationChain();
 
-            buttonOff.Add(new AnimationFrame(@"Content/Entities/Button/character_btn2", 0.0833f, mContentManagerName));
+            buttonOff.Add(new AnimationFrame(@"Content/Entities/Button/" + assetname + "_OFF", 0.0833f, mContentManagerName));
 
             buttonOff.Name = "OFF";
 
             buttonSprites.Add(buttonOn);
             buttonSprites.Add(buttonOff);
 
-            mVisibleRepresentation = SpriteManager.AddSprite(buttonSprites);
-            mVisibleRepresentation.AttachTo(this, false);
-            mVisibleRepresentation.RelativeRotationZ = GameProperties.WorldRotation;
-            mVisibleRepresentation.CurrentChainName = "OFF";
+            mAppearance = SpriteManager.AddSprite(buttonSprites);
+            mAppearance.AttachTo(this, false);
+            mAppearance.RelativeRotationZ = GameProperties.WorldRotation;
+            mAppearance.CurrentChainName = "OFF";
 
-            GameProperties.RescaleSprite(mVisibleRepresentation);
+            GameProperties.RescaleSprite(mAppearance);
         }
 
         public void Toggle()
         {
-            if (mVisibleRepresentation.CurrentChainName.Equals("ON"))
-                mVisibleRepresentation.CurrentChainName = "OFF";
+            if (mAppearance.CurrentChainName.Equals("ON"))
+                mAppearance.CurrentChainName = "OFF";
             else
-                mVisibleRepresentation.CurrentChainName = "ON";
+                mAppearance.CurrentChainName = "ON";
         }
 
         public virtual void Activity()
@@ -132,7 +123,7 @@ namespace Shroud.Entities
             SpriteManager.RemovePositionedObject(this);
 
             // Remove any other objects you've created:
-            SpriteManager.RemoveSprite(mVisibleRepresentation);
+            SpriteManager.RemoveSprite(mAppearance);
             ShapeManager.Remove(mCollision);
         }
 

@@ -20,5 +20,10 @@ namespace Shroud.Utilities
             s.ScaleX = .5f * s.Texture.Width / pixelsPerUnit;
             s.ScaleY = .5f * s.Texture.Height / pixelsPerUnit;
         }
+
+        public static void What()
+        {
+
+        }
     }
 }
