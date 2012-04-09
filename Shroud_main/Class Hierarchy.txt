@@ -1,0 +1,19 @@
+(A)Entity
+	MovingEntity
+		AttackingEntity
+			Player
+			Soldier : Attacked
+				General
+			Counterninja : Attacked
+		Noble : Attacked
+	WorldObject
+		AttackObject : Attacked
+		InteractObject : Interact
+	Trap : Interact
+	(A)UIElement
+		GenericButton : Interact
+			ToggleButton
+			PressButton
+		Indicator
+Scene
+Node
