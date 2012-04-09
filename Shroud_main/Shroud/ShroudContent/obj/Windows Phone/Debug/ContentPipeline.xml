@@ -1,0 +1,568 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <Item>
+      <Source>Entities\Background\building.png</Source>
+      <Name>Entities\Background\building</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\building.xnb</Output>
+      <Time>2012-02-27T23:50:08.2134288-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\bush1.png</Source>
+      <Name>Entities\Background\bush1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\bush1.xnb</Output>
+      <Time>2012-02-27T23:50:08.2314298-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\bush2.png</Source>
+      <Name>Entities\Background\bush2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\bush2.xnb</Output>
+      <Time>2012-02-27T23:50:08.2474307-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\cloud1.png</Source>
+      <Name>Entities\Background\cloud1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\cloud1.xnb</Output>
+      <Time>2012-02-27T23:50:08.2574313-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\cloud2.png</Source>
+      <Name>Entities\Background\cloud2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\cloud2.xnb</Output>
+      <Time>2012-02-27T23:50:08.2704321-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\cloud3.png</Source>
+      <Name>Entities\Background\cloud3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\cloud3.xnb</Output>
+      <Time>2012-02-27T23:50:08.2854329-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\ground.png</Source>
+      <Name>Entities\Background\ground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\ground.xnb</Output>
+      <Time>2012-02-27T23:50:08.3034339-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\mountain.png</Source>
+      <Name>Entities\Background\mountain</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\mountain.xnb</Output>
+      <Time>2012-02-27T23:50:08.3354358-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\mountain2.png</Source>
+      <Name>Entities\Background\mountain2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\mountain2.xnb</Output>
+      <Time>2012-02-27T23:50:08.3474365-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\attacking0.png</Source>
+      <Name>Entities\Player\attacking0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\attacking0.xnb</Output>
+      <Time>2012-03-28T20:08:00.8361794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\attacking1.png</Source>
+      <Name>Entities\Player\attacking1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\attacking1.xnb</Output>
+      <Time>2012-03-28T20:08:00.8361794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\attacking2.png</Source>
+      <Name>Entities\Player\attacking2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\attacking2.xnb</Output>
+      <Time>2012-03-28T20:08:00.8361794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\attacking3.png</Source>
+      <Name>Entities\Player\attacking3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\attacking3.xnb</Output>
+      <Time>2012-03-28T20:08:00.8361794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\attacking4.png</Source>
+      <Name>Entities\Player\attacking4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\attacking4.xnb</Output>
+      <Time>2012-03-28T20:08:00.8361794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\dead0.png</Source>
+      <Name>Entities\Player\dead0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\dead0.xnb</Output>
+      <Time>2012-03-13T19:15:38.5904511-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\dying0.png</Source>
+      <Name>Entities\Player\dying0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\dying0.xnb</Output>
+      <Time>2012-03-13T19:15:45.4087775-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\dying1.png</Source>
+      <Name>Entities\Player\dying1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\dying1.xnb</Output>
+      <Time>2012-03-13T19:15:45.4387792-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\hide0.png</Source>
+      <Name>Entities\Player\hide0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\hide0.xnb</Output>
+      <Time>2012-03-28T20:08:00.8461794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\hiding0.png</Source>
+      <Name>Entities\Player\hiding0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\hiding0.xnb</Output>
+      <Time>2012-03-28T20:07:58.4661761-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\hiding1.png</Source>
+      <Name>Entities\Player\hiding1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\hiding1.xnb</Output>
+      <Time>2012-03-28T20:07:59.2761772-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\Idle0.png</Source>
+      <Name>Entities\Player\Idle0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\Idle0.xnb</Output>
+      <Time>2012-03-28T20:08:00.8061794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\Moving0.png</Source>
+      <Name>Entities\Player\Moving0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\Moving0.xnb</Output>
+      <Time>2012-03-28T20:08:00.8261794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\Moving1.png</Source>
+      <Name>Entities\Player\Moving1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\Moving1.xnb</Output>
+      <Time>2012-03-28T20:08:00.8261794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\Moving2.png</Source>
+      <Name>Entities\Player\Moving2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\Moving2.xnb</Output>
+      <Time>2012-03-28T20:08:00.8261794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\placingtrap0.png</Source>
+      <Name>Entities\Player\placingtrap0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\placingtrap0.xnb</Output>
+      <Time>2012-03-30T12:08:26.7161718-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\placingtrap1.png</Source>
+      <Name>Entities\Player\placingtrap1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\placingtrap1.xnb</Output>
+      <Time>2012-03-30T12:08:26.7161718-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\placingtrap2.png</Source>
+      <Name>Entities\Player\placingtrap2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\placingtrap2.xnb</Output>
+      <Time>2012-03-30T12:14:17.1239536-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Button\bomb_ON.png</Source>
+      <Name>Entities\Button\bomb_ON</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Button\bomb_ON.xnb</Output>
+      <Time>2012-03-28T19:47:30.8656589-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Button\bomb_OFF.png</Source>
+      <Name>Entities\Button\bomb_OFF</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Button\bomb_OFF.xnb</Output>
+      <Time>2012-03-28T19:47:30.8656589-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Button\smoke_ON.png</Source>
+      <Name>Entities\Button\smoke_ON</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Button\smoke_ON.xnb</Output>
+      <Time>2012-03-28T19:48:07.1832429-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Button\smoke_OFF.png</Source>
+      <Name>Entities\Button\smoke_OFF</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Button\smoke_OFF.xnb</Output>
+      <Time>2012-03-28T19:48:07.1832429-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\attacking5.png</Source>
+      <Name>Entities\Player\attacking5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\attacking5.xnb</Output>
+      <Time>2012-03-28T20:08:00.8461794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\attacking6.png</Source>
+      <Name>Entities\Player\attacking6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\attacking6.xnb</Output>
+      <Time>2012-03-28T20:08:00.8461794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\hiding2.png</Source>
+      <Name>Entities\Player\hiding2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\hiding2.xnb</Output>
+      <Time>2012-03-28T20:07:59.2861773-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\hiding3.png</Source>
+      <Name>Entities\Player\hiding3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\hiding3.xnb</Output>
+      <Time>2012-03-28T20:07:59.2861773-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\idle1.png</Source>
+      <Name>Entities\Player\idle1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\idle1.xnb</Output>
+      <Time>2012-03-28T20:08:00.8061794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\idle2.png</Source>
+      <Name>Entities\Player\idle2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\idle2.xnb</Output>
+      <Time>2012-03-28T20:08:00.8061794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\idle3.png</Source>
+      <Name>Entities\Player\idle3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\idle3.xnb</Output>
+      <Time>2012-03-28T20:08:00.8161794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\idle4.png</Source>
+      <Name>Entities\Player\idle4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\idle4.xnb</Output>
+      <Time>2012-03-28T20:08:00.8161794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\idle5.png</Source>
+      <Name>Entities\Player\idle5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\idle5.xnb</Output>
+      <Time>2012-03-28T20:08:00.8261794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\idle6.png</Source>
+      <Name>Entities\Player\idle6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\idle6.xnb</Output>
+      <Time>2012-03-28T20:08:00.8261794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\idle7.png</Source>
+      <Name>Entities\Player\idle7</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\idle7.xnb</Output>
+      <Time>2012-03-28T20:08:00.8261794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\moving3.png</Source>
+      <Name>Entities\Player\moving3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\moving3.xnb</Output>
+      <Time>2012-03-28T20:08:00.8261794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\moving4.png</Source>
+      <Name>Entities\Player\moving4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\moving4.xnb</Output>
+      <Time>2012-03-28T20:08:00.8361794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\moving5.png</Source>
+      <Name>Entities\Player\moving5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\moving5.xnb</Output>
+      <Time>2012-03-28T20:08:00.8361794-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Player\placingtrap3.png</Source>
+      <Name>Entities\Player\placingtrap3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Player\placingtrap3.xnb</Output>
+      <Time>2012-03-30T12:08:26.6693717-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Button\bomb.png</Source>
+      <Name>Entities\Button\bomb</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Button\bomb.xnb</Output>
+      <Time>2012-04-04T18:40:58.6344565-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Button\smoke.png</Source>
+      <Name>Entities\Button\smoke</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Button\smoke.xnb</Output>
+      <Time>2012-04-03T20:02:32.2970216-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Enemy\Soldier1\moving0.png</Source>
+      <Name>Entities\Enemy\Soldier1\moving0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Enemy\Soldier1\moving0.xnb</Output>
+      <Time>2012-04-04T01:04:21.4996302-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Enemy\Soldier1\moving1.png</Source>
+      <Name>Entities\Enemy\Soldier1\moving1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Enemy\Soldier1\moving1.xnb</Output>
+      <Time>2012-04-04T01:04:21.5152303-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Enemy\Soldier1\moving2.png</Source>
+      <Name>Entities\Enemy\Soldier1\moving2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Enemy\Soldier1\moving2.xnb</Output>
+      <Time>2012-04-04T01:04:21.5152303-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Enemy\Soldier1\moving3.png</Source>
+      <Name>Entities\Enemy\Soldier1\moving3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Enemy\Soldier1\moving3.xnb</Output>
+      <Time>2012-04-04T01:04:21.5152303-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Enemy\Soldier1\moving4.png</Source>
+      <Name>Entities\Enemy\Soldier1\moving4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Enemy\Soldier1\moving4.xnb</Output>
+      <Time>2012-04-04T01:04:21.5152303-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Enemy\Soldier1\moving5.png</Source>
+      <Name>Entities\Enemy\Soldier1\moving5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Enemy\Soldier1\moving5.xnb</Output>
+      <Time>2012-04-04T01:04:21.5152303-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Enemy\Soldier1\moving6.png</Source>
+      <Name>Entities\Enemy\Soldier1\moving6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Enemy\Soldier1\moving6.xnb</Output>
+      <Time>2012-04-04T01:04:21.5152303-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Enemy\Soldier1\moving7.png</Source>
+      <Name>Entities\Enemy\Soldier1\moving7</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Enemy\Soldier1\moving7.xnb</Output>
+      <Time>2012-04-04T01:04:21.4996302-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Background\bg1.png</Source>
+      <Name>Entities\Background\bg1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Background\bg1.xnb</Output>
+      <Time>2012-04-04T18:25:51.8457172-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Entities\Trap\Bomb\flash_bomb.png</Source>
+      <Name>Entities\Trap\Bomb\flash_bomb</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\Entities\Trap\Bomb\flash_bomb.xnb</Output>
+      <Time>2012-04-04T18:44:59.8602538-04:00</Time>
+    </Item>
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <TargetPlatform>WindowsPhone</TargetPlatform>
+      <TargetProfile>Reach</TargetProfile>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\ShroudContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\ShroudContent\obj\Windows Phone\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\Shroud\bin\Windows Phone\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Value>2010-08-23T13:41:18-04:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
+        <Value>2010-08-23T13:41:18-04:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Value>2010-08-23T13:41:18-04:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Value>2010-08-23T13:41:18-04:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Value>2010-08-23T13:41:18-04:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
+        <Value>2010-08-23T13:41:18-04:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2011-03-09T21:55:54.6240494-05:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>

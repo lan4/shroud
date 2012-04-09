@@ -1,0 +1,2 @@
+C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud\Shroud\ShroudContent\obj\Windows Phone\Debug\ResolveAssemblyReference.cache
+C:\Users\Nathaniel Lam\Desktop\Sneak-Shroud\Shroud_main\Shroud\ShroudContent\obj\Windows Phone\Debug\ResolveAssemblyReference.cache
