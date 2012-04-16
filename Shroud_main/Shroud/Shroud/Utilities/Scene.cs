@@ -27,6 +27,8 @@ namespace Shroud.Utilities
         public List<Node> Nodes;
         public List<Enemy1> Enemies;
         public List<WorldObject> WorldObjects;
+        public List<Ground> Grounds;
+        public List<Ladder> Ladders;
 
         private Vector3 mAnchor;
         private List<Scene> Neighbors;
@@ -239,6 +241,8 @@ namespace Shroud.Utilities
             Enemies = new List<Enemy1>();
             WorldObjects = new List<WorldObject>();
             Neighbors = new List<Scene>();
+            Grounds = new List<Ground>();
+            Ladders = new List<Ladder>();
 
             SceneX = -123456;
             SceneY = -123456;
@@ -256,6 +260,8 @@ namespace Shroud.Utilities
             Enemies = new List<Enemy1>();
             WorldObjects = new List<WorldObject>();
             Neighbors = new List<Scene>();
+            Grounds = new List<Ground>();
+            Ladders = new List<Ladder>();
 
             SceneX = 0;
             SceneY = 0;
@@ -337,6 +343,22 @@ namespace Shroud.Utilities
         }
 
         #endregion
+
+        public void AddGround(float x, float y, int xSize, int ySize, MainLayer m, DetailLayer d)
+        {
+            Ground g = new Ground("Global", xSize, ySize);
+            Grounds.Add(g);
+            g.X = x;
+            g.Y = y;
+            g.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+        }
+
+        public void AddLadder(Vector3 p1, Vector3 p2, MainLayer m, DetailLayer d)
+        {
+            Ladder l = new Ladder("Global", p1, p2);
+            Ladders.Add(l);
+            l.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+        }
 
         public void AddWorldObject(float x, float y, MainLayer m, DetailLayer d)
         {
