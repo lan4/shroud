@@ -289,74 +289,31 @@ namespace Shroud.Utilities
             Enemies.Remove(e);
         }
 
-        #region Graph Creation
 
-        private Node AddNode(float x, float y, MainLayer m)
+        public void AddGround(float x, float y, int width, int height, MainLayer m, DetailLayer d)
         {
-            Node n = Node.AddGraphNode(x + mAnchor.X, y + mAnchor.Y, mAnchor.Z + LayerManager.SetLayer(m, DetailLayer.Middle));
-            Nodes.Add(n);
-
-            return n;
-        }
-
-        public void CreateLink(float x1, float y1, float x2, float y2, MainLayer m)
-        {
-            Node n1 = AddNode(x1, y1, m);
-            Node n2 = AddNode(x2, y2, m);
-
-            n1.AddUndirectedEdge(n2);
-        }
-
-        public void CreateMovementGraph()
-        {
-            foreach (WorldObject w in WorldObjects)
-            {
-                if (w.OType.Equals(ObjectType.Ground))
-                {
-                    Unwrap(w.Collision);
-                }
-            }
-
-            Node n1 = null;
-            Node n2 = null;
-
-            foreach (Node n in Nodes)
-            {
-                if (!n.HasNeighbors && n.IsLink)
-                {
-                    Node.FindClosestLinePoints(n, Nodes, ref n1, ref n2);
-
-                    n1.RemoveUndirectedEdge(n2);
-                    n1.AddUndirectedEdge(n);
-                    n2.AddUndirectedEdge(n);
-                }
-            }
-        }
-
-        // PLACES NODES AT TOP POINTS OF RECTANGLE
-        private void Unwrap(AxisAlignedRectangle r)
-        {
-            Node n1 = AddNode(r.X + r.Right, r.Y + r.Top, LayerManager.GetMainLayer(r.Z));
-            Node n2 = AddNode(r.X + r.Right, r.Y + r.Bottom, LayerManager.GetMainLayer(r.Z));
-
-            n1.AddUndirectedEdge(n2);
-        }
-
-        #endregion
-
-        public void AddGround(float x, float y, int xSize, int ySize, MainLayer m, DetailLayer d)
-        {
-            Ground g = new Ground("Global", xSize, ySize);
+            Ground g = new Ground("Global", height, width);
             Grounds.Add(g);
-            g.X = x;
-            g.Y = y;
+            g.X = y;
+            g.Y = -x;
             g.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
         }
 
-        public void AddLadder(Vector3 p1, Vector3 p2, MainLayer m, DetailLayer d)
+        public void AddGround(int dx, int dy, int width, int height, Ground relativeG, MainLayer m, DetailLayer d)
         {
-            Ladder l = new Ladder("Global", p1, p2);
+            Ground g = new Ground("Global", height, width);
+            Grounds.Add(g);
+            g.X = relativeG.X + (dy * relativeG.TileHeight);
+            g.Y = relativeG.Y - (dx * relativeG.TileWidth);
+            g.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+        }
+
+        public void AddLadder(Vector3 p1, Vector3 p2, float tileSize, MainLayer m, DetailLayer d)
+        {
+            Ladder l = new Ladder("Global", p1, p2, tileSize);
             Ladders.Add(l);
+            l.X = p1.X + tileSize;
+            l.Y = p1.Y;
             l.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
         }
 
