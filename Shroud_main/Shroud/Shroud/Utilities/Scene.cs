@@ -312,7 +312,7 @@ namespace Shroud.Utilities
         {
             Ladder l = new Ladder("Global", p1, p2, tileSize);
             Ladders.Add(l);
-            l.X = p1.X + tileSize;
+            l.X = p1.X + tileSize * .8f;
             l.Y = p1.Y;
             l.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
         }
