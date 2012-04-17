@@ -55,11 +55,11 @@ namespace Shroud.Utilities
             GameProperties.RescaleSprite(origin.mBG);
             origin.mBG.Z = -0.1f;
             origin.mBG.RotationZ = GameProperties.WorldRotation;
-            origin.AddGround(-14.8f, 8.0f, 8, 3, LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
-            origin.AddGround(-4.2f, 2.5f, 4, 3, LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
-            origin.AddLadder(origin.Grounds[0].GetUnitCoord(4), origin.Grounds[1].GetUnitCoord(1),
+            origin.AddGround(-16.0f, -21.0f, 6, 3, LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
+            origin.AddGround(1, 2, 4, 3, origin.Grounds[0], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+            origin.AddLadder(origin.Grounds[0].GetTilePosition(1), origin.Grounds[1].GetTilePosition(0), origin.Grounds[0].TileHeight,
                              LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
-            origin.AddLadder(origin.Grounds[0].GetUnitCoord(6), origin.Grounds[1].GetUnitCoord(1),
+            origin.AddLadder(origin.Grounds[0].GetTilePosition(4), origin.Grounds[1].GetTilePosition(1), origin.Grounds[0].TileHeight,
                              LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
 
             #region Create Nodes and Edges

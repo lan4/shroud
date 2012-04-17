@@ -25,9 +25,7 @@ namespace Shroud.Entities
         private int mHeight;
         private Sprite[] mGrid;
 
-        private string mName;
-
-        private const float TEXTURE_HEIGHT = 2.650967f;
+        private float mTileHeight;
 
         #endregion
 
@@ -47,12 +45,11 @@ namespace Shroud.Entities
             Initialize(true);
         }
 
-        public Ladder(string contentManagerName, Vector3 pos1, Vector3 pos2)
+        public Ladder(string contentManagerName, Vector3 pos1, Vector3 pos2, float tileSize)
             : base(contentManagerName)
         {
-            mHeight = CalcHeight(pos1.Y, pos2.Y);
-            this.X = pos1.Y;
-            this.Y = pos1.X;
+            mTileHeight = tileSize;
+            mHeight = CalcHeight(pos1.X, pos2.X);
             // If you don't want to add to managers, make an overriding constructor
             Initialize(true);
         }
@@ -98,24 +95,23 @@ namespace Shroud.Entities
                 mGrid[v].AttachTo(this, false);
                 GameProperties.RescaleSprite(mGrid[v]);
                 SetWorldPosition(v);
+                mGrid[v].RelativeRotationZ = GameProperties.WorldRotation;
             }
-
-            this.RotationZ = GameProperties.WorldRotation;
         }
 
         private int CalcHeight(float y1, float y2)
         {
             float realHeight = y2 - y1;
-            int unitHeight = (int)(realHeight / TEXTURE_HEIGHT);
+            int unitHeight = (int)(realHeight / mTileHeight);
 
             return Math.Abs(unitHeight);
         }
 
         private void SetWorldPosition(int v)
         {
-            float vGridSize = mGrid[v].ScaleY;
+            float tileHeight = mGrid[v].ScaleX;
 
-            mGrid[v].RelativeY = (2 * vGridSize * v);
+            mGrid[v].RelativeX = (2 * tileHeight * v);
         }
 
         public virtual void Destroy()

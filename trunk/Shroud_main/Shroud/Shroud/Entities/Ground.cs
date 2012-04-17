@@ -21,22 +21,32 @@ namespace Shroud.Entities
     public class Ground : Entity
     {
         #region Fields
-        private int mXSize;
-        private int mYSize;
-        private Sprite[,] mGrid;
-
-        private string mName;
+        private int mWidth;
+        private int mHeight;
+        private float mTileWidth;
+        private float mTileHeight;
+        private Sprite[,] mTiles;
 
         #endregion
 
         #region Properties
 
+        public float TileWidth
+        {
+            get { return 2 * mTileWidth; }
+        }
+
+        public float TileHeight
+        {
+            get { return 2 * mTileHeight; }
+        }
+
         public Vector3 LeftEnd
         {
             get
             {
-                Vector3 temp = mGrid[0, 0].Position;
-                temp.Y += mGrid[0, 0].ScaleY;
+                Vector3 temp = mTiles[mHeight - 1, 0].Position;
+                temp.X += mTiles[mHeight - 1, 0].ScaleX;
                 return temp;
             }
         }
@@ -45,8 +55,8 @@ namespace Shroud.Entities
         {
             get
             {
-                Vector3 temp = mGrid[mXSize - 1, 0].Position;
-                temp.Y += mGrid[mXSize - 1, 0].ScaleY;
+                Vector3 temp = mTiles[mHeight - 1, mWidth -1].Position;
+                temp.X += mTiles[mHeight - 1, mWidth - 1].ScaleX;
                 return temp;
             }
         }
@@ -65,14 +75,14 @@ namespace Shroud.Entities
             Initialize(true);
         }
 
-        public Ground(string contentManagerName, int xsize, int ysize)
+        public Ground(string contentManagerName, int height, int width)
             : base(contentManagerName)
         {
             mName = "hill";
 
             // Set the ContentManagerName and call Initialize:
-            mXSize = xsize;
-            mYSize = ysize;
+            mWidth = width;
+            mHeight = height;
 
             // If you don't want to add to managers, make an overriding constructor
             Initialize(true);
@@ -80,7 +90,7 @@ namespace Shroud.Entities
 
         protected virtual void Initialize(bool addToManagers)
         {
-            mGrid = new Sprite[mXSize, mYSize];
+            mTiles = new Sprite[mHeight, mWidth];
 
             if (addToManagers)
             {
@@ -101,22 +111,20 @@ namespace Shroud.Entities
         private void InitializeGrid()
         {
             string name;
-            for (int v = 0; v < mYSize; v++)
-            {
-                for (int u = 0; u < mXSize; u++)
-                {
+            for (int u = 0; u < mWidth; u++) {
+                for (int v = 0; v < mHeight; v++) {
                     if (u == 0)
                     {
-                        if (v == (mYSize - 1))
-                                name = @"Content/Entities/Background/Ground/topleft_" + mName;
+                        if (v == (mHeight - 1))
+                            name = @"Content/Entities/Background/Ground/topleft_" + mName;
                         else if (v == 0)
-                                name = @"Content/Entities/Background/Ground/bottomleft_" + mName;
+                            name = @"Content/Entities/Background/Ground/bottomleft_" + mName;
                         else
-                                name = @"Content/Entities/Background/Ground/middleleft_" + mName;
+                            name = @"Content/Entities/Background/Ground/middleleft_" + mName;
                     }
-                    else if (u == (mXSize - 1))
+                    else if (u == mWidth - 1)
                     {
-                        if (v == (mYSize - 1))
+                        if (v == (mHeight - 1))
                             name = @"Content/Entities/Background/Ground/topright_" + mName;
                         else if (v == 0)
                             name = @"Content/Entities/Background/Ground/bottomright_" + mName;
@@ -125,44 +133,52 @@ namespace Shroud.Entities
                     }
                     else
                     {
-                        if (v == (mYSize - 1))
+                        if (v == (mHeight - 1))
                             name = @"Content/Entities/Background/Ground/topcenter_" + mName;
                         else if (v == 0)
                             name = @"Content/Entities/Background/Ground/bottomcenter_" + mName;
                         else
                             name = @"Content/Entities/Background/Ground/middlecenter_" + mName;
                     }
-                    mGrid[u, v] = SpriteManager.AddSprite(name, ContentManagerName);
-                    mGrid[u, v].AttachTo(this, false);
-                    GameProperties.RescaleSprite(mGrid[u, v]);
+
+                    mTiles[v, u] = SpriteManager.AddSprite(name, ContentManagerName);
+                    mTiles[v, u].AttachTo(this, false);
+                    GameProperties.RescaleSprite(mTiles[v, u]);
                     SetWorldPosition(u, v);
+                    mTiles[v, u].RelativeRotationZ = GameProperties.WorldRotation;
                 }
             }
+            mTileWidth = mTiles[0, 0].ScaleY;
+            mTileHeight = mTiles[0, 0].ScaleX;
 
-            this.RotationZ = GameProperties.WorldRotation;
         }
 
         private void SetWorldPosition(int u, int v)
         {
-            float uGridSize = mGrid[u, v].ScaleX;
-            float vGridSize = mGrid[u, v].ScaleY;
-            float uStart = uGridSize * mXSize;
-            float vStart = vGridSize * mYSize;
+            mTileWidth = mTiles[v, u].ScaleY;
+            mTileHeight = mTiles[v, u].ScaleX;
+            float xPos = -mTiles[v, u].RelativeY - mTileWidth - (2 * mTileWidth * u);
+            float yPos = mTiles[v, u].RelativeX + mTileHeight + (2 * mTileHeight * v);
 
-            mGrid[u, v].RelativeX = -uStart / 2 + (2 * uGridSize * u); 
-            mGrid[u, v].RelativeY = -vStart / 2 + (2 * vGridSize * v);
+            mTiles[v, u].RelativeX = yPos;
+            mTiles[v, u].RelativeY = xPos;
         }
 
         public virtual void Destroy()
         {
             base.Destroy();
+            foreach (Sprite s in mTiles)
+            {
+                SpriteManager.RemoveSprite(s);
+            }
         }
 
-        public Vector3 GetUnitCoord(int pos) 
+        public Vector3 GetTilePosition(int pos) 
         {
-            Vector3 temp = mGrid[pos, mYSize - 1].RelativePosition;
-            temp.Y -= (Position.Y + mGrid[pos, mYSize - 1].ScaleY);
+            Vector3 temp = mTiles[mHeight - 1, pos].RelativePosition;
+            temp.Y += this.Position.Y;
             temp.X += this.Position.X;
+
             return temp;
         }
 
