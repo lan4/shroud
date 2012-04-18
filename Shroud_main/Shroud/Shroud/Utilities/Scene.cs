@@ -362,8 +362,8 @@ namespace Shroud.Utilities
         {
             Ground g = new Ground("Global", height, width);
             Grounds.Add(g);
-            g.X = relativeG.X + (dy * relativeG.TileHeight) + mAnchor.X;
-            g.Y = relativeG.Y - (dx * relativeG.TileWidth) + mAnchor.Y;
+            g.X = relativeG.X + (dy * relativeG.TileHeight);
+            g.Y = relativeG.Y - (dx * relativeG.TileWidth);
             g.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
         }
 
@@ -371,8 +371,8 @@ namespace Shroud.Utilities
         {
             Ladder l = new Ladder("Global", p1, p2, tileSize);
             Ladders.Add(l);
-            l.X = p1.X + tileSize * .8f + mAnchor.X;
-            l.Y = p1.Y + mAnchor.Y;
+            l.X = p1.X + tileSize * .85f;
+            l.Y = p1.Y;
             l.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
         }
 
