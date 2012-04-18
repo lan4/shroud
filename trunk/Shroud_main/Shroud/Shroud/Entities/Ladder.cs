@@ -99,8 +99,13 @@ namespace Shroud.Entities
 
         private int CalcHeight(float y1, float y2)
         {
-            float realHeight = y2 - y1;
-            int unitHeight = (int)(realHeight / mTileHeight);
+            float realHeight = (y2 - y1) / mTileHeight;
+            int unitHeight = (int)realHeight;
+
+            if (realHeight - unitHeight > 0.0f)
+            {
+                unitHeight += 1;
+            }
 
             return Math.Abs(unitHeight);
         }
