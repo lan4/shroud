@@ -46,15 +46,11 @@ namespace Shroud
             FlatRedBall.Graphics.Renderer.UseRenderTargets = false;
             FlatRedBallServices.InitializeFlatRedBall(this, graphics);
 
-            // Uncomment the following line and add your Screen's fully qualified name
-            // if using Screens in your project.  If not, or if you don't know what it means,
-            // just ignore the following line for now.
-            // For more information on Screens see the Screens wiki article on FlatRedBall.com.
             /*SpriteManager.Camera.RotationZ = (float)Math.PI / 2.0f;
             SpriteManager.Camera.UpVector = SpriteManager.Camera.RotationMatrix.Up;
             SpriteManager.Camera.CameraCullMode = CameraCullMode.None;*/
-
-            Screens.ScreenManager.Start(typeof(Screens.GameScreen).FullName);
+            Shroud.Utilities.GameProperties.game = this;
+            Screens.ScreenManager.Start(typeof(Screens.StartScreen).FullName);
  
 
             base.Initialize();

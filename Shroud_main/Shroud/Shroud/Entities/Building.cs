@@ -15,41 +15,24 @@ using FlatRedBall.Math.Geometry;
 
 namespace Shroud.Entities
 {
-    public class Building : PositionedObject
+    public class Building : Entity
     {
         #region Fields
 
-        // Here you'd define things that your Entity contains, like Sprites
-        // or Circles:
-        // private Sprite mVisibleRepresentation;
-        // private Circle mCollision;
 
-        // Keep the ContentManager for easy access:
-        string mContentManagerName;
 
         #endregion
 
         #region Properties
 
 
-        // Here you'd define properties for things
-        // you want to give other Entities and game code
-        // access to, like your Collision property:
-        //public Circle Collision
-        //{
-        //    get { return mCollision; }
-        //}
-
         #endregion
 
         #region Methods
 
         // Constructor
-        public Building(string contentManagerName)
+        public Building(string contentManagerName) : base(contentManagerName)
         {
-            // Set the ContentManagerName and call Initialize:
-            mContentManagerName = contentManagerName;
-
             // If you don't want to add to managers, make an overriding constructor
             Initialize(true);
         }
@@ -67,18 +50,7 @@ namespace Shroud.Entities
 
         public virtual void AddToManagers(Layer layerToAddTo)
         {
-            // Add the Entity to the SpriteManager
-            // so it gets managed properly (velocity, acceleration, attachments, etc.)
-            SpriteManager.AddPositionedObject(this);
-
-            // Here you may want to add your objects to the engine.  Use layerToAddTo
-            // when adding if your Entity supports layers.  Make sure to attach things
-            // to this if appropriate.
-            //mVisibleRepresentation = SpriteManager.AddSprite("redball.bmp", contentManagerName);
-            //mVisibleRepresentation.AttachTo(this, false);
-
-            //mCollision = ShapeManager.AddCircle();
-            //mCollision.AttachTo(this, false);
+            
         }
 
 
@@ -90,12 +62,7 @@ namespace Shroud.Entities
 
         public virtual void Destroy()
         {
-            // Remove self from the SpriteManager:
-            SpriteManager.RemovePositionedObject(this);
-
-            // Remove any other objects you've created:
-            //SpriteManager.RemoveSprite(mVisibleRepresentation);
-            //ShapeManager.Remove(mCollision);
+            base.Destroy();
         }
 
         #endregion

@@ -247,14 +247,14 @@ namespace Shroud.Utilities
             Node s1 = null;
             Node s2 = null;
 
-            FindClosestLinePoints(s, Nodes, ref s1, ref s2);
+            FindClosestLinePoints(s, LevelManager.CurrentScene.Nodes, ref s1, ref s2);
 
             // The two nodes e is between
             Node e1 = null;
             Node e2 = null;
             Node beforeEnd = null;
 
-            FindClosestLinePoints(e, Nodes, ref e1, ref e2);
+            FindClosestLinePoints(e, LevelManager.CurrentScene.Nodes, ref e1, ref e2);
 
             // Calculate and Enqueue real end
             Vector3 e1e2 = e2.Position - e1.Position;
@@ -282,7 +282,7 @@ namespace Shroud.Utilities
             Q.Clear();
 
             // Add all nodes and reset values
-            foreach (Node n in Nodes)
+            foreach (Node n in LevelManager.CurrentScene.Nodes)
             {
                 n.Initialize();
                 Q.Add(n);
@@ -367,10 +367,10 @@ namespace Shroud.Utilities
             TempNode.Z = pos.Z;
 
             Node l1 = null, l2 = null;
-            FindClosestLinePoints(last, Nodes, ref l1, ref l2);
+            FindClosestLinePoints(last, LevelManager.CurrentScene.Nodes, ref l1, ref l2);
 
             Node ne1 = null, ne2 = null;
-            FindClosestLinePoints(TempNode, Nodes, ref ne1, ref ne2);
+            FindClosestLinePoints(TempNode, LevelManager.CurrentScene.Nodes, ref ne1, ref ne2);
 
             if ((l1.Equals(ne1) || l1.Equals(ne2)) && (l2.Equals(ne1) || l2.Equals(ne2)))
             {
