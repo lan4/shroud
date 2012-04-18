@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using FlatRedBall;
+using FlatRedBall.Graphics;
 
 using Gesture = Shroud.Utilities.GestureManager.Gesture;
 
@@ -15,6 +16,49 @@ namespace Shroud.Utilities
         private static float YTolerance = 2.5f;
         private static Scene mCurBlock;
         private static Sprite mTransitionCover;
+
+        private static Layer mBackground = SpriteManager.Camera.AddLayer();
+        private static Layer mEntity2 = SpriteManager.Camera.AddLayer();
+        private static Layer mMiddleground = SpriteManager.Camera.AddLayer();
+        private static Layer mEntity1 = SpriteManager.Camera.AddLayer();
+        private static Layer mForeground = SpriteManager.Camera.AddLayer();
+        private static Layer mUI = SpriteManager.Camera.AddLayer();
+        private static Layer mPause = SpriteManager.Camera.AddLayer();
+
+        public static Layer Background
+        {
+            get { return mBackground;}
+        }
+
+        public static Layer Entity2
+        {
+            get { return mEntity2; }
+        }
+
+        public static Layer Middleground
+        {
+            get { return mMiddleground; }
+        }
+
+        public static Layer Entity1
+        {
+            get { return mEntity1; }
+        }
+
+        public static Layer Foreground
+        {
+            get { return mForeground; }
+        }
+
+        public static Layer UI
+        {
+            get { return mUI; }
+        }
+
+        public static Layer Pause
+        {
+            get { return mPause; }
+        }
 
         public static void Initialize(Scene b)
         {

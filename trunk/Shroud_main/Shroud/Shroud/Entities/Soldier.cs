@@ -32,7 +32,7 @@ namespace Shroud.Entities
         {
             get
             {
-                return !mCurAnimationState.Equals(AnimationState.Dead) ||
+                return !mCurAnimationState.Equals(AnimationState.Dead) &&
                        !mCurAnimationState.Equals(AnimationState.Dying);
             }
         }
@@ -44,13 +44,15 @@ namespace Shroud.Entities
             mCurAnimationState = AnimationState.Idle;
             mCurPatrolMode = PatrolMode.Backtrack;
 
-            SpriteManager.AddPositionedObject(this);
+            //SpriteManager.AddPositionedObject(this);
 
             InitializeAnimations();
 
             mCollision = ShapeManager.AddCircle();
             mCollision.AttachTo(this, false);
             mCollision.Radius = 2.0f;
+
+            //StartAttack(WorldManager.PlayerInstance);
         }
 
         private void InitializeAnimations()
@@ -64,19 +66,20 @@ namespace Shroud.Entities
             AnimationChain chasing = new AnimationChain();
             AnimationChain dying = new AnimationChain();
             AnimationChain dead = new AnimationChain();
+            AnimationChain climb = new AnimationChain();
 
             string type = "Soldier1";
 
             int framenum = 0;
             float frametime = 0.083f;
 
-            /*int idleFrameTotal = 2;
+            int idleFrameTotal = 1;
             for (framenum = 0; framenum < idleFrameTotal; framenum++)
             {
-                idle.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/idle" + framenum, frametime, ContentManagerName));
+                idle.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/moving" + framenum, frametime, ContentManagerName));
             }
             idle.Name = "Idle";
-            animations.Add(idle);*/
+            animations.Add(idle);
 
             int moveFrameTotal = 8;
             for (framenum = 0; framenum < moveFrameTotal; framenum++)
@@ -86,13 +89,21 @@ namespace Shroud.Entities
             move.Name = "Moving";
             animations.Add(move);
 
-            /*int attackFrameTotal = 3;
+            int attackFrameTotal = 5;
             for (framenum = 0; framenum < attackFrameTotal; framenum++)
             {
                 attack.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/attacking" + framenum, frametime, ContentManagerName));
             }
             attack.Name = "Attacking";
-            animations.Add(attack);*/
+            animations.Add(attack);
+
+            int climbFrameTotal = 8;
+            for (framenum = 0; framenum < climbFrameTotal; framenum++)
+            {
+                climb.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/climb" + framenum, frametime, ContentManagerName));
+            }
+            climb.Name = "Climbing";
+            animations.Add(climb);
 
             /*int drawweaponFrameTotal = 0;
             for (framenum = 0; framenum < drawweaponFrameTotal; framenum++)
@@ -110,23 +121,24 @@ namespace Shroud.Entities
             chasing.Name = "Chasing";
             animations.Add(chasing);*/
 
-            /*int dyingFrameTotal = 3;
+            int dyingFrameTotal = 5;
             for (framenum = 0; framenum < dyingFrameTotal; framenum++)
             {
                 dying.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/dying" + framenum, frametime, ContentManagerName));
             }
             dying.Name = "Dying";
-            animations.Add(dying);*/
+            animations.Add(dying);
 
-            /*int deadFrameTotal = 3;
+            int deadFrameTotal = 1;
             for (framenum = 0; framenum < deadFrameTotal; framenum++)
             {
                 dead.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/dead" + framenum, frametime, ContentManagerName));
             }
             dead.Name = "Dead";
-            animations.Add(dead);*/
+            animations.Add(dead);
 
             mAppearance = SpriteManager.AddSprite(animations);
+            SpriteManager.AddToLayer(mAppearance, CameraManager.Entity1);
             mAppearance.AttachTo(this, false);
             mAppearance.CurrentChainName = "Moving";
             GameProperties.RescaleSprite(mAppearance);
@@ -137,6 +149,54 @@ namespace Shroud.Entities
         protected override void SetIdle()
         {
             mCurAnimationState = AnimationState.Idle;
+        }
+
+        private void SetAnimation()
+        {
+            mAppearance.Animate = true;
+
+            switch (mCurAnimationState)
+            {
+                case AnimationState.Attacking:
+                    mAppearance.CurrentChainName = "Attacking";
+                    break;
+                case AnimationState.Climbing:
+                    mAppearance.CurrentChainName = "Climbing";
+                    break;
+                case AnimationState.Idle:
+                    if (mAppearance.CurrentChainName == "Climbing")
+                    {
+                        mAppearance.Animate = false;
+                    }
+                    else
+                    {
+                        mAppearance.CurrentChainName = "Idle";
+                    }
+                    break;
+                case AnimationState.Jumping:
+                    //mAppearance.CurrentChainName = "Jumping";
+                    break;
+                case AnimationState.Chasing:
+                case AnimationState.Patrolling:
+                    if (this.XVelocity > 1.0f || this.XVelocity < -1.0f)
+                    {
+                        mAppearance.CurrentChainName = "Climbing";
+                    }
+                    else
+                    {
+                        mAppearance.CurrentChainName = "Moving";
+                    }
+                    break;
+                case AnimationState.Dying:
+                    mAppearance.CurrentChainName = "Dying";
+                    break;
+                case AnimationState.Dead:
+                    mAppearance.CurrentChainName = "Dead";
+                    break;
+                default:
+                    System.Diagnostics.Debug.WriteLine("Error: Player AnimationState not valid");
+                    break;
+            }
         }
 
         #region Behaviors
@@ -160,17 +220,36 @@ namespace Shroud.Entities
 
         private void ChasingBehavior()
         {
-            StartMoving();
             Chase();
+
+            if ((this.Position - mTarget.Position).Length() < PlayerProperties.WeaponRange)
+            {
+                mCurAnimationState = AnimationState.Attacking;
+            }
         }
 
         private void AttackingBehavior()
         {
+            this.Velocity.X = 0.0f;
+            this.Velocity.Y = 0.0f;
+
+            if (!WorldManager.PlayerInstance.IsAlive)
+            {
+                mCurAnimationState = AnimationState.Idle;
+            }
+
             Attack();
+            if (this.mAttackCollision.CollideAgainst(WorldManager.PlayerInstance.Collision))
+            {
+                WorldManager.PlayerInstance.Die();
+            }
         }
 
         private void DyingBehavior()
         {
+            this.Velocity.X = 0.0f;
+            this.Velocity.Y = 0.0f;
+
             if (mAppearance.CurrentChainName == "Dying" && mAppearance.JustCycled)
             {
                 mCurAnimationState = AnimationState.Dead;
@@ -178,6 +257,21 @@ namespace Shroud.Entities
         }
 
         #endregion
+
+        public void StartAttack(Player2 p)
+        {
+            mCurAnimationState = AnimationState.Chasing;
+            mTarget = p;
+            StartMoving();
+        }
+
+        public void Die()
+        {
+            if (mCurAnimationState != AnimationState.Dead)
+            {
+                mCurAnimationState = AnimationState.Dying;
+            }
+        }
 
         public virtual void Activity()
         {
@@ -211,6 +305,8 @@ namespace Shroud.Entities
 
             if (Math.Abs(this.Velocity.Y) > 0.01f)
                 mAppearance.FlipHorizontal = this.Velocity.Y < 0;
+
+            SetAnimation();
         }
 
         public virtual void Destroy()

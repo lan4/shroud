@@ -36,9 +36,9 @@ namespace Shroud.Entities
         {
             // RelativeY used because screen is sideways in game
             if (mFacingRight)
-                mAttackCollision.RelativeY = -mAttackRange;
-            else
                 mAttackCollision.RelativeY = mAttackRange;
+            else
+                mAttackCollision.RelativeY = -mAttackRange;
         }
 
         protected void ResetAttack()

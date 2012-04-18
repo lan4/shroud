@@ -132,10 +132,10 @@ namespace Shroud.Utilities
                         CurGesture = Gesture.SwipeDown;
                     else if (xDiff < -mMIN_SWIPE_LENGTH)
                         CurGesture = Gesture.SwipeUp;
-                    else if (yDiff > mMIN_SWIPE_LENGTH)
+                    /*else if (yDiff > mMIN_SWIPE_LENGTH)
                         CurGesture = Gesture.SwipeLeft;
                     else if (yDiff < -mMIN_SWIPE_LENGTH)
-                        CurGesture = Gesture.SwipeRight;
+                        CurGesture = Gesture.SwipeRight;*/
                     else
                         CurGesture = Gesture.Swipe;
 
@@ -171,6 +171,12 @@ namespace Shroud.Utilities
 
                 CurGesture = Gesture.None;
             }
+        }
+
+        public static void Clean()
+        {
+            ShapeManager.Remove(Touch);
+            ShapeManager.Remove(dragLine);
         }
     }
 }

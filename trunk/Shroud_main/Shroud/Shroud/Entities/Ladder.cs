@@ -66,8 +66,6 @@ namespace Shroud.Entities
 
         public virtual void AddToManagers(Layer layerToAddTo)
         {
-            SpriteManager.AddPositionedObject(this);
-
             InitializeGrid();
 
             mCollision = ShapeManager.AddCircle();
@@ -91,7 +89,7 @@ namespace Shroud.Entities
                 {
                     name = @"Content/Entities/Background/Ladder/ladder_middle";
                 }
-                mGrid[v] = SpriteManager.AddSprite(name, ContentManagerName);
+                mGrid[v] = SpriteManager.AddSprite(name, ContentManagerName, CameraManager.Middleground);
                 mGrid[v].AttachTo(this, false);
                 GameProperties.RescaleSprite(mGrid[v]);
                 SetWorldPosition(v);

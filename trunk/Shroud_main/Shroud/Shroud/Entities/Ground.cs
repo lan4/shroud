@@ -100,8 +100,6 @@ namespace Shroud.Entities
 
         public virtual void AddToManagers(Layer layerToAddTo)
         {
-            SpriteManager.AddPositionedObject(this);
-
             InitializeGrid();
 
             mCollision = ShapeManager.AddCircle();
@@ -141,7 +139,7 @@ namespace Shroud.Entities
                             name = @"Content/Entities/Background/Ground/middlecenter_" + mName;
                     }
 
-                    mTiles[v, u] = SpriteManager.AddSprite(name, ContentManagerName);
+                    mTiles[v, u] = SpriteManager.AddSprite(name, ContentManagerName, CameraManager.Middleground);
                     mTiles[v, u].AttachTo(this, false);
                     GameProperties.RescaleSprite(mTiles[v, u]);
                     SetWorldPosition(u, v);

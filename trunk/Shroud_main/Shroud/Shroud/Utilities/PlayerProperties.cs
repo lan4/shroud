@@ -17,8 +17,8 @@ namespace Shroud.Utilities
         public static float ChaseTolerance = 2.0f;
 
         // Global Attack Vars
-        public static float WeaponSize = 0.3f;
-        public static float WeaponRange = 0.5f;
+        public static float WeaponSize = 1.0f;
+        public static float WeaponRange = 1.5f;
 
         // Global Trap Vars
         

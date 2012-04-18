@@ -6,13 +6,6 @@ using FlatRedBall;
 using FlatRedBall.Graphics;
 using FlatRedBall.Math.Geometry;
 
-
-// Be sure to replace:
-// 1.  The namespace
-// 2.  The class name
-// 3.  The constructor (should be the same as the class name)
-
-
 namespace Shroud.Entities
 {
     public abstract class Entity : PositionedObject
@@ -50,8 +43,7 @@ namespace Shroud.Entities
             // Set the ContentManagerName and call Initialize:
             mContentManagerName = contentManagerName;
 
-            // If you don't want to add to managers, make an overriding constructor
-            Initialize(true);
+            SpriteManager.AddPositionedObject(this);
         }
 
         public virtual void Destroy()
