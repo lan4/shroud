@@ -28,17 +28,18 @@ namespace Shroud.Entities
         };
         private AnimationState mCurAnimationState;
 
+        private float mMinDetect = 0.5f;
+
         public bool IsAlive
         {
             get
             {
-                return !mCurAnimationState.Equals(AnimationState.Dead) &&
-                       !mCurAnimationState.Equals(AnimationState.Dying);
+                return !mCurAnimationState.Equals(AnimationState.Dead);
             }
         }
 
-        public Soldier(string contentManagerName, List<Node> patrol)
-            : base(contentManagerName, patrol, PlayerProperties.WeaponSize, PlayerProperties.WeaponRange)
+        public Soldier(string contentManagerName, List<Node> patrol, float speed)
+            : base(contentManagerName, patrol, speed, PlayerProperties.WeaponSize, PlayerProperties.WeaponRange)
         {
             mPatrolPath = patrol;
             mCurAnimationState = AnimationState.Idle;
@@ -220,11 +221,18 @@ namespace Shroud.Entities
 
         private void ChasingBehavior()
         {
-            Chase();
-
-            if ((this.Position - mTarget.Position).Length() < PlayerProperties.WeaponRange)
+            if (IsPlayerVisible())
             {
-                mCurAnimationState = AnimationState.Attacking;
+                Chase1();
+
+                if ((this.Position - mTarget.Position).Length() < PlayerProperties.WeaponRange)
+                {
+                    mCurAnimationState = AnimationState.Attacking;
+                }
+            }
+            else
+            {
+                mCurAnimationState = AnimationState.Patrolling;
             }
         }
 
@@ -232,6 +240,7 @@ namespace Shroud.Entities
         {
             this.Velocity.X = 0.0f;
             this.Velocity.Y = 0.0f;
+            this.Velocity.Z = 0.0f;
 
             if (!WorldManager.PlayerInstance.IsAlive)
             {
@@ -249,6 +258,7 @@ namespace Shroud.Entities
         {
             this.Velocity.X = 0.0f;
             this.Velocity.Y = 0.0f;
+            this.Velocity.Z = 0.0f;
 
             if (mAppearance.CurrentChainName == "Dying" && mAppearance.JustCycled)
             {
@@ -258,11 +268,28 @@ namespace Shroud.Entities
 
         #endregion
 
+        public bool IsPlayerVisible()
+        {
+            if (Math.Abs(WorldManager.PlayerInstance.Position.X - this.Position.X) < 1.0f && Math.Abs(WorldManager.PlayerInstance.Position.Y - this.Position.Y) < 3.0f)
+            {
+                float yDiff = WorldManager.PlayerInstance.Position.Y - this.Position.Y;
+
+                return ((yDiff < 0 && mFacingRight) || (yDiff > 0 && !mFacingRight)) && WorldManager.PlayerInstance.Opacity > mMinDetect;
+            }
+
+            return false;
+        }
+
         public void StartAttack(Player2 p)
         {
             mCurAnimationState = AnimationState.Chasing;
             mTarget = p;
-            StartMoving();
+            //StartMoving();
+
+            mStart.Position = this.Position;
+            mEnd.Position = mTarget.Position;
+            Node n = Node.FindNextNodeToward(mStart, mEnd);
+            mEnd.Position = n.Position;
         }
 
         public void Die()
@@ -275,6 +302,11 @@ namespace Shroud.Entities
 
         public virtual void Activity()
         {
+            if (IsPlayerVisible() && this.IsAlive)
+            {
+                StartAttack(WorldManager.PlayerInstance);
+            }
+
             switch (mCurAnimationState)
             {
                 case AnimationState.Idle:
@@ -303,8 +335,12 @@ namespace Shroud.Entities
                     break;
             }
 
-            if (Math.Abs(this.Velocity.Y) > 0.01f)
-                mAppearance.FlipHorizontal = this.Velocity.Y < 0;
+            if (this.Velocity.Y > 0.5f)
+                mFacingRight = false;
+            else if (this.Velocity.Y < -0.5f)
+                mFacingRight = true;
+
+            mAppearance.FlipHorizontal = mFacingRight;
 
             SetAnimation();
         }

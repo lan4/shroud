@@ -120,6 +120,13 @@ namespace Shroud.Entities
         public virtual void Destroy()
         {
             base.Destroy();
+
+            foreach (Sprite s in mGrid)
+            {
+                SpriteManager.RemoveSprite(s);
+            }
+
+            //ShapeManager.Remove(mCollision);
         }
 
         #endregion

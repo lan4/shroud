@@ -14,7 +14,6 @@ namespace Shroud.Utilities
     public static class LevelManager
     {
         private static List<WorldObject> mManagedWObjects = new List<WorldObject>();
-        private static List<Enemy1> mManagedEnemies = new List<Enemy1>();
         private static List<Trap> mManagedTraps = new List<Trap>();
         private static Player1 mPlayer;
         private static Scene mCurScene;
@@ -52,11 +51,6 @@ namespace Shroud.Utilities
             */
 
             Scene origin = AddScene();
-            /*origin.mBG = SpriteManager.AddSprite(@"Content/Entities/Background/bg1", "Global", CameraManager.Background);
-            GameProperties.RescaleSprite(origin.mBG);
-           	
-            //origin.mBG.Z = -3.0f;
-            origin.mBG.RotationZ = GameProperties.WorldRotation;*/
             origin.SetBackground("bg1");
             origin.AddGround(-16.0f, -21.0f, 6, 3, LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
             origin.AddGround(1, 2, 4, 3, origin.Grounds[0], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
@@ -68,13 +62,7 @@ namespace Shroud.Utilities
             mCurScene = origin;
 
             Scene next = AddScene(1, 0, 0);
-            /*next.mBG = SpriteManager.AddSprite(@"Content/Entities/Background/bg1", "Global");//, CameraManager.Background);
-            GameProperties.RescaleSprite(next.mBG);
-            next.mBG.RotationZ = GameProperties.WorldRotation;*/
             next.SetBackground("bg1");
-            //next.mBG.Z = -3.0f;
-            //next.mBG.X += next.WorldAnchor.X;
-            //next.mBG.Y += next.WorldAnchor.Y;
             next.AddGround(-16.0f, -21.0f, 6, 3, LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
             next.AddGround(1, 2, 4, 3, next.Grounds[0], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
             next.AddLadder(next.Grounds[0].GetTilePosition(1), next.Grounds[1].GetTilePosition(0), next.Grounds[0].TileHeight,
@@ -85,7 +73,6 @@ namespace Shroud.Utilities
             //SceneMoveRight();
 
             #region Create Nodes and Edges
-            float z = 0.0f;//LayerManager.SetLayer(LayerManager.MainLayer.Entity2, LayerManager.DetailLayer.Middle);
 
             Node n0 = origin.AddNode(-4.0f,  12.0f, LayerManager.MainLayer.Background);
             Node n1 = origin.AddNode(-4.0f, 8.0f, LayerManager.MainLayer.Background);
@@ -101,6 +88,7 @@ namespace Shroud.Utilities
             Node.AddUndirectedEdge(n4, n5);
             Node.AddUndirectedEdge(n3, n4);
 
+            origin.LeftStart = n5;
 
             Node n0b = next.AddNode(-4.0f, 12.0f, LayerManager.MainLayer.Background);
             Node n1b = next.AddNode(-4.0f, 8.0f, LayerManager.MainLayer.Background);
@@ -116,12 +104,14 @@ namespace Shroud.Utilities
             Node.AddUndirectedEdge(n4b, n5b);
             Node.AddUndirectedEdge(n3b, n4b);
 
+            next.RightStart = n0b;
+
             #endregion
 
-            Node.DEBUG_VIEW();
+            //Node.DEBUG_VIEW();
 
-            WorldManager.PlayerInstance = new Player2("Global");
-            WorldManager.PlayerInstance.Position = n5.Position;
+            WorldManager.PlayerInstance = new Player2("Global", 10.0f);
+            WorldManager.PlayerInstance.Position = n0.Position;
             WorldManager.PlayerInstance.Z = LayerManager.SetLayer(LayerManager.MainLayer.Entity2, LayerManager.DetailLayer.Middle);
 
             List<Node> patrol1 = new List<Node>();
@@ -130,9 +120,32 @@ namespace Shroud.Utilities
             patrol1.Add(n3);
             patrol1.Add(n4);
 
-            WorldManager.Soldiers.Add(new Soldier("Global", patrol1));
-            WorldManager.Soldiers[0].Position = n1.Position;
+            List<Node> patrol2 = new List<Node>();
+            patrol2.Add(n1b);
+            patrol2.Add(n2b);
+            patrol2.Add(n3b);
+            patrol2.Add(n4b);
+
+            List<Node> patrol3 = new List<Node>();
+            patrol3.Add(n4);
+            patrol3.Add(n3);
+            patrol3.Add(n2);
+            patrol3.Add(n1);
+
+            WorldManager.Soldiers.Add(new Soldier("Global", patrol1, 7.0f));
+            WorldManager.Soldiers[0].Position = n4.Position;
+            WorldManager.Soldiers[0].MyScene = origin;
             //WorldManager.Soldiers[0].KeepTrackOfReal = true;
+
+            WorldManager.Soldiers.Add(new Soldier("Global", patrol3, 7.0f));
+            WorldManager.Soldiers[1].Position = n5.Position;
+            WorldManager.Soldiers[1].MyScene = origin;
+
+            WorldManager.Target = new Noble("Global", patrol2, 5.0f);
+            WorldManager.Target.Position = n4b.Position;
+            WorldManager.Target.MyScene = next;
+
+            Node.NodeListToUse = mCurScene.Nodes;
         }
 
         private static Scene AddScene()
@@ -194,7 +207,31 @@ namespace Shroud.Utilities
 
         public static void SceneMoveRight()
         {
-            mCurScene = mCurScene.Right;
+            if (mCurScene.Right != null)
+                mCurScene = mCurScene.Right;
+        }
+
+        public static void SceneMoveLeft()
+        {
+            if (mCurScene.Left != null)
+                mCurScene = mCurScene.Left;
+        }
+
+        public static void SceneMoveUp()
+        {
+            if (mCurScene.Up != null)
+                mCurScene = mCurScene.Up;
+        }
+
+        public static void SceneMoveDown()
+        {
+            if (mCurScene.Down != null)
+                mCurScene = mCurScene.Down;
+        }
+
+        public static void Clean()
+        {
+            Scene.Clear();
         }
     }
 }

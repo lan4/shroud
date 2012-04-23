@@ -19,14 +19,15 @@ namespace Shroud.Utilities
         public static List<InteractObject> ManagedInteractObjects;
         public static List<WorldObject> ManagedWorldObjects;
         public static List<Trap> ManagedTraps;
-        public static List<Enemy1> ManagedEnemies;
+        //public static List<Enemy1> ManagedEnemies;
         public static List<Sprite> ManagedSprites;
         public static Player2 PlayerInstance;
-        public static Enemy1 Target;
+        //public static Enemy1 Target;
         public static PositionedObject InteractTarget;
         public static PressButton justFired = null;
-        public static Button FAKE_BUTTON = new Button("Global", "bomb");
+        //public static Button FAKE_BUTTON = new Button("Global", "bomb");
         public static List<Soldier> Soldiers;
+        public static Noble Target;
 
         #region Main Functions
 
@@ -37,9 +38,9 @@ namespace Shroud.Utilities
             ManagedWorldObjects = new List<WorldObject>();
             ManagedTraps = new List<Trap>();
             ManagedSprites = new List<Sprite>();
-            ManagedEnemies = new List<Enemy1>();
+            //ManagedEnemies = new List<Enemy1>();
             Soldiers = new List<Soldier>();
-            FAKE_BUTTON.Visible = false;
+            //FAKE_BUTTON.Visible = false;
         }
 
         public static void Update()
@@ -52,6 +53,8 @@ namespace Shroud.Utilities
             {
                 s.Activity();
             }
+
+            Target.Activity();
         }
 
         public static void Destroy()
@@ -70,11 +73,11 @@ namespace Shroud.Utilities
             }
             ManagedTraps.Clear();
 
-            foreach (Enemy1 e in ManagedEnemies)
+            /*foreach (Enemy1 e in ManagedEnemies)
             {
                 e.Destroy();
             }
-            ManagedEnemies.Clear();
+            ManagedEnemies.Clear();*/
 
             foreach (Sprite s in ManagedSprites)
             {
@@ -82,8 +85,15 @@ namespace Shroud.Utilities
             }
             ManagedSprites.Clear();
 
+            foreach (Soldier d in Soldiers)
+            {
+                d.Destroy();
+            }
+            Soldiers.Clear();
+
             PlayerInstance.Destroy();
             Target.Destroy();
+            //FAKE_BUTTON.Destroy();
         }
 
         #endregion
@@ -107,18 +117,18 @@ namespace Shroud.Utilities
         {
             if (GestureManager.CurGesture.Equals(Gesture.Tap))
             {
-                if (UIManager.CheckButtonPressed())
+                /*if (UIManager.CheckButtonPressed())
                 {
                     return FAKE_BUTTON;
-                }
+                }*/
 
-                foreach (Enemy1 e in ManagedEnemies)
+                /*foreach (Enemy1 e in ManagedEnemies)
                 {
                     if (!e.IsAlive && e.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
                     {
                         return e;
                     }
-                }
+                }*/
 
                 foreach (Soldier s in Soldiers)
                 {
@@ -126,6 +136,11 @@ namespace Shroud.Utilities
                     {
                         return s;
                     }
+                }
+
+                if (Target.IsAlive && Target.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
+                {
+                    return Target;
                 }
 
                 foreach (Trap t in ManagedTraps)
@@ -161,13 +176,13 @@ namespace Shroud.Utilities
                     return PlayerInstance;
                 }
 
-                foreach (Enemy1 e in ManagedEnemies)
+                /*foreach (Enemy1 e in ManagedEnemies)
                 {
                     if (e.Collision.CollideAgainst(GestureManager.DragLine))
                     {
                         return e;
                     }
-                }
+                }*/
 
                 foreach (Soldier s in Soldiers)
                 {

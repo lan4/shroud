@@ -100,10 +100,17 @@ namespace Shroud.Entities
         {
             private Sprite mAppearance;
             private AxisAlignedRectangle mCollision;
+            private int mDirection;
 
             public AxisAlignedRectangle Collision
             {
                 get { return mCollision; }
+            }
+
+            public bool Active
+            {
+                get { return mAppearance.Visible; }
+                set { mAppearance.Visible = value; }
             }
 
             public LeaveButton(string contentManagerName)
@@ -115,11 +122,63 @@ namespace Shroud.Entities
                 mAppearance.AttachTo(this, false);
                 GameProperties.RescaleSprite(mAppearance);
                 mAppearance.RelativeRotationZ = GameProperties.WorldRotation;
+                mDirection = 0;
 
                 mCollision = ShapeManager.AddAxisAlignedRectangle();
                 mCollision.ScaleX = mAppearance.ScaleY;
                 mCollision.ScaleY = mAppearance.ScaleX;
                 mCollision.AttachTo(this, false);
+            }
+
+            public void OrientUp()
+            {
+                mAppearance.RelativeRotationZ = 0.0f;
+                mDirection = 3;
+            }
+
+            public void OrientDown()
+            {
+                mAppearance.RelativeRotationZ = (float)Math.PI;
+                mDirection = 1;
+            }
+
+            public void OrientLeft()
+            {
+                mAppearance.RelativeRotationZ = (float)Math.PI / 2.0f;
+                mDirection = 2;
+            }
+
+            public void OrientRight()
+            {
+                mAppearance.RelativeRotationZ = GameProperties.WorldRotation;
+                mDirection = 0;
+            }
+
+            public void Activate(PositionedObject po)
+            {
+                Node setPos = null;
+
+                switch (mDirection)
+                {
+                    case 0:
+                        LevelManager.SceneMoveRight();
+                        setPos = LevelManager.CurrentScene.RightStart;
+                        break;
+                    case 1:
+                        LevelManager.SceneMoveDown();
+                        setPos = LevelManager.CurrentScene.DownStart;
+                        break;
+                    case 2:
+                        LevelManager.SceneMoveLeft();
+                        setPos = LevelManager.CurrentScene.LeftStart;
+                        break;
+                    case 3:
+                        LevelManager.SceneMoveUp();
+                        setPos = LevelManager.CurrentScene.UpStart;
+                        break;
+                }
+
+                po.Position = setPos.Position;
             }
 
             public void Destroy()
@@ -143,8 +202,8 @@ namespace Shroud.Entities
 
         public bool IsAlive
         {
-            get { return mCurAnimationState.Equals(AnimationState.Dying) ||
-                         mCurAnimationState.Equals(AnimationState.Dead); }
+            get { return !mCurAnimationState.Equals(AnimationState.Dying) &&
+                         !mCurAnimationState.Equals(AnimationState.Dead); }
         }
 
         /*public TrapType TrapSelected
@@ -152,12 +211,18 @@ namespace Shroud.Entities
             set { mTrapSelected = value; }
         }*/
 
+        public float Opacity
+        {
+            get { return mAppearance.Alpha; }
+        }
+
         #endregion
 
         #region Methods
 
         // Constructor
-        public Player2(string contentManagerName) : base(contentManagerName, PlayerProperties.WeaponSize, PlayerProperties.WeaponRange)
+        public Player2(string contentManagerName, float speed)
+            : base(contentManagerName, speed, PlayerProperties.WeaponSize, PlayerProperties.WeaponRange)
         {
             Initialize(true);
         }
@@ -175,6 +240,8 @@ namespace Shroud.Entities
             mLB = new LeaveButton(ContentManagerName);
             mLB.AttachTo(this, false);
             mLB.RelativeX = 3.0f;
+
+            MyScene = LevelManager.CurrentScene;
 
             if (addToManagers)
             {
@@ -510,11 +577,11 @@ namespace Shroud.Entities
         {
             mTarget = WorldManager.InteractTarget;
 
-            if (mLB.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
+            if (mLB.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y) && mLB.Active)
             {
-                mLB.RelativeRotationZ += (float)Math.PI / 2.0f;
-                LevelManager.SceneMoveRight();
-                this.Position = LevelManager.CurrentScene.Nodes[0].Position;
+                //LevelManager.SceneMoveRight();
+                //this.Position = LevelManager.CurrentScene.Nodes[0].Position;
+                mLB.Activate(this);
             }
             else if (WorldManager.InteractTarget == null)
             {
@@ -527,36 +594,41 @@ namespace Shroud.Entities
             }
             else if (WorldManager.InteractTarget.GetType().Equals(typeof(Player2)))
             {
-                if (mCurAnimationState != AnimationState.Hidden)
-                    mCurAnimationState = AnimationState.Hiding;
-                else
-                    mCurAnimationState = AnimationState.Idle;
-            }
-            else if (WorldManager.InteractTarget.GetType().Equals(typeof(Soldier)))
-            {
-                float xDiff = mTarget.X - this.X;
-                float yDiff = mTarget.Y - this.Y;
-
-                //System.Diagnostics.Debug.WriteLine(xDiff + ", " + yDiff);
-
-                if (Math.Abs(yDiff) < 10.0f && Math.Abs(xDiff) < 1.0f)
+                if (!mAppearance.CurrentChainName.Equals("Climbing"))
                 {
-                    Soldier s = (Soldier)mTarget;
+                    if (mCurAnimationState != AnimationState.Hidden)
+                        mCurAnimationState = AnimationState.Hiding;
+                    else
+                        mCurAnimationState = AnimationState.Idle;
+                }
+            }
+            else if (WorldManager.InteractTarget.GetType().Equals(typeof(Soldier)) || WorldManager.InteractTarget.GetType().Equals(typeof(Noble)))
+            {
+                if (!mAppearance.CurrentChainName.Equals("Climbing"))
+                {
+                    float xDiff = mTarget.X - this.X;
+                    float yDiff = mTarget.Y - this.Y;
 
-                    if (true)
+                    //System.Diagnostics.Debug.WriteLine(xDiff + ", " + yDiff);
+
+                    if (Math.Abs(yDiff) < 10.0f && Math.Abs(xDiff) < 1.0f)
                     {
-                        if (yDiff > 0)
+
+                        if (true)
                         {
-                            this.Y = mTarget.Y - PlayerProperties.WeaponRange;
-                            mFacingRight = true;
+                            if (yDiff > 0)
+                            {
+                                this.Y = mTarget.Y - PlayerProperties.WeaponRange;
+                                mFacingRight = true;
+                            }
+                            else
+                            {
+                                this.Y = mTarget.Y + PlayerProperties.WeaponRange;
+                                mFacingRight = false;
+                            }
+                            //this.X = mTarget.X;
+                            mCurAnimationState = AnimationState.Attacking;
                         }
-                        else
-                        {
-                            this.Y = mTarget.Y + PlayerProperties.WeaponRange;
-                            mFacingRight = false;
-                        }
-                        //this.X = mTarget.X;
-                        mCurAnimationState = AnimationState.Attacking;
                     }
                 }
             }
@@ -570,10 +642,14 @@ namespace Shroud.Entities
         private void DragBehavior()
         {
             mTarget = WorldManager.InteractTarget;
-            
+
             if (WorldManager.InteractTarget == null)
             {
-                mCurAnimationState = AnimationState.Idle;
+                if (mAppearance.CurrentChainName != "Climbing")
+                {
+                    mCurAnimationState = AnimationState.Idle;
+                    mAppearance.Animate = true;
+                }
             }
             else if (WorldManager.InteractTarget.GetType().Equals(typeof(Soldier)))
             {
@@ -591,9 +667,9 @@ namespace Shroud.Entities
             }
             else
             {
-                StartMoving();
-                mCurAnimationState = AnimationState.Moving;
-                mAppearance.Animate = true;
+                //StartMoving();
+                //mCurAnimationState = AnimationState.Moving;
+                //mAppearance.Animate = true;
             }
         }
 
@@ -608,9 +684,12 @@ namespace Shroud.Entities
                     mCurAnimationState = AnimationState.PlacingTrap;
                 }*/
 
-                mFlash.Pop(this.X - mAppearance.ScaleX, this.Y, this.Z + 0.1f);
+                if (mAppearance.CurrentChainName != "Climbing")
+                {
+                    mFlash.Pop(this.X - mAppearance.ScaleX, this.Y, this.Z + 0.1f);
 
-                mAppearance.Animate = true;
+                    mAppearance.Animate = true;
+                }
             }
             else
             {
@@ -624,20 +703,23 @@ namespace Shroud.Entities
 
             if (WorldManager.InteractTarget != null && WorldManager.InteractTarget.GetType().Equals(typeof(Player2)))
             {
-                //mCurAnimationState = AnimationState.Hiding;
-                /*if (mTraps.Count > 0)
+                if (mAppearance.CurrentChainName != "Climbing")
                 {
-                    mCurAnimationState = AnimationState.PlacingTrap;
-                }*/
+                    //mCurAnimationState = AnimationState.Hiding;
+                    /*if (mTraps.Count > 0)
+                    {
+                        mCurAnimationState = AnimationState.PlacingTrap;
+                    }*/
 
-                this.Velocity += Vector3.Normalize(GestureManager.EndTouchWorld - GestureManager.StartTouchWorld) * 15.0f;
-                //this.Velocity.Normalize();
-                //this.Velocity *= 10.0f;
-                this.Acceleration.X = -20.0f;
+                    //this.Velocity += Vector3.Normalize(GestureManager.EndTouchWorld - GestureManager.StartTouchWorld) * 15.0f;
+                    //this.Velocity.Normalize();
+                    //this.Velocity *= 10.0f;
+                    //this.Acceleration.X = -20.0f;
 
-                mCurAnimationState = AnimationState.Jumping;
+                    //mCurAnimationState = AnimationState.Jumping;
 
-                mAppearance.Animate = true;
+                    mAppearance.Animate = true;
+                }
             }
             else
             {
@@ -822,13 +904,13 @@ namespace Shroud.Entities
             }
             else if (GestureManager.CurGesture.Equals(Gesture.SwipeDown))
             {
-                SwipeDownBehavior();
-                mAppearance.Alpha = 1.0f;
+                //SwipeDownBehavior();
+                //mAppearance.Alpha = 1.0f;
             }
             else if (GestureManager.CurGesture.Equals(Gesture.Swipe))
             {
-                DragBehavior();
-                mAppearance.Alpha = 1.0f;
+                //DragBehavior();
+                //mAppearance.Alpha = 1.0f;
             }
         }
 
@@ -845,9 +927,22 @@ namespace Shroud.Entities
             {
                 Attack();
 
-                if (mTarget.GetType().Equals(typeof(Soldier)))
+                if (mTarget == null)
+                {
+
+                }
+                else if (mTarget.GetType().Equals(typeof(Soldier)))
                 {
                     Soldier s = (Soldier)mTarget;
+
+                    if (s.Collision.CollideAgainst(this.mAttackCollision))
+                    {
+                        s.Die();
+                    }
+                }
+                else if (mTarget.GetType().Equals(typeof(Noble)))
+                {
+                    Noble s = (Noble)mTarget;
 
                     if (s.Collision.CollideAgainst(this.mAttackCollision))
                     {
@@ -914,9 +1009,46 @@ namespace Shroud.Entities
             //System.Diagnostics.Debug.WriteLine(GestureManager.CurGesture.ToString());
         }
 
+        private void ManageMoveArrow()
+        {
+            float xDiff = this.X - LevelManager.CurrentScene.WorldAnchor.X;
+            float yDiff = this.Y - LevelManager.CurrentScene.WorldAnchor.Y;
+
+            //System.Diagnostics.Debug.WriteLine(xDiff + " " + yDiff);
+
+            if (xDiff > 5.0f && LevelManager.CurrentScene.Up != null) // UP
+            {
+                mLB.OrientUp();
+                mLB.Active = true;
+            }
+            else if (xDiff < -5.0f && LevelManager.CurrentScene.Down != null) // DOWN
+            {
+                mLB.OrientDown();
+                mLB.Active = true;
+            }
+            else if (yDiff > 10.0f && LevelManager.CurrentScene.Left != null) // LEFT
+            {
+                mLB.OrientLeft();
+                mLB.Active = true;
+            }
+            else if (yDiff < -10.0f && LevelManager.CurrentScene.Right != null) // RIGHT
+            {
+                mLB.OrientRight();
+                mLB.Active = true;
+            }
+            else
+            {
+                mLB.Active = false;
+            }
+        }
+
         public virtual void Activity()
         {
             //PrintOutState();
+            MyScene = LevelManager.CurrentScene;
+
+            ManageMoveArrow();
+
             switch (mCurAnimationState)
             {
                 case AnimationState.Idle:
@@ -980,6 +1112,9 @@ namespace Shroud.Entities
             }
 
             mTraps.Clear();*/
+
+            mLB.Destroy();
+            mFlash.Destroy();
         }
 
         #endregion

@@ -18,7 +18,9 @@ namespace Shroud.Utilities
         public static string OldProfileString = "";
         public static string ProfileString = "";
         public static string LevelString = "";
+        public static string LevelToken = "";
         public static bool IsPaused = false;
+        public static bool JumpBack = false;
         public static Game1 game;
 
         public static void RescaleSprite(Sprite s)
@@ -36,8 +38,8 @@ namespace Shroud.Utilities
             using (StreamWriter writeFile = new StreamWriter(new IsolatedStorageFileStream("profiles2.txt", FileMode.Create, FileAccess.Write, myIsolatedStorage)))
             {
                 //string defaultText = "-1 l1";
-                writeFile.WriteLine("-1 l1");
-                writeFile.WriteLine("-2 l1");
+                writeFile.WriteLine("0 l1");
+                writeFile.WriteLine("1 l1 l2");
                 writeFile.WriteLine("-3 l1");
                 writeFile.WriteLine("-4 l1");
                 writeFile.WriteLine("-5 l1");

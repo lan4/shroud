@@ -13,6 +13,8 @@ namespace Shroud.Entities
 {
     public abstract class MovingEntity : Entity
     {
+        private float mSpeed;
+
         protected List<Node> mPath;
         protected Node mStart;
         protected Node mEnd;
@@ -35,16 +37,18 @@ namespace Shroud.Entities
         }
         protected PatrolMode mCurPatrolMode;
 
-        protected MovingEntity(string contentManagerName)
+        protected MovingEntity(string contentManagerName, float speed)
             : base(contentManagerName)
         {
-            mStart = Node.CreateNode();
+            /*mStart = Node.CreateNode();
             mEnd = Node.CreateNode();
             mPath = new List<Node>();
             mCur = null;
             mFacingRight = false;
 
-            mTarget = null;
+            mTarget = null;*/
+            Initialize();
+            mSpeed = speed;
             mCurPatrolMode = PatrolMode.None;
             mPatrolPath = null;
             mLastPatrolNode = null;
@@ -52,8 +56,26 @@ namespace Shroud.Entities
             mPatrolReady = false;
         }
 
-        protected MovingEntity(string contentManagerName, List<Node> patrol)
+        protected MovingEntity(string contentManagerName, List<Node> patrol, float speed)
             : base(contentManagerName)
+        {
+            /*mStart = Node.CreateNode();
+            mEnd = Node.CreateNode();
+            mPath = new List<Node>();
+            mCur = null;
+            mFacingRight = false;
+
+            mTarget = null;*/
+            Initialize();
+            mSpeed = speed;
+            mCurPatrolMode = PatrolMode.Backtrack;
+            mPatrolPath = patrol;
+            mLastPatrolNode = mPatrolPath[0];
+            mPatrolling = false;
+            mPatrolReady = false;
+        }
+
+        private void Initialize()
         {
             mStart = Node.CreateNode();
             mEnd = Node.CreateNode();
@@ -62,11 +84,6 @@ namespace Shroud.Entities
             mFacingRight = false;
 
             mTarget = null;
-            mCurPatrolMode = PatrolMode.Backtrack;
-            mPatrolPath = patrol;
-            mLastPatrolNode = mPatrolPath[0];
-            mPatrolling = false;
-            mPatrolReady = false;
         }
 
         #region Helpers
@@ -109,6 +126,7 @@ namespace Shroud.Entities
                 mEnd.Position = mLastPatrolNode.Position;
             }
 
+            Node.NodeListToUse = MyScene.Nodes;
             Node.GetPathBetween(mStart, mEnd, ref mPath);
 
             mCur = mPath[0];
@@ -143,7 +161,7 @@ namespace Shroud.Entities
                 this.Velocity.Normalize();
             }
 
-            this.Velocity *= PlayerProperties.MoveSpeed;
+            this.Velocity *= mSpeed;
         }
 
         private void GetNextPatrolNode()
@@ -217,6 +235,64 @@ namespace Shroud.Entities
             Move();
         }
 
+        public void Chase1()
+        {
+            if ((mEnd.Position - this.Position).Length() < PlayerProperties.MoveTolerance)
+            {
+                mStart.Position = this.Position;
+                mEnd.Position = mTarget.Position;
+                Node.NodeListToUse = MyScene.Nodes;
+                Node n = Node.FindNextNodeToward(mStart, mEnd);
+                mEnd.Position = n.Position;
+            }
+            else
+            {
+                this.Velocity = mEnd.Position - this.Position;
+
+                if (this.Velocity.Length() > 0.0f)
+                {
+                    this.Velocity.Normalize();
+                }
+
+                this.Velocity *= PlayerProperties.MoveSpeed;
+            }
+        }
+
+        public void Run()
+        {
+            if ((mEnd.Position - this.Position).Length() < PlayerProperties.MoveTolerance)
+            {
+                //this.Velocity = Vector3.Zero;
+
+                //SetIdle();
+
+                mStart.Position = this.Position;
+                mEnd.Position = mTarget.Position;
+                Node.NodeListToUse = MyScene.Nodes;
+                Node n = Node.FindNextNodeAway(mStart, mEnd);
+                mEnd.Position = n.Position;
+            }
+            if ((mTarget.Position - this.Position).Length() < 5.0f)
+            {
+                mStart.Position = this.Position;
+                mEnd.Position = mTarget.Position;
+                Node.NodeListToUse = MyScene.Nodes;
+                Node n = Node.FindNextNodeAway(mStart, mEnd);
+                mEnd.Position = n.Position;
+            }
+            else
+            {
+                this.Velocity = mEnd.Position - this.Position;
+
+                if (this.Velocity.Length() > 0.0f)
+                {
+                    this.Velocity.Normalize();
+                }
+
+                this.Velocity *= PlayerProperties.MoveSpeed;
+            }
+        }
+
         public void Patrol()
         {
             if (mPatrolReady)
@@ -239,6 +315,7 @@ namespace Shroud.Entities
         {
             base.Destroy();
 
+            mTarget = null;
             mPath.Clear();
         }
     }

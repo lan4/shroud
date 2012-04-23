@@ -29,6 +29,7 @@ namespace Shroud.Screens
             private Sprite mBadge3;
 
             private string mLevelString;
+            public string mLevelToken;
 
             public string LevelString
             {
@@ -188,6 +189,7 @@ namespace Shroud.Screens
                 if (level.Contains('l'))
                 {
                     mLevels.Add(new LevelButton(level));
+                    mLevels[mLevels.Count - 1].mLevelToken = level;
                 }
             }
 
@@ -250,6 +252,7 @@ namespace Shroud.Screens
                     if (b.Collision.IsPointInside(x, y))
                     {
                         GameProperties.LevelString = b.LevelString;
+                        GameProperties.LevelToken = b.mLevelToken;
                         Destroy();
                         MoveToScreen(typeof(Screens.GameScreen).FullName);
                     }

@@ -25,10 +25,14 @@ namespace Shroud.Utilities
         private static int mRealSize = 0;
 
         public List<Node> Nodes;
-        public List<Enemy1> Enemies;
         public List<WorldObject> WorldObjects;
         public List<Ground> Grounds;
         public List<Ladder> Ladders;
+
+        public Node LeftStart;
+        public Node RightStart;
+        public Node UpStart;
+        public Node DownStart;
 
         private Vector3 mAnchor;
         private List<Scene> Neighbors;
@@ -238,7 +242,6 @@ namespace Shroud.Utilities
         {
             Nodes = new List<Node>();
             mAnchor = new Vector3();
-            Enemies = new List<Enemy1>();
             WorldObjects = new List<WorldObject>();
             Neighbors = new List<Scene>();
             Grounds = new List<Ground>();
@@ -257,7 +260,7 @@ namespace Shroud.Utilities
         {
             Nodes = new List<Node>();
             mAnchor = anchor;
-            Enemies = new List<Enemy1>();
+            //Enemies = new List<Enemy1>();
             WorldObjects = new List<WorldObject>();
             Neighbors = new List<Scene>();
             Grounds = new List<Ground>();
@@ -272,7 +275,7 @@ namespace Shroud.Utilities
             mScenes.Add(this);
         }
 
-        public void AddEnemy(Enemy1.EnemyType et, Enemy1.PatrolMode pm, float x, float y, MainLayer m, DetailLayer d)
+        /*public void AddEnemy(Enemy1.EnemyType et, Enemy1.PatrolMode pm, float x, float y, MainLayer m, DetailLayer d)
         {
             Enemy1 e = new Enemy1("Global", et, pm);
             Enemies.Add(e);
@@ -287,7 +290,7 @@ namespace Shroud.Utilities
         public void RemoveEnemy(Enemy1 e)
         {
             Enemies.Remove(e);
-        }
+        }*/
 
 		#region Graph Creation
 		
@@ -405,11 +408,21 @@ namespace Shroud.Utilities
         private void Destroy()
         {
             Nodes.Clear();
-            Enemies.Clear();
+            //Enemies.Clear();
             WorldObjects.Clear();
             Neighbors.Clear();
             SpriteManager.RemoveSprite(mBG);
             mBG = null;
+
+            foreach (Ground g in Grounds)
+            {
+                g.Destroy();
+            }
+
+            foreach (Ladder l in Ladders)
+            {
+                l.Destroy();
+            }
         }
 
         public static Scene Create()
