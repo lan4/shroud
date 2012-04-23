@@ -567,11 +567,11 @@ namespace Shroud.Entities
             {
                 mCurAnimationState = AnimationState.Idle;
             }
-            else if (WorldManager.InteractTarget.GetType().Equals(typeof(Enemy1)))
+            /*else if (WorldManager.InteractTarget.GetType().Equals(typeof(Enemy1)))
             {
                 StartMoving();
                 mCurAnimationState = AnimationState.Chasing;
-            }
+            }*/
             else
             {
                 StartMoving();

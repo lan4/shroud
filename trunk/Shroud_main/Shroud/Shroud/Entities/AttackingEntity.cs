@@ -15,7 +15,7 @@ namespace Shroud.Entities
         protected Circle mAttackCollision;
         protected float mAttackRange;
 
-        protected AttackingEntity(string contentManagerName, float size, float range) : base(contentManagerName)
+        protected AttackingEntity(string contentManagerName, float speed, float size, float range) : base(contentManagerName, speed)
         {
             mAttackCollision = ShapeManager.AddCircle();
             mAttackCollision.AttachTo(this, false);
@@ -23,8 +23,8 @@ namespace Shroud.Entities
             mAttackRange = range;
         }
 
-        protected AttackingEntity(string contentManagerName, List<Node> patrol, float size, float range)
-            : base(contentManagerName, patrol)
+        protected AttackingEntity(string contentManagerName, List<Node> patrol, float speed, float size, float range)
+            : base(contentManagerName, patrol, speed)
         {
             mAttackCollision = ShapeManager.AddCircle();
             mAttackCollision.AttachTo(this, false);

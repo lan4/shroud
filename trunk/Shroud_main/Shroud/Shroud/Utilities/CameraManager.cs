@@ -17,13 +17,13 @@ namespace Shroud.Utilities
         private static Scene mCurBlock;
         private static Sprite mTransitionCover;
 
-        private static Layer mBackground = SpriteManager.Camera.AddLayer();
-        private static Layer mEntity2 = SpriteManager.Camera.AddLayer();
-        private static Layer mMiddleground = SpriteManager.Camera.AddLayer();
-        private static Layer mEntity1 = SpriteManager.Camera.AddLayer();
-        private static Layer mForeground = SpriteManager.Camera.AddLayer();
-        private static Layer mUI = SpriteManager.Camera.AddLayer();
-        private static Layer mPause = SpriteManager.Camera.AddLayer();
+        private static Layer mBackground;// = SpriteManager.Camera.AddLayer();
+        private static Layer mEntity2;// = SpriteManager.Camera.AddLayer();
+        private static Layer mMiddleground;// = SpriteManager.Camera.AddLayer();
+        private static Layer mEntity1;// = SpriteManager.Camera.AddLayer();
+        private static Layer mForeground;// = SpriteManager.Camera.AddLayer();
+        private static Layer mUI;// = SpriteManager.Camera.AddLayer();
+        private static Layer mPause;// = SpriteManager.Camera.AddLayer();
 
         public static Layer Background
         {
@@ -66,6 +66,17 @@ namespace Shroud.Utilities
             //mTransitionCover = SpriteManager.AddSprite(@"Content/Entities/fuck", "Global");
             //mTransitionCover.AttachTo(SpriteManager.Camera, false);
             //mTransitionCover.Visible = false;
+        }
+
+        public static void Initialize()
+        {
+            mBackground = SpriteManager.Camera.AddLayer();
+            mEntity2 = SpriteManager.Camera.AddLayer();
+            mMiddleground = SpriteManager.Camera.AddLayer();
+            mEntity1 = SpriteManager.Camera.AddLayer();
+            mForeground = SpriteManager.Camera.AddLayer();
+            mUI = SpriteManager.Camera.AddLayer();
+            mPause = SpriteManager.Camera.AddLayer();
         }
 
         public static void UpdateCamera()

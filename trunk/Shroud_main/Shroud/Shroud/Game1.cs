@@ -50,6 +50,7 @@ namespace Shroud
             SpriteManager.Camera.UpVector = SpriteManager.Camera.RotationMatrix.Up;
             SpriteManager.Camera.CameraCullMode = CameraCullMode.None;*/
             Shroud.Utilities.GameProperties.game = this;
+            SpriteManager.Camera.DrawsShapes = false;
             Screens.ScreenManager.Start(typeof(Screens.StartScreen).FullName);
  
 

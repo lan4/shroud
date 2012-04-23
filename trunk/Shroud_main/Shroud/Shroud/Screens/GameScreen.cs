@@ -22,6 +22,8 @@ namespace Shroud.Screens
     {
         private PauseButton mPause;
         private bool mIsPaused;
+        private bool mGameOver;
+        private bool mWon;
 
         private class PauseButton : PositionedObject
         {
@@ -86,6 +88,9 @@ namespace Shroud.Screens
             //mPause.Z = HUDManager.zUI - SpriteManager.Camera.Z;
             mIsPaused = false;
 
+            mGameOver = false;
+            mWon = false;
+
             //SpriteManager.Camera.DrawsShapes = false;
 
 			// AddToManagers should be called LAST in this method:
@@ -105,6 +110,7 @@ namespace Shroud.Screens
 
         private void InitializeManagers()
         {
+            CameraManager.Initialize();
             WorldManager.Initialize();
             GestureManager.Initialize2();
         }
@@ -114,6 +120,14 @@ namespace Shroud.Screens
         public override void Activity(bool firstTimeCalled)
         {
             base.Activity(firstTimeCalled);
+
+            mPause.X = LevelManager.CurrentScene.WorldAnchor.X + 8.0f;
+            mPause.Y = LevelManager.CurrentScene.WorldAnchor.Y - 14.0f;
+
+            if (GameProperties.JumpBack)
+            {
+                //MoveToScreen(typeof(LevelScreen).FullName);
+            }
 
             if (!mIsPaused)
             {
@@ -145,13 +159,58 @@ namespace Shroud.Screens
                 InstructionManager.UnpauseEngine();
                 mIsPaused = false;
             }
+
+            mGameOver = !WorldManager.PlayerInstance.IsAlive || !WorldManager.Target.IsAlive;
+
+            if (mGameOver)
+            {
+                if (!WorldManager.PlayerInstance.IsAlive)
+                {
+                    //Destroy();
+                    //System.Diagnostics.Debug.WriteLine(SpriteManager.AutomaticallyUpdatedSprites[0]);
+                    MoveToScreen(typeof(LevelScreen).FullName);
+                }
+                else
+                {
+                    /*GameProperties.IsPaused = true;
+                    mIsPaused = true;
+                    InstructionManager.PauseEngine();
+                    LoadPopup(typeof(WinScreen).FullName, CameraManager.Pause);*/
+
+                    string lvl = GameProperties.LevelToken;
+
+                    if (!lvl.Contains("d"))
+                    {
+                        lvl = lvl + "d";
+                        GameProperties.ProfileString = GameProperties.ProfileString.Replace(GameProperties.LevelToken, lvl);
+                        System.Diagnostics.Debug.WriteLine(GameProperties.ProfileString);
+                        GameProperties.Save();
+                    }
+
+                    //Destroy();
+
+                    MoveToScreen(typeof(GameScreen).FullName);
+                }
+            }
         }
 
         public override void Destroy()
         {
             base.Destroy();
 
+            mPause.Destroy();
+
             WorldManager.Destroy();
+            GestureManager.Clean();
+            LevelManager.Clean();
+            SpriteManager.Camera.RemoveLayer(CameraManager.Background);
+            SpriteManager.Camera.RemoveLayer(CameraManager.Entity1);
+            SpriteManager.Camera.RemoveLayer(CameraManager.Entity2);
+            SpriteManager.Camera.RemoveLayer(CameraManager.Middleground);
+            SpriteManager.Camera.RemoveLayer(CameraManager.Foreground);
+            SpriteManager.Camera.RemoveLayer(CameraManager.Pause);
+            SpriteManager.Camera.RemoveLayer(CameraManager.UI);
+            //SpriteManager.Camera.RemoveLayer(CameraManager.Background);
         }
 
         #endregion

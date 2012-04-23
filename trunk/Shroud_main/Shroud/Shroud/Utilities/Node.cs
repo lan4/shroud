@@ -156,6 +156,7 @@ namespace Shroud.Utilities
         private static List<Node> Nodes = new List<Node>();
         private static List<Node> Q = new List<Node>();
         private static Node TempNode = new Node(false);
+        public static List<Node> NodeListToUse = Nodes;
 
         public static Node CreateNode()
         {
@@ -247,14 +248,14 @@ namespace Shroud.Utilities
             Node s1 = null;
             Node s2 = null;
 
-            FindClosestLinePoints(s, LevelManager.CurrentScene.Nodes, ref s1, ref s2);
+            FindClosestLinePoints(s, NodeListToUse, ref s1, ref s2);
 
             // The two nodes e is between
             Node e1 = null;
             Node e2 = null;
             Node beforeEnd = null;
 
-            FindClosestLinePoints(e, LevelManager.CurrentScene.Nodes, ref e1, ref e2);
+            FindClosestLinePoints(e, NodeListToUse, ref e1, ref e2);
 
             // Calculate and Enqueue real end
             Vector3 e1e2 = e2.Position - e1.Position;
@@ -282,7 +283,7 @@ namespace Shroud.Utilities
             Q.Clear();
 
             // Add all nodes and reset values
-            foreach (Node n in LevelManager.CurrentScene.Nodes)
+            foreach (Node n in NodeListToUse)
             {
                 n.Initialize();
                 Q.Add(n);
@@ -351,6 +352,262 @@ namespace Shroud.Utilities
                 path.Add(e);
         }
 
+        private static List<Node> TestPath1 = new List<Node>();
+        //private static List<Node> TestPath2 = new List<Node>();
+        private static Dictionary<Node, float> NodeDict = new Dictionary<Node, float>();
+
+        public static Node FindNextNodeToward(Node s, Node e)
+        {
+            NodeDict.Clear();
+
+            Node s1 = null;
+            Node s2 = null;
+
+            FindClosestLinePoints(s, NodeListToUse, ref s1, ref s2);
+
+            Node e1 = null;
+            Node e2 = null;
+
+            FindClosestLinePoints(e, NodeListToUse, ref e1, ref e2);
+
+            if ((e1.Equals(s1) && e2.Equals(s2)) || (e1.Equals(s2) && e2.Equals(s1)))
+            {
+                return e;
+            }
+
+            if ((s.Position - s1.Position).Length() < 0.5f)
+            {
+                foreach (Node n in s1.mNeighbors)
+                {
+                    float d = (e.Position - n.Position).Length();
+                    //TestPath1.Clear();
+                    //GetPathBetween(n, e, ref TestPath1);
+
+                    /*foreach (Node m in TestPath1)
+                    {
+                        d += n.mDistance;
+                    }
+                    
+                    d += (s.Position - s1.Position).Length();*/
+
+                    NodeDict.Add(n, d);
+                }
+
+                Node min = null;
+                float minValue = 10000.0f;
+
+                foreach (Node o in NodeDict.Keys)
+                {
+                    if (NodeDict[o] < minValue)
+                    {
+                        min = o;
+                        minValue = NodeDict[o];
+                    }
+                }
+
+                return min;
+            }
+            else if ((s.Position - s2.Position).Length() < 0.5f)
+            {
+                //System.Diagnostics.Debug.WriteLine("THERE");
+
+                foreach (Node n in s2.mNeighbors)
+                {
+                    float d = (e.Position - n.Position).Length();
+                    /*TestPath1.Clear();
+                    GetPathBetween(n, e, ref TestPath1);
+
+                    foreach (Node m in TestPath1)
+                    {
+                        d += n.mDistance;
+                    }
+
+                    d += (s.Position - s2.Position).Length();*/
+
+                    NodeDict.Add(n, d);
+                }
+
+                Node min = null;
+                float minValue = 10000.0f;
+
+                foreach (Node o in NodeDict.Keys)
+                {
+                    //System.Diagnostics.Debug.WriteLine(NodeDict[o]);
+
+                    if (NodeDict[o] < minValue)
+                    {
+                        min = o;
+                        minValue = NodeDict[o];
+                    }
+                }
+
+                //System.Diagnostics.Debug.WriteLine("END");
+
+                return min;
+            }
+            else
+            {
+                //TestPath1.Clear();
+                //GetPathBetween(s1, e, ref TestPath1);
+
+                float dist1 = (e.Position - s1.Position).Length();
+
+                /*foreach (Node n in TestPath1)
+                {
+                    dist1 += n.mDistance;
+                }
+
+                dist1 += (s.Position - s1.Position).Length();*/
+
+                //TestPath1.Clear();
+                //GetPathBetween(s2, e, ref TestPath1);
+
+                float dist2 = (e.Position - s2.Position).Length();
+
+                /*foreach (Node n in TestPath1)
+                {
+                    dist2 += n.mDistance;
+                }
+
+                dist2 += (s.Position - s2.Position).Length();*/
+
+                if (dist1 < dist2)
+                {
+                    return s1;
+                }
+                else
+                {
+                    return s2;
+                }
+            }
+        }
+
+        public static Node FindNextNodeAway(Node s, Node e)
+        {
+            NodeDict.Clear();
+
+            Node s1 = null;
+            Node s2 = null;
+
+            FindClosestLinePoints(s, NodeListToUse, ref s1, ref s2);
+
+            /*Node e1 = null;
+            Node e2 = null;
+
+            FindClosestLinePoints(e, LevelManager.CurrentScene.Nodes, ref e1, ref e2);
+
+            if ((e1.Equals(s1) && e2.Equals(s2)) || (e1.Equals(s2) && e2.Equals(s1)))
+            {
+                return e;
+            }*/
+
+            if ((s.Position - s1.Position).Length() < 0.5f)
+            {
+                foreach (Node n in s1.mNeighbors)
+                {
+                    float d = (e.Position - n.Position).Length();
+                    //TestPath1.Clear();
+                    //GetPathBetween(n, e, ref TestPath1);
+
+                    /*foreach (Node m in TestPath1)
+                    {
+                        d += n.mDistance;
+                    }
+                    
+                    d += (s.Position - s1.Position).Length();*/
+
+                    NodeDict.Add(n, d);
+                }
+
+                Node max = null;
+                float maxValue = -10000.0f;
+
+                foreach (Node o in NodeDict.Keys)
+                {
+                    if (NodeDict[o] > maxValue)
+                    {
+                        max = o;
+                        maxValue = NodeDict[o];
+                    }
+                }
+
+                return max;
+            }
+            else if ((s.Position - s2.Position).Length() < 0.5f)
+            {
+                //System.Diagnostics.Debug.WriteLine("THERE");
+
+                foreach (Node n in s2.mNeighbors)
+                {
+                    float d = (e.Position - n.Position).Length();
+                    /*TestPath1.Clear();
+                    GetPathBetween(n, e, ref TestPath1);
+
+                    foreach (Node m in TestPath1)
+                    {
+                        d += n.mDistance;
+                    }
+
+                    d += (s.Position - s2.Position).Length();*/
+
+                    NodeDict.Add(n, d);
+                }
+
+                Node max = null;
+                float maxValue = -10000.0f;
+
+                foreach (Node o in NodeDict.Keys)
+                {
+                    //System.Diagnostics.Debug.WriteLine(NodeDict[o]);
+
+                    if (NodeDict[o] > maxValue)
+                    {
+                        max = o;
+                        maxValue = NodeDict[o];
+                    }
+                }
+
+                //System.Diagnostics.Debug.WriteLine("END");
+
+                return max;
+            }
+            else
+            {
+                //TestPath1.Clear();
+                //GetPathBetween(s1, e, ref TestPath1);
+
+                float dist1 = (e.Position - s1.Position).Length();
+
+                /*foreach (Node n in TestPath1)
+                {
+                    dist1 += n.mDistance;
+                }
+
+                dist1 += (s.Position - s1.Position).Length();*/
+
+                //TestPath1.Clear();
+                //GetPathBetween(s2, e, ref TestPath1);
+
+                float dist2 = (e.Position - s2.Position).Length();
+
+                /*foreach (Node n in TestPath1)
+                {
+                    dist2 += n.mDistance;
+                }
+
+                dist2 += (s.Position - s2.Position).Length();*/
+
+                if (dist1 < dist2)
+                {
+                    return s2;
+                }
+                else
+                {
+                    return s1;
+                }
+            }
+        }
+
         // METHOD ONLY WORKS IF NEW END IS CLOSE ENOUGH (1 NODE AWAY) TO OLD END
         // RETURNS FALSE IF PATH UNCHANGED, RETURNS TRUE IF PATH CHANGED
         public static bool ChangePath(Vector3 pos, Node cur, Node end, ref List<Node> path)
@@ -367,10 +624,10 @@ namespace Shroud.Utilities
             TempNode.Z = pos.Z;
 
             Node l1 = null, l2 = null;
-            FindClosestLinePoints(last, LevelManager.CurrentScene.Nodes, ref l1, ref l2);
+            FindClosestLinePoints(last, NodeListToUse, ref l1, ref l2);
 
             Node ne1 = null, ne2 = null;
-            FindClosestLinePoints(TempNode, LevelManager.CurrentScene.Nodes, ref ne1, ref ne2);
+            FindClosestLinePoints(TempNode, NodeListToUse, ref ne1, ref ne2);
 
             if ((l1.Equals(ne1) || l1.Equals(ne2)) && (l2.Equals(ne1) || l2.Equals(ne2)))
             {

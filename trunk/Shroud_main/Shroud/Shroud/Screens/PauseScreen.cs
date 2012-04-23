@@ -76,6 +76,8 @@ namespace Shroud.Screens
 
             mBg = SpriteManager.AddSprite(@"Content/Menus/Pause/pauseScreen", ContentManagerName, this.Layer);
             GameProperties.RescaleSprite(mBg);
+            mBg.X = LevelManager.CurrentScene.WorldAnchor.X;
+            mBg.Y = LevelManager.CurrentScene.WorldAnchor.Y;
             mBg.RotationZ = GameProperties.WorldRotation;
 
             mContinue = new ClickButton(ContentManagerName, "continue", this.Layer);
@@ -85,18 +87,20 @@ namespace Shroud.Screens
             mCtrls = SpriteManager.AddSprite(@"Content/Menus/Pause/controls_screen", ContentManagerName, this.Layer);
             GameProperties.RescaleSprite(mCtrls);
             mCtrls.RotationZ = GameProperties.WorldRotation;
+            mCtrls.X = LevelManager.CurrentScene.WorldAnchor.X;
+            mCtrls.Y = LevelManager.CurrentScene.WorldAnchor.Y;
             mCtrls.Visible = false;
 
-            mContinue.X = 1.0f;
-            mContinue.Y = 8.0f;
+            mContinue.X = 1.0f + LevelManager.CurrentScene.WorldAnchor.X;
+            mContinue.Y = 8.0f + LevelManager.CurrentScene.WorldAnchor.Y;
             //mContinue.Z = 0.01f;
 
-            mControls.X = -2.0f;
-            mControls.Y = 8.0f;
+            mControls.X = -2.0f + LevelManager.CurrentScene.WorldAnchor.X;
+            mControls.Y = 8.0f + LevelManager.CurrentScene.WorldAnchor.Y;
             //mControls.Z = 0.01f;
 
-            mExit.X = -5.0f;
-            mExit.Y = 8.0f;
+            mExit.X = -5.0f + LevelManager.CurrentScene.WorldAnchor.X;
+            mExit.Y = 8.0f + LevelManager.CurrentScene.WorldAnchor.Y;
             //mExit.Z = 0.01f;
 			
 			// AddToManagers should be called LAST in this method:
@@ -160,6 +164,7 @@ namespace Shroud.Screens
             mExit.Destroy();
 
             SpriteManager.RemoveSprite(mBg);
+            SpriteManager.RemoveSprite(mCtrls);
         }
 
         #endregion

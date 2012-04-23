@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 
 using FlatRedBall;
-using FlatRedBall.Graphics;
 using FlatRedBall.Math.Geometry;
+
+using Shroud.Utilities;
+using Scene = Shroud.Utilities.Scene;
 
 namespace Shroud.Entities
 {
@@ -15,6 +17,8 @@ namespace Shroud.Entities
         // Basic Entity Properties
         protected Sprite mAppearance;
         protected Circle mCollision;
+
+        public Scene MyScene;
 
         // Keep the ContentManager for easy access:
         string mContentManagerName;

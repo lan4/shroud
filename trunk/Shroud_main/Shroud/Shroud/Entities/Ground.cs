@@ -169,6 +169,8 @@ namespace Shroud.Entities
             {
                 SpriteManager.RemoveSprite(s);
             }
+
+            //ShapeManager.Remove(mCollision);
         }
 
         public Vector3 GetTilePosition(int pos) 

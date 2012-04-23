@@ -35,10 +35,10 @@ namespace Shroud.Utilities
 
         public static void Initialize()
         {
-            lineOfSight = ShapeManager.AddLine();
+            //lineOfSight = ShapeManager.AddLine();
         }
 
-        public static bool IsVisibleTo(Enemy1 e, Player1 p)
+        /*public static bool IsVisibleTo(Enemy1 e, Player1 p)
         {
             return VisibilityHelper(e, p);
         }
@@ -71,7 +71,7 @@ namespace Shroud.Utilities
             }
 
             return false;
-        }
+        }*/
 
         private static float GetStealthRating(PositionedObject po)
         {
