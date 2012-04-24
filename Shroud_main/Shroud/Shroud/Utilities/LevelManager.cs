@@ -52,22 +52,22 @@ namespace Shroud.Utilities
 
             Scene origin = AddScene();
             origin.SetBackground("bg1");
-            origin.AddGround(-16.0f, -21.0f, 6, 3, LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
-            origin.AddGround(1, 2, 4, 3, origin.Grounds[0], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
-            origin.AddLadder(origin.Grounds[0].GetTilePosition(1), origin.Grounds[1].GetTilePosition(0), origin.Grounds[0].TileHeight,
+            origin.AddGround(-16.0f, -21.0f, 6, 3, "hill", LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
+            origin.AddGround(1, 2, 4, 3, "hill", origin.Grounds[0], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+            origin.AddLadder(origin.Grounds[0].GetTilePosition(1), origin.Grounds[1].GetTilePosition(0),
                              LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Back);
-            origin.AddLadder(origin.Grounds[0].GetTilePosition(4), origin.Grounds[1].GetTilePosition(1), origin.Grounds[0].TileHeight,
+            origin.AddLadder(origin.Grounds[0].GetTilePosition(4), origin.Grounds[1].GetTilePosition(1),
                              LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Back);
 
             mCurScene = origin;
 
             Scene next = AddScene(1, 0, 0);
             next.SetBackground("bg1");
-            next.AddGround(-16.0f, -21.0f, 6, 3, LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
-            next.AddGround(1, 2, 4, 3, next.Grounds[0], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
-            next.AddLadder(next.Grounds[0].GetTilePosition(1), next.Grounds[1].GetTilePosition(0), next.Grounds[0].TileHeight,
+            next.AddGround(-16.0f, -21.0f, 6, 3, "hill", LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
+            next.AddGround(1, 2, 4, 3, "hill", next.Grounds[0], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+            next.AddLadder(next.Grounds[0].GetTilePosition(1), next.Grounds[1].GetTilePosition(0),
                              LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
-            next.AddLadder(next.Grounds[0].GetTilePosition(4), next.Grounds[1].GetTilePosition(1), next.Grounds[0].TileHeight,
+            next.AddLadder(next.Grounds[0].GetTilePosition(4), next.Grounds[1].GetTilePosition(1),
                              LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Back);
 
             //SceneMoveRight();

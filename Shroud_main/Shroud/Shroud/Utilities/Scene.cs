@@ -28,6 +28,7 @@ namespace Shroud.Utilities
         public List<WorldObject> WorldObjects;
         public List<Ground> Grounds;
         public List<Ladder> Ladders;
+        public List<Sprite> SceneryObjects;
 
         public Node LeftStart;
         public Node RightStart;
@@ -246,6 +247,7 @@ namespace Shroud.Utilities
             Neighbors = new List<Scene>();
             Grounds = new List<Ground>();
             Ladders = new List<Ladder>();
+            SceneryObjects = new List<Sprite>();
 
             SceneX = -123456;
             SceneY = -123456;
@@ -260,11 +262,11 @@ namespace Shroud.Utilities
         {
             Nodes = new List<Node>();
             mAnchor = anchor;
-            //Enemies = new List<Enemy1>();
             WorldObjects = new List<WorldObject>();
             Neighbors = new List<Scene>();
             Grounds = new List<Ground>();
             Ladders = new List<Ladder>();
+            SceneryObjects = new List<Sprite>();
 
             SceneX = 0;
             SceneY = 0;
@@ -352,32 +354,42 @@ namespace Shroud.Utilities
 
         #endregion
 
-        public void AddGround(float x, float y, int width, int height, MainLayer m, DetailLayer d)
+        public void AddGround(float x, float y, int width, int height, string tileSet, MainLayer m, DetailLayer d)
         {
-            Ground g = new Ground("Global", height, width);
+            Ground g = new Ground("Global", height, width, tileSet);
             Grounds.Add(g);
             g.X = y + mAnchor.X;
             g.Y = -x + mAnchor.Y;
             g.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
         }
 
-        public void AddGround(int dx, int dy, int width, int height, Ground relativeG, MainLayer m, DetailLayer d)
+        public void AddGround(int dx, int dy, int width, int height, string tileSet, Ground relativeG, MainLayer m, DetailLayer d)
         {
-            Ground g = new Ground("Global", height, width);
+            Ground g = new Ground("Global", height, width, tileSet);
             Grounds.Add(g);
-            g.X = relativeG.X + (dy * relativeG.TileHeight);
-            g.Y = relativeG.Y - (dx * relativeG.TileWidth);
+            g.X = relativeG.X + (dy * Ground.TileHeight);
+            g.Y = relativeG.Y - (dx * Ground.TileWidth);
             g.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
         }
 
-        public void AddLadder(Vector3 p1, Vector3 p2, float tileSize, MainLayer m, DetailLayer d)
+        public void AddLadder(Vector3 p1, Vector3 p2, MainLayer m, DetailLayer d)
         {
-            Ladder l = new Ladder("Global", p1, p2, tileSize);
+            Ladder l = new Ladder("Global", p1, p2, Ground.TileHeight);
             Ladders.Add(l);
-            l.X = p1.X + tileSize * .85f;
+            l.X = p1.X + Ground.TileHeight * .85f;
             l.Y = p1.Y;
             l.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
         }
+
+        public void AddBuilding(Vector3 p, int type, MainLayer m, DetailLayer d)
+        {
+
+        }
+
+//        public void AddScenery(Vector3 p, string name)
+//        {
+//            Sprite temp = SpriteManager.AddSprite(@"Content/
+//        }
 
         public void AddWorldObject(float x, float y, MainLayer m, DetailLayer d)
         {
