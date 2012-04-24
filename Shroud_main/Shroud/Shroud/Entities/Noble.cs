@@ -84,7 +84,7 @@ namespace Shroud.Entities
             move.Name = "Moving";
             animations.Add(move);
 
-            int climbFrameTotal = 8;
+            int climbFrameTotal = 6;
             for (framenum = 0; framenum < climbFrameTotal; framenum++)
             {
                 climb.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/climb" + framenum, frametime, ContentManagerName));
