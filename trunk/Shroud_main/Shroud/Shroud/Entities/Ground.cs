@@ -23,20 +23,20 @@ namespace Shroud.Entities
         #region Fields
         private int mWidth;
         private int mHeight;
-        private float mTileWidth;
-        private float mTileHeight;
+        private static float mTileWidth;
+        private static float mTileHeight;
         private Sprite[,] mTiles;
 
         #endregion
 
         #region Properties
 
-        public float TileWidth
+        public static float TileWidth
         {
             get { return 2 * mTileWidth; }
         }
 
-        public float TileHeight
+        public static float TileHeight
         {
             get { return 2 * mTileHeight; }
         }
@@ -75,10 +75,10 @@ namespace Shroud.Entities
             Initialize(true);
         }
 
-        public Ground(string contentManagerName, int height, int width)
+        public Ground(string contentManagerName, int height, int width, string tile)
             : base(contentManagerName)
         {
-            mName = "hill";
+            mName = tile;
 
             // Set the ContentManagerName and call Initialize:
             mWidth = width;

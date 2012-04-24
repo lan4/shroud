@@ -19,29 +19,21 @@ namespace Shroud.Entities
     {
         #region Fields
 
-
-
         #endregion
 
         #region Properties
-
 
         #endregion
 
         #region Methods
 
-        // Constructor
         public Building(string contentManagerName) : base(contentManagerName)
         {
-            // If you don't want to add to managers, make an overriding constructor
             Initialize(true);
         }
 
         protected virtual void Initialize(bool addToManagers)
         {
-            // Here you can preload any content you will be using
-            // like .scnx files or texture files.
-
             if (addToManagers)
             {
                 AddToManagers(null);
@@ -53,11 +45,9 @@ namespace Shroud.Entities
             
         }
 
-
-
         public virtual void Activity()
         {
-            // This code should do things like set Animations, respond to input, and so on.
+
         }
 
         public virtual void Destroy()
