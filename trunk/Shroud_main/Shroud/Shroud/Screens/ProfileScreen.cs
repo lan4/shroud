@@ -72,7 +72,9 @@ namespace Shroud.Screens
 
                 SpriteManager.AddPositionedObject(this);
 
-                mPercent = TextManager.AddText(percent.ToString());
+                BitmapFont fnt = new BitmapFont(@"Content\Fonts\blambot", @"Content\Fonts\blambot.fnt", "Global");
+
+                mPercent = TextManager.AddText(percent.ToString(), fnt);
                 mPercent.AttachTo(this, false);
                 mPercent.RelativeX = -1.0f;
                 mPercent.RelativeY = 1.5f;
