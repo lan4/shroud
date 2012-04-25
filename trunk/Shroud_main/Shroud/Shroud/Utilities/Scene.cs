@@ -386,10 +386,28 @@ namespace Shroud.Utilities
 
         }
 
-//        public void AddScenery(Vector3 p, string name)
-//        {
-//            Sprite temp = SpriteManager.AddSprite(@"Content/
-//        }
+        public void AddScenery(Vector3 p, string name, MainLayer m, DetailLayer d)
+        {
+            Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", CameraManager.Foreground);
+            GameProperties.RescaleSprite(temp);                        
+            temp.Position = p;
+            temp.X += mAnchor.X;
+            temp.Y += mAnchor.Y;
+            temp.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+            temp.RotationZ = GameProperties.WorldRotation;
+            SceneryObjects.Add(temp);
+        }
+
+        public void AddScenery(int groundNum, int tileNum, string name, MainLayer m, DetailLayer d)
+        {
+            Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", CameraManager.Foreground);
+            GameProperties.RescaleSprite(temp);
+            temp.Position = Grounds[groundNum].GetTilePosition(tileNum);
+            temp.X += Ground.TileHeight / 2;
+            temp.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+            temp.RotationZ = GameProperties.WorldRotation;
+            SceneryObjects.Add(temp);
+        }
 
         public void AddWorldObject(float x, float y, MainLayer m, DetailLayer d)
         {
@@ -434,6 +452,11 @@ namespace Shroud.Utilities
             foreach (Ladder l in Ladders)
             {
                 l.Destroy();
+            }
+
+            foreach (Sprite s in SceneryObjects)
+            {
+                SpriteManager.RemoveSprite(s);
             }
         }
 

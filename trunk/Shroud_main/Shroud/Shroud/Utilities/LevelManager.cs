@@ -59,6 +59,8 @@ namespace Shroud.Utilities
             origin.AddLadder(origin.Grounds[0].GetTilePosition(4), origin.Grounds[1].GetTilePosition(1),
                              LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Back);
 
+            origin.AddScenery(0, 2, "bush0", LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front); 
+
             mCurScene = origin;
 
             Scene next = AddScene(1, 0, 0);
