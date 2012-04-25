@@ -92,6 +92,56 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Background\Scenery\bridge0.png">
+      <Name>bridge0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\bush0.png">
+      <Name>bush0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\bush1.png">
+      <Name>bush1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\pot0.png">
+      <Name>pot0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\pot2.png">
+      <Name>pot2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\pot3.png">
+      <Name>pot3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\table0.png">
+      <Name>table0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\table1.png">
+      <Name>table1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\tree0.png">
+      <Name>tree0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Entities\Background\Scenery\tree1.png">
+      <Name>tree1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="Entities\Player\attacking0.png">
       <Name>attacking0</Name>
       <Importer>TextureImporter</Importer>
@@ -823,13 +873,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\moving7.png">
-      <Name>moving7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Entities\Enemy\Noble\climb0.png">
       <Name>climb0</Name>
       <Importer>TextureImporter</Importer>
@@ -872,20 +915,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\climb6.png">
-      <Name>climb6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\climb7.png">
-      <Name>climb7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Entities\Enemy\Noble\dead0.png">
       <Name>dead0</Name>
       <Importer>TextureImporter</Importer>
@@ -909,55 +938,6 @@
   <ItemGroup>
     <Compile Include="Entities\Enemy\Noble\dying2.png">
       <Name>dying2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\moving0.png">
-      <Name>moving0</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\moving1.png">
-      <Name>moving1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\moving2.png">
-      <Name>moving2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\moving3.png">
-      <Name>moving3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\moving4.png">
-      <Name>moving4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\moving5.png">
-      <Name>moving5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Enemy\Noble\moving6.png">
-      <Name>moving6</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -990,6 +970,19 @@
     </Compile>
     <Compile Include="Entities\Enemy\Noble\running3.png">
       <Name>running3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Fonts\blambot.fnt">
+      <Name>blambot</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fonts\blambot.tga">
+      <Name>blambot</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
