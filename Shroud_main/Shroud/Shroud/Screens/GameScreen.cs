@@ -133,7 +133,7 @@ namespace Shroud.Screens
             {
                 GestureManager.Update2(WorldManager.PlayerInstance.Z, HUDManager.zUI - SpriteManager.Camera.Z);
 
-                mPause.Z = WorldManager.PlayerInstance.Z;
+                //mPause.Z = WorldManager.PlayerInstance.Z;
 
                 if (GestureManager.CurGesture == GestureManager.Gesture.Tap)
                 {

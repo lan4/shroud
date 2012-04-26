@@ -36,21 +36,112 @@ namespace Shroud.Utilities
 
         public static void Load(string filename)
         {
-            /*
-            var resource = System.Windows.Application.GetResourceStream(new Uri(@"/Shroud;component/Data/test.txt", UriKind.Relative));
+            
+            var resource = System.Windows.Application.GetResourceStream(new Uri(@"/Shroud;component/Data/level1.txt", UriKind.Relative));
 
             StreamReader streamReader = new StreamReader(resource.Stream);
-            string x = streamReader.ReadToEnd();
+            //string x = streamReader.ReadToEnd();
 
             string s;
+            string[] tokens;
+            Scene sc = null;
             while (!streamReader.EndOfStream)
             {
                 s = streamReader.ReadLine();
-                System.Diagnostics.Debug.WriteLine(s);
-            }
-            */
 
-            Scene origin = AddScene();
+                tokens = s.Split(' ');
+
+                switch (tokens[0])
+                {
+                    case "s":
+                        int x = int.Parse(tokens[1]);
+                        int y = int.Parse(tokens[2]);
+                        int z = int.Parse(tokens[3]);
+
+                        if (x == 0 && y == 0 && z == 0)
+                        {
+                            sc = AddScene();
+                            mCurScene = sc;
+                        }
+                        else
+                        {
+                            sc = AddScene(x, y, z);
+                        }
+
+                        sc.SetBackground(tokens[4]);
+                        
+                        break;
+                    case "g":
+                        if (tokens[1] == "r")
+                        {
+                            int dx = int.Parse(tokens[2]);
+                            int dy = int.Parse(tokens[3]);
+                            int w = int.Parse(tokens[4]);
+                            int h = int.Parse(tokens[5]);
+                            int gindex = int.Parse(tokens[6]);
+
+                            sc.AddGround(dx, dy, w, h, tokens[7], sc.Grounds[gindex], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+                        }
+                        else
+                        {
+                            float ax = float.Parse(tokens[1]);
+                            float ay = float.Parse(tokens[2]);
+                            int tw = int.Parse(tokens[3]);
+                            int th = int.Parse(tokens[4]);
+
+                            sc.AddGround(ax, ay, tw, th, tokens[5], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+                        }
+
+                        break;
+                    case "l":
+                        int g1i = int.Parse(tokens[1]);
+                        int t1i = int.Parse(tokens[2]);
+                        int g2i = int.Parse(tokens[3]);
+                        int t2i = int.Parse(tokens[4]);
+
+                        sc.AddLadder(sc.Grounds[g1i].GetTilePosition(t1i), sc.Grounds[g2i].GetTilePosition(t2i), LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Back);
+
+                        break;
+                    case "n":
+                        float nx = float.Parse(tokens[1]);
+                        float ny = float.Parse(tokens[2]);
+
+                        Node n = sc.AddNode(nx, ny, LayerManager.MainLayer.Background);
+
+                        switch (tokens[3])
+                        {
+                            case "r":
+                                sc.RightStart = n;
+                                break;
+                            case "l":
+                                sc.LeftStart = n;
+                                break;
+                            case "u":
+                                sc.UpStart = n;
+                                break;
+                            case "d":
+                                sc.DownStart = n;
+                                break;
+                            case "f":
+                                break;
+                            case "b":
+                                break;
+                        }
+
+                        break;
+                    case "e":
+                        int ne1 = int.Parse(tokens[1]);
+                        int ne2 = int.Parse(tokens[2]);
+
+                        Node.AddUndirectedEdge(sc.Nodes[ne1], sc.Nodes[ne2]);
+
+                        break;
+                }
+                
+            }
+            
+
+            /*Scene origin = AddScene();
             origin.SetBackground("bg1");
             origin.AddGround(-16.0f, -21.0f, 6, 3, "hill", LayerManager.MainLayer.Background, LayerManager.DetailLayer.Back);
             origin.AddGround(1, 2, 4, 3, "hill", origin.Grounds[0], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
@@ -110,42 +201,42 @@ namespace Shroud.Utilities
 
             #endregion
 
-            //Node.DEBUG_VIEW();
+            //Node.DEBUG_VIEW();*/
 
             WorldManager.PlayerInstance = new Player2("Global", 10.0f);
-            WorldManager.PlayerInstance.Position = n0.Position;
+            WorldManager.PlayerInstance.Position = mCurScene.Nodes[0].Position;
             WorldManager.PlayerInstance.Z = LayerManager.SetLayer(LayerManager.MainLayer.Entity2, LayerManager.DetailLayer.Middle);
 
             List<Node> patrol1 = new List<Node>();
-            patrol1.Add(n1);
-            patrol1.Add(n2);
-            patrol1.Add(n3);
-            patrol1.Add(n4);
+            patrol1.Add(mCurScene.Nodes[1]);
+            patrol1.Add(mCurScene.Nodes[2]);
+            patrol1.Add(mCurScene.Nodes[3]);
+            patrol1.Add(mCurScene.Nodes[4]);
 
             List<Node> patrol2 = new List<Node>();
-            patrol2.Add(n1b);
-            patrol2.Add(n2b);
-            patrol2.Add(n3b);
-            patrol2.Add(n4b);
+            patrol2.Add(mCurScene.Right.Nodes[1]);
+            patrol2.Add(mCurScene.Right.Nodes[2]);
+            patrol2.Add(mCurScene.Right.Nodes[3]);
+            patrol2.Add(mCurScene.Right.Nodes[4]);
 
             List<Node> patrol3 = new List<Node>();
-            patrol3.Add(n4);
-            patrol3.Add(n3);
-            patrol3.Add(n2);
-            patrol3.Add(n1);
+            patrol3.Add(mCurScene.Nodes[4]);
+            patrol3.Add(mCurScene.Nodes[3]);
+            patrol3.Add(mCurScene.Nodes[2]);
+            patrol3.Add(mCurScene.Nodes[1]);
 
-            WorldManager.Soldiers.Add(new Soldier("Global", patrol1, 7.0f));
-            WorldManager.Soldiers[0].Position = n4.Position;
-            WorldManager.Soldiers[0].MyScene = origin;
+            WorldManager.Soldiers.Add(new Soldier("Global", patrol1, 7.0f, CameraManager.Entity1));
+            WorldManager.Soldiers[0].Position = mCurScene.Nodes[4].Position;
+            WorldManager.Soldiers[0].MyScene = mCurScene;
             //WorldManager.Soldiers[0].KeepTrackOfReal = true;
 
-            WorldManager.Soldiers.Add(new Soldier("Global", patrol3, 7.0f));
-            WorldManager.Soldiers[1].Position = n5.Position;
-            WorldManager.Soldiers[1].MyScene = origin;
+            WorldManager.Soldiers.Add(new Soldier("Global", patrol3, 7.0f, CameraManager.Entity1));
+            WorldManager.Soldiers[1].Position = mCurScene.Nodes[5].Position;
+            WorldManager.Soldiers[1].MyScene = mCurScene;
 
-            WorldManager.Target = new Noble("Global", patrol2, 5.0f);
-            WorldManager.Target.Position = n4b.Position;
-            WorldManager.Target.MyScene = next;
+            WorldManager.Target = new Noble("Global", patrol2, 5.0f, CameraManager.Entity1);
+            WorldManager.Target.Position = mCurScene.Right.Nodes[4].Position;
+            WorldManager.Target.MyScene = mCurScene.Right;
 
             Node.NodeListToUse = mCurScene.Nodes;
         }
@@ -159,34 +250,6 @@ namespace Shroud.Utilities
         private static Scene AddScene(int x, int y, int z)
         {
             return Scene.Create(x, y, z);
-        }
-
-        // MIGHT BE DEPRECATED
-        private static Scene AddScene(Scene baseScene, Direction d)
-        {
-            switch (d)
-            {
-                case Direction.Left:
-                    baseScene.Left = Scene.Create(); 
-                    return baseScene.Left;
-                case Direction.Right:
-                    baseScene.Right = Scene.Create();
-                    return baseScene.Right;
-                case Direction.Up:
-                    baseScene.Up = Scene.Create();
-                    return baseScene.Up;
-                case Direction.Down:
-                    baseScene.Down = Scene.Create();
-                    return baseScene.Down;
-                case Direction.Front:
-                    baseScene.Front = Scene.Create();
-                    return baseScene.Front;
-                case Direction.Back:
-                    baseScene.Back = Scene.Create();
-                    return baseScene.Back;
-            }
-
-            return null;
         }
 
         private static void CreatePlayer(float x, float y, float z)

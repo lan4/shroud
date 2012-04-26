@@ -52,7 +52,6 @@ namespace Shroud
             Shroud.Utilities.GameProperties.game = this;
             SpriteManager.Camera.DrawsShapes = false;
             Screens.ScreenManager.Start(typeof(Screens.StartScreen).FullName);
- 
 
             base.Initialize();
         }

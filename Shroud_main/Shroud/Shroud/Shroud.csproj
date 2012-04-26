@@ -93,6 +93,7 @@
     <Compile Include="Entities\AttackingEntity.cs" />
     <Compile Include="Entities\Building.cs" />
     <Compile Include="Entities\Button.cs" />
+    <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\Ground.cs" />
     <Compile Include="Entities\Ladder.cs" />
     <Compile Include="Entities\Ninja.cs" />
@@ -101,7 +102,6 @@
     <Compile Include="Entities\MovingEntity.cs" />
     <Compile Include="Entities\Player2.cs" />
     <Compile Include="Entities\DestructibleObject.cs" />
-    <Compile Include="Entities\Enemy1.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\InteractObject.cs" />
     <Compile Include="Entities\Player1.cs" />
@@ -119,6 +119,7 @@
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
     <Compile Include="Screens\StartScreen.cs" />
+    <Compile Include="Screens\WinScreen.cs" />
     <Compile Include="Utilities\BinaryHeap.cs" />
     <Compile Include="Utilities\LevelManager.cs" />
     <Compile Include="Utilities\Scene.cs" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <Resource Include="Data\test.txt" />
     <Resource Include="Data\profiles.txt" />
+    <Resource Include="Data\level1.txt" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="Background.png">
