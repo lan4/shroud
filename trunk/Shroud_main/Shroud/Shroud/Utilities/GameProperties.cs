@@ -38,12 +38,12 @@ namespace Shroud.Utilities
             using (StreamWriter writeFile = new StreamWriter(new IsolatedStorageFileStream("profiles2.txt", FileMode.Create, FileAccess.Write, myIsolatedStorage)))
             {
                 //string defaultText = "-1 l1";
-                writeFile.WriteLine("0 l1");
-                writeFile.WriteLine("1 l1 l2");
-                writeFile.WriteLine("-3 l1");
-                writeFile.WriteLine("-4 l1");
-                writeFile.WriteLine("-5 l1");
-                writeFile.WriteLine("-6 l1");
+                writeFile.WriteLine("-1 r l1");
+                writeFile.WriteLine("-2 t l1");
+                writeFile.WriteLine("-3 u l1");
+                writeFile.WriteLine("-4 v l1");
+                writeFile.WriteLine("-5 w l1");
+                writeFile.WriteLine("-6 x l1");
                 writeFile.Flush();
                 writeFile.Close();
             }

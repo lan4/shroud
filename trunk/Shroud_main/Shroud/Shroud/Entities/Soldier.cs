@@ -38,7 +38,7 @@ namespace Shroud.Entities
             }
         }
 
-        public Soldier(string contentManagerName, List<Node> patrol, float speed)
+        public Soldier(string contentManagerName, List<Node> patrol, float speed, Layer layer)
             : base(contentManagerName, patrol, speed, PlayerProperties.WeaponSize, PlayerProperties.WeaponRange)
         {
             mPatrolPath = patrol;
@@ -47,7 +47,7 @@ namespace Shroud.Entities
 
             //SpriteManager.AddPositionedObject(this);
 
-            InitializeAnimations();
+            InitializeAnimations(layer);
 
             mCollision = ShapeManager.AddCircle();
             mCollision.AttachTo(this, false);
@@ -56,7 +56,7 @@ namespace Shroud.Entities
             //StartAttack(WorldManager.PlayerInstance);
         }
 
-        private void InitializeAnimations()
+        private void InitializeAnimations(Layer layer)
         {
             AnimationChainList animations = new AnimationChainList();
 
@@ -139,7 +139,7 @@ namespace Shroud.Entities
             animations.Add(dead);
 
             mAppearance = SpriteManager.AddSprite(animations);
-            SpriteManager.AddToLayer(mAppearance, CameraManager.Entity1);
+            SpriteManager.AddToLayer(mAppearance, layer);
             mAppearance.AttachTo(this, false);
             mAppearance.CurrentChainName = "Moving";
             GameProperties.RescaleSprite(mAppearance);
