@@ -80,7 +80,7 @@ namespace Shroud.Utilities
                             int h = int.Parse(tokens[5]);
                             int gindex = int.Parse(tokens[6]);
 
-                            sc.AddGround(dx, dy, w, h, tokens[7], sc.Grounds[gindex], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+                            sc.AddGround(dx, dy, w, h, tokens[7], sc.Grounds[gindex], CameraManager.Middleground);
                         }
                         else
                         {
@@ -89,7 +89,7 @@ namespace Shroud.Utilities
                             int tw = int.Parse(tokens[3]);
                             int th = int.Parse(tokens[4]);
 
-                            sc.AddGround(ax, ay, tw, th, tokens[5], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+                            sc.AddGround(ax, ay, tw, th, tokens[5], CameraManager.Middleground);
                         }
 
                         break;
@@ -135,6 +135,23 @@ namespace Shroud.Utilities
 
                         Node.AddUndirectedEdge(sc.Nodes[ne1], sc.Nodes[ne2]);
 
+                        break;
+                    case "en":
+                        int ni = int.Parse(tokens[1]);
+
+                        List<Node> p = new List<Node>();
+                        
+                        int j;
+                        for (int i = 2; i < tokens.Length; i++)
+                        {
+                            j = int.Parse(tokens[i]);
+
+                            p.Add(sc.Nodes[j]);
+                        }
+
+                        WorldManager.Soldiers.Add(new Soldier("Global", p, 7.0f, CameraManager.Entity1));
+                        WorldManager.Soldiers[WorldManager.Soldiers.Count - 1].Position = mCurScene.Nodes[ni].Position;
+                        WorldManager.Soldiers[WorldManager.Soldiers.Count - 1].MyScene = sc;
                         break;
                 }
                 
@@ -207,11 +224,11 @@ namespace Shroud.Utilities
             WorldManager.PlayerInstance.Position = mCurScene.Nodes[0].Position;
             WorldManager.PlayerInstance.Z = LayerManager.SetLayer(LayerManager.MainLayer.Entity2, LayerManager.DetailLayer.Middle);
 
-            List<Node> patrol1 = new List<Node>();
+            /*List<Node> patrol1 = new List<Node>();
             patrol1.Add(mCurScene.Nodes[1]);
             patrol1.Add(mCurScene.Nodes[2]);
             patrol1.Add(mCurScene.Nodes[3]);
-            patrol1.Add(mCurScene.Nodes[4]);
+            patrol1.Add(mCurScene.Nodes[4]);*/
 
             List<Node> patrol2 = new List<Node>();
             patrol2.Add(mCurScene.Right.Nodes[1]);
@@ -219,20 +236,20 @@ namespace Shroud.Utilities
             patrol2.Add(mCurScene.Right.Nodes[3]);
             patrol2.Add(mCurScene.Right.Nodes[4]);
 
-            List<Node> patrol3 = new List<Node>();
+            /*List<Node> patrol3 = new List<Node>();
             patrol3.Add(mCurScene.Nodes[4]);
             patrol3.Add(mCurScene.Nodes[3]);
             patrol3.Add(mCurScene.Nodes[2]);
-            patrol3.Add(mCurScene.Nodes[1]);
+            patrol3.Add(mCurScene.Nodes[1]);*/
 
-            WorldManager.Soldiers.Add(new Soldier("Global", patrol1, 7.0f, CameraManager.Entity1));
+            /*WorldManager.Soldiers.Add(new Soldier("Global", patrol1, 7.0f, CameraManager.Entity1));
             WorldManager.Soldiers[0].Position = mCurScene.Nodes[4].Position;
-            WorldManager.Soldiers[0].MyScene = mCurScene;
+            WorldManager.Soldiers[0].MyScene = mCurScene;*/
             //WorldManager.Soldiers[0].KeepTrackOfReal = true;
 
-            WorldManager.Soldiers.Add(new Soldier("Global", patrol3, 7.0f, CameraManager.Entity1));
+            /*WorldManager.Soldiers.Add(new Soldier("Global", patrol3, 7.0f, CameraManager.Entity1));
             WorldManager.Soldiers[1].Position = mCurScene.Nodes[5].Position;
-            WorldManager.Soldiers[1].MyScene = mCurScene;
+            WorldManager.Soldiers[1].MyScene = mCurScene;*/
 
             WorldManager.Target = new Noble("Global", patrol2, 5.0f, CameraManager.Entity1);
             WorldManager.Target.Position = mCurScene.Right.Nodes[4].Position;

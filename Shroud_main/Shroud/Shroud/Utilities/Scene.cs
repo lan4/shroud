@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 
 using FlatRedBall;
 using FlatRedBall.Math.Geometry;
+using FlatRedBall.Graphics;
 
 using Shroud.Entities;
 using MainLayer = Shroud.Utilities.LayerManager.MainLayer;
@@ -354,22 +355,22 @@ namespace Shroud.Utilities
 
         #endregion
 
-        public void AddGround(float x, float y, int width, int height, string tileSet, MainLayer m, DetailLayer d)
+        public void AddGround(float x, float y, int width, int height, string tileSet, Layer layer)
         {
-            Ground g = new Ground("Global", height, width, tileSet);
+            Ground g = new Ground("Global", height, width, tileSet, layer);
             Grounds.Add(g);
             g.X = y + mAnchor.X;
             g.Y = -x + mAnchor.Y;
-            g.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+            g.Z = mAnchor.Z;
         }
 
-        public void AddGround(int dx, int dy, int width, int height, string tileSet, Ground relativeG, MainLayer m, DetailLayer d)
+        public void AddGround(int dx, int dy, int width, int height, string tileSet, Ground relativeG, Layer layer)
         {
-            Ground g = new Ground("Global", height, width, tileSet);
+            Ground g = new Ground("Global", height, width, tileSet, layer);
             Grounds.Add(g);
             g.X = relativeG.X + (dy * Ground.TileHeight);
             g.Y = relativeG.Y - (dx * Ground.TileWidth);
-            g.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+            g.Z = mAnchor.Z;
         }
 
         public void AddLadder(Vector3 p1, Vector3 p2, MainLayer m, DetailLayer d)
