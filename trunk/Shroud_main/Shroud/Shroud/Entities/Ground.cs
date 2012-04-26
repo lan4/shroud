@@ -75,7 +75,7 @@ namespace Shroud.Entities
             Initialize(true);
         }
 
-        public Ground(string contentManagerName, int height, int width, string tile)
+        public Ground(string contentManagerName, int height, int width, string tile, Layer layer)
             : base(contentManagerName)
         {
             mName = tile;
@@ -85,28 +85,28 @@ namespace Shroud.Entities
             mHeight = height;
 
             // If you don't want to add to managers, make an overriding constructor
-            Initialize(true);
+            Initialize(true, layer);
         }
 
-        protected virtual void Initialize(bool addToManagers)
+        protected virtual void Initialize(bool addToManagers, Layer layer)
         {
             mTiles = new Sprite[mHeight, mWidth];
 
             if (addToManagers)
             {
-                AddToManagers(null);
+                AddToManagers(layer);
             }
         }
 
         public virtual void AddToManagers(Layer layerToAddTo)
         {
-            InitializeGrid();
+            InitializeGrid(layerToAddTo);
 
             mCollision = ShapeManager.AddCircle();
             mCollision.AttachTo(this, false);
         }
 
-        private void InitializeGrid()
+        private void InitializeGrid(Layer layer)
         {
             string name;
             for (int u = 0; u < mWidth; u++) {
@@ -139,7 +139,7 @@ namespace Shroud.Entities
                             name = @"Content/Entities/Background/Ground/middlecenter_" + mName;
                     }
 
-                    mTiles[v, u] = SpriteManager.AddSprite(name, ContentManagerName, CameraManager.Middleground);
+                    mTiles[v, u] = SpriteManager.AddSprite(name, ContentManagerName, layer);
                     mTiles[v, u].AttachTo(this, false);
                     GameProperties.RescaleSprite(mTiles[v, u]);
                     SetWorldPosition(u, v);
