@@ -124,8 +124,8 @@ namespace Shroud.Utilities
                         {
                             int ground = int.Parse(tokens[2]);
                             int tile = int.Parse(tokens[3]);
-                            int scli = int.Parse(tokens[4]);
-                            float scZ = float.Parse(tokens[5]);
+                            int scli = int.Parse(tokens[5]);
+                            float scZ = float.Parse(tokens[6]);
 
                             sc.AddScenery(ground, tile, tokens[4], GetLayer(scli), scZ);
                         }
