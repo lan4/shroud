@@ -101,6 +101,7 @@ namespace Shroud.Entities
             private Sprite mAppearance;
             private AxisAlignedRectangle mCollision;
             private int mDirection;
+            public Node MoveTo;
 
             public AxisAlignedRectangle Collision
             {
@@ -128,6 +129,8 @@ namespace Shroud.Entities
                 mCollision.ScaleX = mAppearance.ScaleY;
                 mCollision.ScaleY = mAppearance.ScaleX;
                 mCollision.AttachTo(this, false);
+
+                MoveTo = null;
             }
 
             public void OrientUp()
@@ -154,31 +157,38 @@ namespace Shroud.Entities
                 mDirection = 0;
             }
 
-            public void Activate(PositionedObject po)
+            public int Activate(PositionedObject po, ref Vector3 vec)
             {
-                Node setPos = null;
+                //Node setPos = MoveTo;
 
                 switch (mDirection)
                 {
                     case 0:
-                        LevelManager.SceneMoveRight();
-                        setPos = LevelManager.CurrentScene.RightStart;
+                        //LevelManager.SceneMoveRight();
+                        vec.X = 0.0f;
+                        vec.Y = -1.0f;
                         break;
                     case 1:
-                        LevelManager.SceneMoveDown();
-                        setPos = LevelManager.CurrentScene.DownStart;
+                        //LevelManager.SceneMoveDown();
+                        vec.X = -1.0f;
+                        vec.Y = 0.0f;
                         break;
                     case 2:
-                        LevelManager.SceneMoveLeft();
-                        setPos = LevelManager.CurrentScene.LeftStart;
+                        //LevelManager.SceneMoveLeft();
+                        vec.X = 0.0f;
+                        vec.Y = 1.0f;
                         break;
                     case 3:
-                        LevelManager.SceneMoveUp();
-                        setPos = LevelManager.CurrentScene.UpStart;
+                        //LevelManager.SceneMoveUp();
+                        vec.X = 1.0f;
+                        vec.Y = 0.0f;
                         break;
                 }
 
-                po.Position = setPos.Position;
+                //po.Position = setPos.Position;
+                //MoveTo = null;
+
+                return mDirection;
             }
 
             public void Destroy()
@@ -190,6 +200,10 @@ namespace Shroud.Entities
         }
 
         private LeaveButton mLB;
+
+        private bool mBusyMoving;
+        private Vector3 mMoveVec;
+        private int mD;
 
         #endregion
 
@@ -242,6 +256,10 @@ namespace Shroud.Entities
             mLB.RelativeX = 3.0f;
 
             MyScene = LevelManager.CurrentScene;
+
+            mBusyMoving = false;
+            mMoveVec = new Vector3();
+            mD = 0;
 
             if (addToManagers)
             {
@@ -581,7 +599,9 @@ namespace Shroud.Entities
             {
                 //LevelManager.SceneMoveRight();
                 //this.Position = LevelManager.CurrentScene.Nodes[0].Position;
-                mLB.Activate(this);
+                mD = mLB.Activate(this, ref mMoveVec);
+                mBusyMoving = true;
+                mCurAnimationState = AnimationState.Moving;
             }
             else if (WorldManager.InteractTarget == null)
             {
@@ -757,39 +777,54 @@ namespace Shroud.Entities
 
         private void MovingBehavior()
         {
-            switch (GestureManager.CurGesture)
+            if (!mBusyMoving)
             {
-                case Gesture.Tap:
-                    TapBehavior();
-                    break;
-                case Gesture.SwipeUp:
-                    SwipeUpBehavior();
-                    break;
-                case Gesture.SwipeDown:
-                    SwipeDownBehavior();
-                    break;
-                case Gesture.Swipe:
-                case Gesture.SwipeLeft:
-                case Gesture.SwipeRight:
-                    DragBehavior();
-                    break;
-                default:
-                    if (mTarget != null)
-                    {
-                        if (mTarget.GetType().Equals(typeof(Trap)))
+                switch (GestureManager.CurGesture)
+                {
+                    case Gesture.Tap:
+                        TapBehavior();
+                        break;
+                    case Gesture.SwipeUp:
+                        SwipeUpBehavior();
+                        break;
+                    case Gesture.SwipeDown:
+                        SwipeDownBehavior();
+                        break;
+                    case Gesture.Swipe:
+                    case Gesture.SwipeLeft:
+                    case Gesture.SwipeRight:
+                        DragBehavior();
+                        break;
+                    default:
+                        if (mTarget != null)
                         {
-                            Trap t = (Trap)mTarget;
-
-                            if (t.Collision.CollideAgainst(this.Collision))
+                            if (mTarget.GetType().Equals(typeof(Trap)))
                             {
-                                RetrieveTrap(t);
-                                mTarget = null;
+                                Trap t = (Trap)mTarget;
+
+                                if (t.Collision.CollideAgainst(this.Collision))
+                                {
+                                    RetrieveTrap(t);
+                                    mTarget = null;
+                                }
                             }
                         }
-                    }
 
-                    Move();
-                    break;
+                        Move();
+                        break;
+                }
+            }
+            else
+            {
+                MoveInVec(mMoveVec);
+
+                float xDiff = this.X - LevelManager.CurrentScene.WorldAnchor.X;
+                float yDiff = this.Y - LevelManager.CurrentScene.WorldAnchor.Y;
+
+                if (Math.Abs(xDiff) > 10.0f || Math.Abs(yDiff) > 18.0f)
+                {
+                    Teleport();
+                }
             }
         }
 
@@ -1009,36 +1044,74 @@ namespace Shroud.Entities
             //System.Diagnostics.Debug.WriteLine(GestureManager.CurGesture.ToString());
         }
 
+        private void Teleport()
+        {
+            switch (mD)
+            {
+                case 0:
+                    LevelManager.SceneMoveRight();
+                    break;
+                case 1:
+                    LevelManager.SceneMoveDown();
+                    break;
+                case 2:
+                    LevelManager.SceneMoveLeft();
+                    break;
+                case 3:
+                    LevelManager.SceneMoveUp();
+                    break;
+            }
+
+            this.Position = mLB.MoveTo.Position;
+            mLB.MoveTo = null;
+            mBusyMoving = false;
+
+            SetIdle();
+        }
+
         private void ManageMoveArrow()
         {
             float xDiff = this.X - LevelManager.CurrentScene.WorldAnchor.X;
             float yDiff = this.Y - LevelManager.CurrentScene.WorldAnchor.Y;
 
+            Node.NodeListToUse = LevelManager.CurrentScene.Nodes;
+            Node n = Node.FindClosestNode(this.Position);
+
             //System.Diagnostics.Debug.WriteLine(xDiff + " " + yDiff);
 
-            if (xDiff > 5.0f && LevelManager.CurrentScene.Up != null) // UP
+            if (n.Link != null)
             {
-                mLB.OrientUp();
-                mLB.Active = true;
-            }
-            else if (xDiff < -5.0f && LevelManager.CurrentScene.Down != null) // DOWN
-            {
-                mLB.OrientDown();
-                mLB.Active = true;
-            }
-            else if (yDiff > 10.0f && LevelManager.CurrentScene.Left != null) // LEFT
-            {
-                mLB.OrientLeft();
-                mLB.Active = true;
-            }
-            else if (yDiff < -10.0f && LevelManager.CurrentScene.Right != null) // RIGHT
-            {
-                mLB.OrientRight();
-                mLB.Active = true;
+                mLB.MoveTo = n.Link;
+
+                if (xDiff > 5.0f && LevelManager.CurrentScene.Up != null) // UP
+                {
+                    mLB.OrientUp();
+                    mLB.Active = true;
+                }
+                else if (xDiff < -5.0f && LevelManager.CurrentScene.Down != null) // DOWN
+                {
+                    mLB.OrientDown();
+                    mLB.Active = true;
+                }
+                else if (yDiff > 10.0f && LevelManager.CurrentScene.Left != null) // LEFT
+                {
+                    mLB.OrientLeft();
+                    mLB.Active = true;
+                }
+                else if (yDiff < -10.0f && LevelManager.CurrentScene.Right != null) // RIGHT
+                {
+                    mLB.OrientRight();
+                    mLB.Active = true;
+                }
+                else
+                {
+                    mLB.Active = false;
+                }
             }
             else
             {
                 mLB.Active = false;
+                mLB.MoveTo = null;
             }
         }
 

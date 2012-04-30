@@ -71,6 +71,8 @@ namespace Shroud.Utilities
 
         #endregion
 
+        public Node Link;
+
         #region Constructors
 
         private Node(bool addToGraph)
@@ -80,6 +82,8 @@ namespace Shroud.Utilities
             mPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
             Initialize();
+
+            Link = null;
 
             if (addToGraph)
                 Nodes.Add(this);
@@ -94,6 +98,8 @@ namespace Shroud.Utilities
             mPosition.Z = z;
 
             Initialize();
+
+            Link = null;
 
             if (addToGraph)
                 Nodes.Add(this);
@@ -780,6 +786,26 @@ namespace Shroud.Utilities
             }
 
             return dist;
+        }
+
+        public static Node FindClosestNode(Vector3 pos)
+        {
+            Node closest = NodeListToUse[0];
+            float dist = Vector3.Distance(pos, closest.Position);
+            float newdist;
+
+            foreach (Node m in NodeListToUse)
+            {
+                newdist = Vector3.Distance(pos, m.Position);
+
+                if (newdist < dist)
+                {
+                    closest = m;
+                    dist = newdist;
+                }
+            }
+
+            return closest;
         }
     }
 }

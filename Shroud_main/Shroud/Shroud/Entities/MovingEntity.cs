@@ -311,6 +311,11 @@ namespace Shroud.Entities
 
         protected abstract void SetIdle();
 
+        protected void MoveInVec(Vector3 vec)
+        {
+            this.Velocity = vec * mSpeed;
+        }
+
         public virtual void Destroy()
         {
             base.Destroy();

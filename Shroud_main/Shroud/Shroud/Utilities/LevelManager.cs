@@ -155,6 +155,7 @@ namespace Shroud.Utilities
                         float nx = float.Parse(tokens[1]);
                         float ny = float.Parse(tokens[2]);
                         float nz = float.Parse(tokens[3]);
+                        int linkI;
 
                         Node n = sc.AddNode(nx, ny, nz);
 
@@ -162,19 +163,35 @@ namespace Shroud.Utilities
                         {
                             case "r":
                                 sc.RightStart = n;
+                                linkI = int.Parse(tokens[5]);
+                                sc.Right.Nodes[linkI].Link = n;
+                                n.Link = sc.Right.Nodes[linkI];
                                 break;
                             case "l":
                                 sc.LeftStart = n;
+                                linkI = int.Parse(tokens[5]);
+                                sc.Left.Nodes[linkI].Link = n;
+                                n.Link = sc.Left.Nodes[linkI];
                                 break;
                             case "u":
                                 sc.UpStart = n;
+                                linkI = int.Parse(tokens[5]);
+                                sc.Up.Nodes[linkI].Link = n;
+                                n.Link = sc.Up.Nodes[linkI];
                                 break;
                             case "d":
                                 sc.DownStart = n;
+                                linkI = int.Parse(tokens[5]);
+                                sc.Down.Nodes[linkI].Link = n;
+                                n.Link = sc.Down.Nodes[linkI];
                                 break;
                             case "f":
+                                //DO NOT USE
+                                linkI = int.Parse(tokens[5]);
                                 break;
                             case "b":
+                                //DO NOT USE
+                                linkI = int.Parse(tokens[5]);
                                 break;
                         }
 
