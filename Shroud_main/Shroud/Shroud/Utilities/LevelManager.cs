@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 
 using FlatRedBall;
+using FlatRedBall.Graphics;
 
 using Shroud.Entities;
 
@@ -32,6 +33,26 @@ namespace Shroud.Utilities
         {
             get { return mCurScene; }
             set { mCurScene = value; }
+        }
+
+
+        private static Layer GetLayer(int layerNum)
+        {
+            switch (layerNum)
+            {
+                case 0:
+                    return CameraManager.Foreground;
+                case 1:
+                    return CameraManager.Entity1;
+                case 2:
+                    return CameraManager.Middleground;
+                case 3:
+                    return CameraManager.Entity2;
+                case 4:
+                    return CameraManager.Background;
+            }
+
+            return CameraManager.Background;
         }
 
         public static void Load(string filename)
@@ -79,8 +100,10 @@ namespace Shroud.Utilities
                             int w = int.Parse(tokens[4]);
                             int h = int.Parse(tokens[5]);
                             int gindex = int.Parse(tokens[6]);
+                            int lyi = int.Parse(tokens[8]);
+                            float zyOff = float.Parse(tokens[9]);
 
-                            sc.AddGround(dx, dy, w, h, tokens[7], sc.Grounds[gindex], CameraManager.Middleground);
+                            sc.AddGround(dx, dy, w, h, tokens[7], sc.Grounds[gindex], GetLayer(lyi), zyOff);
                         }
                         else
                         {
@@ -88,8 +111,10 @@ namespace Shroud.Utilities
                             float ay = float.Parse(tokens[2]);
                             int tw = int.Parse(tokens[3]);
                             int th = int.Parse(tokens[4]);
+                            int lyi = int.Parse(tokens[6]);
+                            float zyOff = float.Parse(tokens[7]);
 
-                            sc.AddGround(ax, ay, tw, th, tokens[5], CameraManager.Middleground);
+                            sc.AddGround(ax, ay, tw, th, tokens[5], GetLayer(lyi), zyOff);
                         }
 
                         break;
@@ -99,15 +124,19 @@ namespace Shroud.Utilities
                         {
                             int ground = int.Parse(tokens[2]);
                             int tile = int.Parse(tokens[3]);
+                            int scli = int.Parse(tokens[4]);
+                            float scZ = float.Parse(tokens[5]);
 
-                            sc.AddScenery(ground, tile, tokens[4], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+                            sc.AddScenery(ground, tile, tokens[4], GetLayer(scli), scZ);
                         }
                         else
                         {
                             float dx = float.Parse(tokens[1]);
                             float dy = float.Parse(tokens[2]);
+                            int scli = int.Parse(tokens[4]);
+                            float scZ = float.Parse(tokens[5]);
 
-                            sc.AddScenery(new Microsoft.Xna.Framework.Vector3(dx, dy, 0.0f), tokens[3], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+                            sc.AddScenery(new Microsoft.Xna.Framework.Vector3(dx, dy, 0.0f), tokens[3], GetLayer(scli), scZ);
                         }
 
                         break;
@@ -116,17 +145,20 @@ namespace Shroud.Utilities
                         int t1i = int.Parse(tokens[2]);
                         int g2i = int.Parse(tokens[3]);
                         int t2i = int.Parse(tokens[4]);
+                        int li = int.Parse(tokens[5]);
+                        float zOff = float.Parse(tokens[6]);
 
-                        sc.AddLadder(sc.Grounds[g1i].GetTilePosition(t1i), sc.Grounds[g2i].GetTilePosition(t2i), LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Back);
+                        sc.AddLadder(sc.Grounds[g1i].GetTilePosition(t1i), sc.Grounds[g2i].GetTilePosition(t2i), GetLayer(li), zOff);
 
                         break;
                     case "n":
                         float nx = float.Parse(tokens[1]);
                         float ny = float.Parse(tokens[2]);
+                        float nz = float.Parse(tokens[3]);
 
-                        Node n = sc.AddNode(nx, ny, LayerManager.MainLayer.Background);
+                        Node n = sc.AddNode(nx, ny, nz);
 
-                        switch (tokens[3])
+                        switch (tokens[4])
                         {
                             case "r":
                                 sc.RightStart = n;
@@ -156,20 +188,39 @@ namespace Shroud.Utilities
                         break;
                     case "en":
                         int ni = int.Parse(tokens[1]);
+                        int lei = int.Parse(tokens[2]);
 
                         List<Node> p = new List<Node>();
                         
                         int j;
-                        for (int i = 2; i < tokens.Length; i++)
+                        for (int i = 3; i < tokens.Length; i++)
                         {
                             j = int.Parse(tokens[i]);
 
                             p.Add(sc.Nodes[j]);
                         }
 
-                        WorldManager.Soldiers.Add(new Soldier("Global", p, 7.0f, CameraManager.Entity1));
-                        WorldManager.Soldiers[WorldManager.Soldiers.Count - 1].Position = mCurScene.Nodes[ni].Position;
+                        WorldManager.Soldiers.Add(new Soldier("Global", p, 7.0f, GetLayer(lei)));
+                        WorldManager.Soldiers[WorldManager.Soldiers.Count - 1].Position = sc.Nodes[ni].Position;
                         WorldManager.Soldiers[WorldManager.Soldiers.Count - 1].MyScene = sc;
+                        break;
+                    case "t":
+                        int ti = int.Parse(tokens[1]);
+                        int lti = int.Parse(tokens[2]);
+
+                        List<Node> pt = new List<Node>();
+                        
+                        int k;
+                        for (int i = 3; i < tokens.Length; i++)
+                        {
+                            k = int.Parse(tokens[i]);
+
+                            pt.Add(sc.Nodes[k]);
+                        }
+
+                        WorldManager.Target = new Noble("Global", pt, 7.0f, GetLayer(lti));
+                        WorldManager.Target.Position = sc.Nodes[ti].Position;
+                        WorldManager.Target.MyScene = sc;
                         break;
                 }
                 
@@ -248,9 +299,12 @@ namespace Shroud.Utilities
             //patrol1.Add(mCurScene.Nodes[3]);
             patrol1.Add(mCurScene.Nodes[4]);*/
 
-            List<Node> patrol2 = new List<Node>();
+            /*List<Node> patrol2 = new List<Node>();
             patrol2.Add(mCurScene.Right.Nodes[0]);
             patrol2.Add(mCurScene.Right.Nodes[1]);
+            patrol2.Add(mCurScene.Right.Nodes[2]);
+            patrol2.Add(mCurScene.Right.Nodes[3]);
+            patrol2.Add(mCurScene.Right.Nodes[4]);*/
 
             /*List<Node> patrol3 = new List<Node>();
             patrol3.Add(mCurScene.Nodes[4]);
@@ -267,9 +321,9 @@ namespace Shroud.Utilities
             WorldManager.Soldiers[1].Position = mCurScene.Nodes[5].Position;
             WorldManager.Soldiers[1].MyScene = mCurScene;*/
 
-            WorldManager.Target = new Noble("Global", patrol2, 5.0f, CameraManager.Entity1);
+            /*WorldManager.Target = new Noble("Global", patrol2, 5.0f, CameraManager.Entity1);
             WorldManager.Target.Position = mCurScene.Right.Nodes[1].Position;
-            WorldManager.Target.MyScene = mCurScene.Right;
+            WorldManager.Target.MyScene = mCurScene.Right;*/
 
             Node.NodeListToUse = mCurScene.Nodes;
         }
