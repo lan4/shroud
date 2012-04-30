@@ -11,11 +11,6 @@ using Microsoft.Xna.Framework;
 
 using Shroud.Utilities;
 
-// Be sure to replace:
-// 1.  The namespace
-// 2.  The class name
-// 3.  The constructor (should be the same as the class name)
-
 
 namespace Shroud.Entities
 {
@@ -45,34 +40,34 @@ namespace Shroud.Entities
             Initialize(true);
         }
 
-        public Ladder(string contentManagerName, Vector3 pos1, Vector3 pos2, float tileSize)
+        public Ladder(string contentManagerName, Vector3 pos1, Vector3 pos2, float tileSize, Layer layer)
             : base(contentManagerName)
         {
             mTileHeight = tileSize;
             mHeight = CalcHeight(pos1.X, pos2.X);
             // If you don't want to add to managers, make an overriding constructor
-            Initialize(true);
+            Initialize(true, layer);
         }
 
-        protected virtual void Initialize(bool addToManagers)
+        protected virtual void Initialize(bool addToManagers, Layer layer)
         {
             mGrid = new Sprite[mHeight];
 
             if (addToManagers)
             {
-                AddToManagers(null);
+                AddToManagers(layer);
             }
         }
 
         public virtual void AddToManagers(Layer layerToAddTo)
         {
-            InitializeGrid();
+            InitializeGrid(layerToAddTo);
 
             mCollision = ShapeManager.AddCircle();
             mCollision.AttachTo(this, false);
         }
 
-        private void InitializeGrid()
+        private void InitializeGrid(Layer layer)
         {
             string name;
             for (int v = 0; v < mHeight; v++)
@@ -89,7 +84,7 @@ namespace Shroud.Entities
                 {
                     name = @"Content/Entities/Background/Ladder/ladder_middle";
                 }
-                mGrid[v] = SpriteManager.AddSprite(name, ContentManagerName, CameraManager.Middleground);
+                mGrid[v] = SpriteManager.AddSprite(name, ContentManagerName, layer);
                 mGrid[v].AttachTo(this, false);
                 GameProperties.RescaleSprite(mGrid[v]);
                 SetWorldPosition(v);

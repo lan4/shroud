@@ -297,18 +297,18 @@ namespace Shroud.Utilities
 
 		#region Graph Creation
 		
-		public Node AddNode(float x, float y, MainLayer m)
+		public Node AddNode(float x, float y, float zOffset)
         {
-            Node n = Node.AddGraphNode(x + mAnchor.X, y + mAnchor.Y, mAnchor.Z + LayerManager.SetLayer(m, DetailLayer.Middle));
+            Node n = Node.AddGraphNode(x + mAnchor.X, y + mAnchor.Y, mAnchor.Z + zOffset);
             Nodes.Add(n);
 
             return n;
         }
 
-        public void CreateLink(float x1, float y1, float x2, float y2, MainLayer m)
+        public void CreateLink(float x1, float y1, float x2, float y2, float z1, float z2)
         {
-            Node n1 = AddNode(x1, y1, m);
-            Node n2 = AddNode(x2, y2, m);
+            Node n1 = AddNode(x1, y1, z1);
+            Node n2 = AddNode(x2, y2, z2);
 
             n1.AddUndirectedEdge(n2);
         }
@@ -347,39 +347,39 @@ namespace Shroud.Utilities
         // PLACES NODES AT TOP POINTS OF RECTANGLE
         private void Unwrap(AxisAlignedRectangle r)
         {
-            Node n1 = AddNode(r.X + r.Right, r.Y + r.Top, LayerManager.GetMainLayer(r.Z));
-            Node n2 = AddNode(r.X + r.Right, r.Y + r.Bottom, LayerManager.GetMainLayer(r.Z));
+            Node n1 = AddNode(r.X + r.Right, r.Y + r.Top, r.Z);
+            Node n2 = AddNode(r.X + r.Right, r.Y + r.Bottom, r.Z);
 
             n1.AddUndirectedEdge(n2);
         }
 
         #endregion
 
-        public void AddGround(float x, float y, int width, int height, string tileSet, Layer layer)
+        public void AddGround(float x, float y, int width, int height, string tileSet, Layer layer, float zOffset)
         {
             Ground g = new Ground("Global", height, width, tileSet, layer);
             Grounds.Add(g);
             g.X = y + mAnchor.X;
             g.Y = -x + mAnchor.Y;
-            g.Z = mAnchor.Z;
+            g.Z = mAnchor.Z + zOffset;
         }
 
-        public void AddGround(int dx, int dy, int width, int height, string tileSet, Ground relativeG, Layer layer)
+        public void AddGround(int dx, int dy, int width, int height, string tileSet, Ground relativeG, Layer layer, float zOffset)
         {
             Ground g = new Ground("Global", height, width, tileSet, layer);
             Grounds.Add(g);
             g.X = relativeG.X + (dy * Ground.TileHeight);
             g.Y = relativeG.Y - (dx * Ground.TileWidth);
-            g.Z = mAnchor.Z;
+            g.Z = mAnchor.Z + zOffset;
         }
 
-        public void AddLadder(Vector3 p1, Vector3 p2, MainLayer m, DetailLayer d)
+        public void AddLadder(Vector3 p1, Vector3 p2, Layer layer, float zOffset)
         {
-            Ladder l = new Ladder("Global", p1, p2, Ground.TileHeight);
+            Ladder l = new Ladder("Global", p1, p2, Ground.TileHeight, layer);
             Ladders.Add(l);
             l.X = p1.X + Ground.TileHeight * .85f;
             l.Y = p1.Y;
-            l.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+            l.Z = mAnchor.Z + zOffset;
         }
 
         public void AddBuilding(Vector3 p, int type, MainLayer m, DetailLayer d)
@@ -387,38 +387,27 @@ namespace Shroud.Utilities
 
         }
 
-        public void AddScenery(Vector3 p, string name, MainLayer m, DetailLayer d)
+        public void AddScenery(Vector3 p, string name, Layer layer, float zOffset)
         {
-            Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", CameraManager.Foreground);
+            Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
             GameProperties.RescaleSprite(temp);                        
             temp.Position = p;
             temp.X += mAnchor.X;
             temp.Y += mAnchor.Y;
-            temp.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+            temp.Z = mAnchor.Z + zOffset;
             temp.RotationZ = GameProperties.WorldRotation;
             SceneryObjects.Add(temp);
         }
 
-        public void AddScenery(int groundNum, int tileNum, string name, MainLayer m, DetailLayer d)
+        public void AddScenery(int groundNum, int tileNum, string name, Layer layer, float zOffset)
         {
-            Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", CameraManager.Foreground);
+            Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
             GameProperties.RescaleSprite(temp);
             temp.Position = Grounds[groundNum].GetTilePosition(tileNum);
             temp.X += Ground.TileHeight / 2;
-            temp.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
+            temp.Z = mAnchor.Z + zOffset;
             temp.RotationZ = GameProperties.WorldRotation;
             SceneryObjects.Add(temp);
-        }
-
-        public void AddWorldObject(float x, float y, MainLayer m, DetailLayer d)
-        {
-            WorldObject w = new WorldObject("Global");
-            WorldObjects.Add(w);
-            w.X += mAnchor.X;
-            w.Y += mAnchor.Y;
-            w.Z = mAnchor.Z + LayerManager.SetLayer(m, d);
-
-            WorldManager.ManagedWorldObjects.Add(w);
         }
 
         public void SetBackground(string filename)
