@@ -93,6 +93,24 @@ namespace Shroud.Utilities
                         }
 
                         break;
+
+                    case "sc":
+                        if (tokens[1] == "r")
+                        {
+                            int ground = int.Parse(tokens[2]);
+                            int tile = int.Parse(tokens[3]);
+
+                            sc.AddScenery(ground, tile, tokens[4], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+                        }
+                        else
+                        {
+                            float dx = float.Parse(tokens[1]);
+                            float dy = float.Parse(tokens[2]);
+
+                            sc.AddScenery(new Microsoft.Xna.Framework.Vector3(dx, dy, 0.0f), tokens[3], LayerManager.MainLayer.Middleground, LayerManager.DetailLayer.Front);
+                        }
+
+                        break;
                     case "l":
                         int g1i = int.Parse(tokens[1]);
                         int t1i = int.Parse(tokens[2]);
@@ -227,14 +245,12 @@ namespace Shroud.Utilities
             /*List<Node> patrol1 = new List<Node>();
             patrol1.Add(mCurScene.Nodes[1]);
             patrol1.Add(mCurScene.Nodes[2]);
-            patrol1.Add(mCurScene.Nodes[3]);
+            //patrol1.Add(mCurScene.Nodes[3]);
             patrol1.Add(mCurScene.Nodes[4]);*/
 
             List<Node> patrol2 = new List<Node>();
+            patrol2.Add(mCurScene.Right.Nodes[0]);
             patrol2.Add(mCurScene.Right.Nodes[1]);
-            patrol2.Add(mCurScene.Right.Nodes[2]);
-            patrol2.Add(mCurScene.Right.Nodes[3]);
-            patrol2.Add(mCurScene.Right.Nodes[4]);
 
             /*List<Node> patrol3 = new List<Node>();
             patrol3.Add(mCurScene.Nodes[4]);
@@ -252,7 +268,7 @@ namespace Shroud.Utilities
             WorldManager.Soldiers[1].MyScene = mCurScene;*/
 
             WorldManager.Target = new Noble("Global", patrol2, 5.0f, CameraManager.Entity1);
-            WorldManager.Target.Position = mCurScene.Right.Nodes[4].Position;
+            WorldManager.Target.Position = mCurScene.Right.Nodes[1].Position;
             WorldManager.Target.MyScene = mCurScene.Right;
 
             Node.NodeListToUse = mCurScene.Nodes;
