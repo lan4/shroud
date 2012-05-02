@@ -1478,7 +1478,7 @@ namespace Shroud.Entities
 
             mTimer.Update(mFlash.PercentReady);
             mTimer.X = LevelManager.CurrentScene.WorldAnchor.X + 8.0f;
-            mTimer.Y = LevelManager.CurrentScene.WorldAnchor.Y + 14.0f;
+            mTimer.Y = LevelManager.CurrentScene.WorldAnchor.Y - 11.0f;
         }
 
         public virtual void Destroy()
