@@ -48,6 +48,11 @@ namespace Shroud.Entities
             private double cooldownTime;
             private double lastUsed;
 
+            public bool IsReady
+            {
+                get { return (float)((TimeManager.CurrentTime - lastUsed) / cooldownTime) >= 1.0f; }
+            }
+
             public float PercentReady
             {
                 get { return (float)((TimeManager.CurrentTime - lastUsed) / cooldownTime); }
@@ -890,7 +895,7 @@ namespace Shroud.Entities
                     mCurAnimationState = AnimationState.PlacingTrap;
                 }*/
 
-                if (mAppearance.CurrentChainName != "Climbing")
+                if (mAppearance.CurrentChainName != "Climbing" && mFlash.IsReady)
                 {
                     mFlash.Pop(this.X - mAppearance.ScaleX, this.Y, this.Z + 0.1f);
 
