@@ -404,7 +404,7 @@ namespace Shroud.Utilities
             Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
             GameProperties.RescaleSprite(temp);
             temp.Position = Grounds[groundNum].GetTilePosition(tileNum);
-            temp.X += Ground.TileHeight / 2;
+            temp.X += Ground.TileHeight / 1.25f;
             temp.Z = mAnchor.Z + zOffset;
             temp.RotationZ = GameProperties.WorldRotation;
             SceneryObjects.Add(temp);
