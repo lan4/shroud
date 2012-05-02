@@ -27,6 +27,8 @@ namespace Shroud.Entities
         protected Node mLastPatrolNode;
         protected bool mPatrolling;
         private bool mPatrolReady;
+        private bool mCanBacktrack;
+        private bool mBacktracking;
 
         public enum PatrolMode
         {
@@ -54,6 +56,8 @@ namespace Shroud.Entities
             mLastPatrolNode = null;
             mPatrolling = false;
             mPatrolReady = false;
+            mCanBacktrack = false;
+            mBacktracking = false;
         }
 
         protected MovingEntity(string contentManagerName, List<Node> patrol, float speed)
@@ -73,6 +77,9 @@ namespace Shroud.Entities
             mLastPatrolNode = mPatrolPath[0];
             mPatrolling = false;
             mPatrolReady = false;
+
+            mCanBacktrack = mPatrolPath.Count != 1 && !mPatrolPath[0].IsNeighbor(mPatrolPath[mPatrolPath.Count - 1]);
+            mBacktracking = false;
         }
 
         private void Initialize()
@@ -84,6 +91,9 @@ namespace Shroud.Entities
             mFacingRight = false;
 
             mTarget = null;
+
+            mStartSentry = TimeManager.CurrentTime;
+            mSentryLimit = 3.0f;
         }
 
         #region Helpers
@@ -171,13 +181,33 @@ namespace Shroud.Entities
                 if (mPatrolPath.Contains(mCur))
                 {
                     int index = mPatrolPath.IndexOf(mCur);
-                    index++;
-                    
-                    //THIS IS CIRCULAR BEHAVIOR
-                    if (index >= mPatrolPath.Count)
+
+                    if (index <= 0 && mBacktracking)
+                    {
+                        mBacktracking = false;
                         index = 0;
+                    }
+
+                    if (mBacktracking)
+                        index--;
+                    else
+                        index++;
+
+                    //THIS IS CIRCULAR BEHAVIOR
+                    if (index >= mPatrolPath.Count && !mCanBacktrack)
+                        index = 0;
+                    else if (index >= mPatrolPath.Count && mCanBacktrack)
+                    {
+                        mBacktracking = true;
+                        index--;
+                    }
 
                     mCur = mPatrolPath[index];
+                    mLastPatrolNode = mCur;
+                }
+                else
+                {
+                    mCur = mLastPatrolNode;
                 }
             }
         }
@@ -237,7 +267,7 @@ namespace Shroud.Entities
 
         public void Chase1()
         {
-            if ((mEnd.Position - this.Position).Length() < PlayerProperties.MoveTolerance)
+            if ((mEnd.Position - this.Position).Length() < 0.3f)
             {
                 mStart.Position = this.Position;
                 mEnd.Position = mTarget.Position;
@@ -254,7 +284,7 @@ namespace Shroud.Entities
                     this.Velocity.Normalize();
                 }
 
-                this.Velocity *= PlayerProperties.MoveSpeed;
+                this.Velocity *= mSpeed;
             }
         }
 
@@ -289,7 +319,21 @@ namespace Shroud.Entities
                     this.Velocity.Normalize();
                 }
 
-                this.Velocity *= PlayerProperties.MoveSpeed;
+                this.Velocity *= mSpeed;
+            }
+        }
+
+        private double mStartSentry;
+        private double mSentryLimit;
+        private void Sentry()
+        {
+            this.Velocity.X = 0.0f;
+            this.Velocity.Y = 0.0f;
+
+            if (TimeManager.CurrentTime - mStartSentry > mSentryLimit)
+            {
+                mStartSentry = TimeManager.CurrentTime;
+                mFacingRight = !mFacingRight;
             }
         }
 
@@ -297,10 +341,17 @@ namespace Shroud.Entities
         {
             if (mPatrolReady)
             {
-                if ((mCur.Position - this.Position).Length() < PlayerProperties.MoveTolerance)
+                if (mPatrolPath.Count > 1)
                 {
-                    GetNextPatrolNode();
-                    MoveToNextNode();
+                    if ((mCur.Position - this.Position).Length() < PlayerProperties.MoveTolerance)
+                    {
+                        GetNextPatrolNode();
+                        MoveToNextNode();
+                    }
+                }
+                else
+                {
+                    Sentry();
                 }
             }
             else

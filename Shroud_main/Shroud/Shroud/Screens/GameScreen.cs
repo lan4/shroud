@@ -113,6 +113,8 @@ namespace Shroud.Screens
             CameraManager.Initialize();
             WorldManager.Initialize();
             GestureManager.Initialize2();
+
+            GameProperties.JumpBack = false;
         }
 
         #region Public Methods
@@ -126,7 +128,11 @@ namespace Shroud.Screens
 
             if (GameProperties.JumpBack)
             {
-                //MoveToScreen(typeof(LevelScreen).FullName);
+                SpriteManager.Camera.X = 0.0f;
+                SpriteManager.Camera.Y = 0.0f;
+                GameProperties.JumpBack = false;
+                GameProperties.IsPaused = false;
+                MoveToScreen(typeof(LevelScreen).FullName);
             }
 
             if (!mIsPaused)
@@ -150,7 +156,6 @@ namespace Shroud.Screens
                 {
                     WorldManager.Update();
                     CameraManager.UpdateCamera2();
-                    //HUDManager.Update();
                 }
             }
 
@@ -160,15 +165,22 @@ namespace Shroud.Screens
                 mIsPaused = false;
             }
 
-            mGameOver = !WorldManager.PlayerInstance.IsAlive || !WorldManager.Target.IsAlive;
+            mGameOver = WorldManager.PlayerInstance.IsReallyDead || WorldManager.Target.IsReallyDead;
 
             if (mGameOver)
             {
+                GameProperties.PlayerAlive = WorldManager.PlayerInstance.IsAlive;
+
                 if (!WorldManager.PlayerInstance.IsAlive)
                 {
                     //Destroy();
                     //System.Diagnostics.Debug.WriteLine(SpriteManager.AutomaticallyUpdatedSprites[0]);
-                    MoveToScreen(typeof(LevelScreen).FullName);
+                    //SpriteManager.Camera.X = 0.0f;
+                    //SpriteManager.Camera.Y = 0.0f;
+                    //mIsPaused = true;
+                    //GameProperties.IsPaused = true;
+                    //LoadPopup(typeof(WinScreen).FullName, CameraManager.Pause);
+                    //MoveToScreen(typeof(WinScreen).FullName);
                 }
                 else
                 {
@@ -178,18 +190,55 @@ namespace Shroud.Screens
                     LoadPopup(typeof(WinScreen).FullName, CameraManager.Pause);*/
 
                     string lvl = GameProperties.LevelToken;
-
-                    if (!lvl.Contains("d"))
+                    bool changed = false;
+                    
+                    if (!lvl.Contains('d') && mIsPaused == false)
                     {
                         lvl = lvl + "d";
+                        changed = true;
+
+                        GameProperties.ProfileString = GameProperties.ProfileString.Replace("p" + GameProperties.NumLevels.ToString(), "p" + (GameProperties.NumLevels + 1).ToString());
+                        GameProperties.NumLevels++;
+
+                        if (GameProperties.NumLevels < GameProperties.TotalLevels)
+                        {
+                            GameProperties.ProfileString += " l" + (GameProperties.NumLevels + 1).ToString();
+                        }
+                    }
+
+                    if (!lvl.Contains('a') && GameProperties.HiddenBadge)
+                    {
+                        lvl = lvl + "a";
+                        changed = true;
+                    }
+
+                    if (!lvl.Contains('b') && GameProperties.OneKillBadge)
+                    {
+                        lvl = lvl + "b";
+                        changed = true;
+                    }
+
+                    if (!lvl.Contains('c') && GameProperties.NoDieBadge)
+                    {
+                        lvl = lvl + "c";
+                        changed = true;
+                    }
+
+                    if (!lvl.Equals(GameProperties.LevelToken) || changed)
+                    {
                         GameProperties.ProfileString = GameProperties.ProfileString.Replace(GameProperties.LevelToken, lvl);
-                        System.Diagnostics.Debug.WriteLine(GameProperties.ProfileString);
+                        //System.Diagnostics.Debug.WriteLine(GameProperties.ProfileString);
                         GameProperties.Save();
+                        GameProperties.LevelToken = lvl;
                     }
 
                     //Destroy();
-
-                    MoveToScreen(typeof(GameScreen).FullName);
+                    SpriteManager.Camera.X = 0.0f;
+                    SpriteManager.Camera.Y = 0.0f;
+                    mIsPaused = true;
+                    GameProperties.IsPaused = true;
+                    //LoadPopup(typeof(WinScreen).FullName, CameraManager.Pause);
+                    MoveToScreen(typeof(WinScreen).FullName);
                 }
             }
         }

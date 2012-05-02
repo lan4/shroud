@@ -74,7 +74,15 @@ namespace Shroud.Screens
 
                 BitmapFont fnt = new BitmapFont(@"Content\Fonts\blambot", @"Content\Fonts\blambot.fnt", "Global");
 
-                mPercent = TextManager.AddText(percent.ToString(), fnt);
+                if (percent == 100.0f)
+                {
+                    mPercent = TextManager.AddText("END", fnt);
+                }
+                else
+                {
+                    mPercent = TextManager.AddText(((int)percent).ToString() + "%", fnt);
+                }
+
                 mPercent.AttachTo(this, false);
                 mPercent.RelativeX = -1.0f;
                 mPercent.RelativeY = 1.5f;
@@ -83,7 +91,7 @@ namespace Shroud.Screens
                 mPercent.Red = 0.0f;
                 mPercent.Blue = 0.0f;
                 mPercent.Green = 0.0f;
-                mPercent.Scale = 2.0f;
+                mPercent.Scale = 1.0f;
                 mPercent.Spacing = mPercent.Scale;
 
                 mbg = SpriteManager.AddSprite(@"Content/Menus/Profiles/scroll" + mTotal + "-1", "Global");
@@ -229,11 +237,11 @@ namespace Shroud.Screens
                             {
                                 int levelsDone = -99;
 
-                                levelsDone = int.Parse(numCom);
+                                levelsDone = int.Parse(numCom.Replace("p", ""));
 
                                 if (levelsDone >= 0)
                                 {
-                                    mProfiles.Add(new ProfileButton((levelsDone / 10.0f) * 100.0f));
+                                    mProfiles.Add(new ProfileButton((levelsDone / (float) GameProperties.TotalLevels) * 100.0f));
                                     mProfiles[mProfiles.Count - 1].StoredString = line.Trim();
                                     mProfiles[mProfiles.Count - 1].NumLevels = numCom;
                                 }
@@ -301,7 +309,7 @@ namespace Shroud.Screens
 
             GestureManager.Update2(0.0f, 0.0f);
 
-            if (GestureManager.CurGesture == GestureManager.Gesture.Tap)
+            if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
             {
                 float x = GestureManager.EndTouchWorld.X;
                 float y = GestureManager.EndTouchWorld.Y;
@@ -310,13 +318,16 @@ namespace Shroud.Screens
                 {
                     if (p.Collision.IsPointInside(x, y))
                     {
-                        if (p.NumLevels[0] == '-')
+                        if (p.NumLevels[1] == '-')
                         {
-                            GameProperties.ProfileString = p.StoredString.Replace(p.NumLevels, "0");
+                            GameProperties.ProfileString = p.StoredString.Replace(p.NumLevels, "p0");
+                            
+                            GameProperties.NumLevels = 0;
                         }
                         else
                         {
                             GameProperties.ProfileString = p.StoredString;
+                            GameProperties.NumLevels = int.Parse(p.NumLevels.Replace("p", ""));
                         }
 
                         GameProperties.OldProfileString = p.StoredString;

@@ -18,8 +18,8 @@ namespace Shroud.Utilities
 {
     public class Scene
     {
-        private static float WIDTH = 35.0f;
-        private static float HEIGHT = 20.0f;
+        private static float WIDTH = 350.0f;
+        private static float HEIGHT = 200.0f;
         private static float DEPTH = 10.0f;
 
         private static List<Scene> mScenes = new List<Scene>();
@@ -30,6 +30,7 @@ namespace Shroud.Utilities
         public List<Ground> Grounds;
         public List<Ladder> Ladders;
         public List<Sprite> SceneryObjects;
+        public List<Sprite> StealthObjects;
 
         public Node LeftStart;
         public Node RightStart;
@@ -249,6 +250,7 @@ namespace Shroud.Utilities
             Grounds = new List<Ground>();
             Ladders = new List<Ladder>();
             SceneryObjects = new List<Sprite>();
+            StealthObjects = new List<Sprite>();
 
             SceneX = -123456;
             SceneY = -123456;
@@ -268,6 +270,7 @@ namespace Shroud.Utilities
             Grounds = new List<Ground>();
             Ladders = new List<Ladder>();
             SceneryObjects = new List<Sprite>();
+            StealthObjects = new List<Sprite>();
 
             SceneX = 0;
             SceneY = 0;
@@ -387,7 +390,7 @@ namespace Shroud.Utilities
 
         }
 
-        public void AddScenery(Vector3 p, string name, Layer layer, float zOffset)
+        public void AddScenery(Vector3 p, string name, Layer layer, float zOffset, bool UsedForStealth)
         {
             Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
             GameProperties.RescaleSprite(temp);                        
@@ -397,9 +400,12 @@ namespace Shroud.Utilities
             temp.Z = mAnchor.Z + zOffset;
             temp.RotationZ = GameProperties.WorldRotation;
             SceneryObjects.Add(temp);
+
+            if (UsedForStealth)
+                StealthObjects.Add(temp);
         }
 
-        public void AddScenery(int groundNum, int tileNum, string name, Layer layer, float zOffset)
+        public void AddScenery(int groundNum, int tileNum, string name, Layer layer, float zOffset, bool UsedForStealth)
         {
             Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
             GameProperties.RescaleSprite(temp);
@@ -408,6 +414,9 @@ namespace Shroud.Utilities
             temp.Z = mAnchor.Z + zOffset;
             temp.RotationZ = GameProperties.WorldRotation;
             SceneryObjects.Add(temp);
+
+            if (UsedForStealth)
+                StealthObjects.Add(temp);
         }
 
         public void SetBackground(string filename)
@@ -439,15 +448,23 @@ namespace Shroud.Utilities
                 g.Destroy();
             }
 
+            Grounds.Clear();
+
             foreach (Ladder l in Ladders)
             {
                 l.Destroy();
             }
 
+            Ladders.Clear();
+
             foreach (Sprite s in SceneryObjects)
             {
                 SpriteManager.RemoveSprite(s);
             }
+
+            SceneryObjects.Clear();
+
+            StealthObjects.Clear();
         }
 
         public static Scene Create()
