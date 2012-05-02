@@ -28,14 +28,28 @@ namespace Shroud.Entities
         };
         private AnimationState mCurAnimationState;
 
-        private float mMinDetect = 0.5f;
+        private float mMinDetect = 0.7f;
+
+        private double mStunStart;
+        private static double mStunLimit = 1.5;
+        private bool mIsStunned;
 
         public bool IsAlive
         {
             get
             {
-                return !mCurAnimationState.Equals(AnimationState.Dead);
+                return !mCurAnimationState.Equals(AnimationState.Dead) && !mCurAnimationState.Equals(AnimationState.Dying);
             }
+        }
+
+        public bool IsClimbing
+        {
+            get { return mAppearance.CurrentChainName == "Climbing"; }
+        }
+
+        public bool IsFalling
+        {
+            get { return mAppearance.CurrentChainName == "Fall"; }
         }
 
         public Soldier(string contentManagerName, List<Node> patrol, float speed, Layer layer)
@@ -53,6 +67,9 @@ namespace Shroud.Entities
             mCollision.AttachTo(this, false);
             mCollision.Radius = 2.0f;
 
+            mStunStart = TimeManager.CurrentTime;
+            mIsStunned = false;
+
             //StartAttack(WorldManager.PlayerInstance);
         }
 
@@ -68,6 +85,8 @@ namespace Shroud.Entities
             AnimationChain dying = new AnimationChain();
             AnimationChain dead = new AnimationChain();
             AnimationChain climb = new AnimationChain();
+            AnimationChain stunned = new AnimationChain();
+            AnimationChain fall = new AnimationChain();
 
             string type = "Soldier1";
 
@@ -77,7 +96,7 @@ namespace Shroud.Entities
             int idleFrameTotal = 1;
             for (framenum = 0; framenum < idleFrameTotal; framenum++)
             {
-                idle.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/moving" + framenum, frametime, ContentManagerName));
+                idle.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/idle" + framenum, frametime, ContentManagerName));
             }
             idle.Name = "Idle";
             animations.Add(idle);
@@ -138,6 +157,22 @@ namespace Shroud.Entities
             dead.Name = "Dead";
             animations.Add(dead);
 
+            int stunFrameTotal = 1;
+            for (framenum = 0; framenum < stunFrameTotal; framenum++)
+            {
+                stunned.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/stunned_unarmed" + framenum, frametime, ContentManagerName));
+            }
+            stunned.Name = "Stunned";
+            animations.Add(stunned);
+
+            int fallFrameTotal = 1;
+            for (framenum = 0; framenum < fallFrameTotal; framenum++)
+            {
+                fall.Add(new AnimationFrame(@"Content/Entities/Enemy/" + type + "/fall" + framenum, frametime, ContentManagerName));
+            }
+            fall.Name = "Fall";
+            animations.Add(fall);
+
             mAppearance = SpriteManager.AddSprite(animations);
             SpriteManager.AddToLayer(mAppearance, layer);
             mAppearance.AttachTo(this, false);
@@ -155,6 +190,17 @@ namespace Shroud.Entities
         private void SetAnimation()
         {
             mAppearance.Animate = true;
+
+            if (mAppearance.CurrentChainName == "Fall")
+            {
+                return;
+            }
+
+            if (mIsStunned)
+            {
+                mAppearance.CurrentChainName = "Stunned";
+                return;
+            }
 
             switch (mCurAnimationState)
             {
@@ -185,7 +231,14 @@ namespace Shroud.Entities
                     }
                     else
                     {
-                        mAppearance.CurrentChainName = "Moving";
+                        if (Math.Abs(this.YVelocity) < 0.1f)
+                        {
+                            mAppearance.CurrentChainName = "Idle";
+                        }
+                        else
+                        {
+                            mAppearance.CurrentChainName = "Moving";
+                        }
                     }
                     break;
                 case AnimationState.Dying:
@@ -204,6 +257,7 @@ namespace Shroud.Entities
 
         private void IdleBehavior()
         {
+            mPatrolling = false;
             mCurAnimationState = AnimationState.Patrolling;
         }
 
@@ -225,13 +279,14 @@ namespace Shroud.Entities
             {
                 Chase1();
 
-                if ((this.Position - mTarget.Position).Length() < PlayerProperties.WeaponRange)
+                if ((this.Position - mTarget.Position).Length() < PlayerProperties.WeaponRange && mAppearance.CurrentChainName != "Climbing")
                 {
                     mCurAnimationState = AnimationState.Attacking;
                 }
             }
             else
             {
+                mPatrolling = false;
                 mCurAnimationState = AnimationState.Patrolling;
             }
         }
@@ -242,15 +297,32 @@ namespace Shroud.Entities
             this.Velocity.Y = 0.0f;
             this.Velocity.Z = 0.0f;
 
+            //System.Diagnostics.Debug.WriteLine(WorldManager.PlayerInstance.IsAlive);
+
             if (!WorldManager.PlayerInstance.IsAlive)
             {
                 mCurAnimationState = AnimationState.Idle;
+                mPlayerDetected = false;
             }
-
-            Attack();
-            if (this.mAttackCollision.CollideAgainst(WorldManager.PlayerInstance.Collision))
+            else
             {
-                WorldManager.PlayerInstance.Die();
+
+                Attack();
+
+                if (this.mAttackCollision.CollideAgainst(WorldManager.PlayerInstance.Collision) && WorldManager.PlayerInstance.IsAlive)
+                {
+                    WorldManager.PlayerInstance.Die();
+                }
+                else
+                {
+                    if (mAppearance.CurrentChainName == "Attacking" && mAppearance.JustCycled)
+                    {
+                        mPatrolling = false;
+                        mCurAnimationState = AnimationState.Patrolling;
+                    }
+                }
+
+                mPlayerDetected = false;
             }
         }
 
@@ -268,16 +340,21 @@ namespace Shroud.Entities
 
         #endregion
 
+        private bool mPlayerDetected = false;
+
         public bool IsPlayerVisible()
         {
-            if (Math.Abs(WorldManager.PlayerInstance.Position.X - this.Position.X) < 1.0f && Math.Abs(WorldManager.PlayerInstance.Position.Y - this.Position.Y) < 3.0f)
+            if (Math.Abs(WorldManager.PlayerInstance.Position.X - this.Position.X) < 4.0f && 
+                Math.Abs(WorldManager.PlayerInstance.Position.Y - this.Position.Y) < 7.0f)
             {
                 float yDiff = WorldManager.PlayerInstance.Position.Y - this.Position.Y;
 
-                return ((yDiff < 0 && mFacingRight) || (yDiff > 0 && !mFacingRight)) && WorldManager.PlayerInstance.Opacity > mMinDetect;
+                return (((yDiff < 0 && mFacingRight) || (yDiff > 0 && !mFacingRight)) && 
+                        WorldManager.PlayerInstance.Opacity > mMinDetect) || 
+                       mPlayerDetected;
             }
 
-            return false;
+            return mPlayerDetected;
         }
 
         public void StartAttack(Player2 p)
@@ -288,7 +365,39 @@ namespace Shroud.Entities
 
             mStart.Position = this.Position;
             mEnd.Position = mTarget.Position;
+            Node.NodeListToUse = MyScene.Nodes;
             Node n = Node.FindNextNodeToward(mStart, mEnd);
+            mEnd.Position = n.Position;
+        }
+
+        public void Stunned()
+        {
+            if (this.IsAlive && mAppearance.CurrentChainName != "Fall" && mAppearance.CurrentChainName != "Climbing")
+            {
+                mStunStart = TimeManager.CurrentTime;
+                mIsStunned = true;
+
+                this.Velocity.X = 0.0f;
+                this.Velocity.Y = 0.0f;
+                this.Velocity.Z = 0.0f;
+
+                mAppearance.Animate = true;
+                mPlayerDetected = false;
+            }
+        }
+
+        public void Fall()
+        {
+            mCurAnimationState = AnimationState.Idle;
+            mAppearance.CurrentChainName = "Fall";
+            mAppearance.Animate = true;
+            this.Velocity.X = 0.0f;
+            this.Velocity.Y = 0.0f;
+            this.Acceleration.X = -20.0f;
+            mStart.X = this.X;
+            mStart.Y = this.Y;
+
+            Node n = Node.FindFallNode(mStart);
             mEnd.Position = n.Position;
         }
 
@@ -297,52 +406,82 @@ namespace Shroud.Entities
             if (mCurAnimationState != AnimationState.Dead)
             {
                 mCurAnimationState = AnimationState.Dying;
+                mIsStunned = false;
             }
+
+            GameProperties.OneKillBadge = false;
         }
 
         public virtual void Activity()
         {
-            if (IsPlayerVisible() && this.IsAlive)
+            if ((this.Position - WorldManager.PlayerInstance.Position).Length() > 15.0f)
             {
+                mPlayerDetected = false;
+            }
+
+            if (IsPlayerVisible() && this.IsAlive && !mIsStunned && mAppearance.CurrentChainName != "Fall" && 
+                mCurAnimationState != AnimationState.Chasing && mCurAnimationState != AnimationState.Attacking &&
+                WorldManager.PlayerInstance.IsAlive)
+            {
+                mPlayerDetected = true;
+                GameProperties.HiddenBadge = false;
                 StartAttack(WorldManager.PlayerInstance);
             }
 
-            switch (mCurAnimationState)
+            if (!mIsStunned && mAppearance.CurrentChainName != "Fall")
             {
-                case AnimationState.Idle:
-                    IdleBehavior();
-                    break;
-                case AnimationState.Patrolling:
-                    PatrollingBehavior();
-                    break;
-                case AnimationState.Chasing:
-                    ChasingBehavior();
-                    break;
-                case AnimationState.DrawWeapon:
-                    break;
-                case AnimationState.Attacking:
-                    AttackingBehavior();
-                    break;
-                case AnimationState.Climbing:
-                case AnimationState.Jumping:
-                    break;
-                case AnimationState.Dying:
-                    DyingBehavior();
-                    break;
-                case AnimationState.Dead:
-                    break;
-                default:
-                    break;
+                switch (mCurAnimationState)
+                {
+                    case AnimationState.Idle:
+                        IdleBehavior();
+                        break;
+                    case AnimationState.Patrolling:
+                        PatrollingBehavior();
+                        break;
+                    case AnimationState.Chasing:
+                        ChasingBehavior();
+                        break;
+                    case AnimationState.DrawWeapon:
+                        break;
+                    case AnimationState.Attacking:
+                        AttackingBehavior();
+                        break;
+                    case AnimationState.Climbing:
+                    case AnimationState.Jumping:
+                        break;
+                    case AnimationState.Dying:
+                        DyingBehavior();
+                        break;
+                    case AnimationState.Dead:
+                        break;
+                    default:
+                        break;
+                }
             }
 
-            if (this.Velocity.Y > 0.5f)
+            if (this.Velocity.Y > 2.0f)
                 mFacingRight = false;
-            else if (this.Velocity.Y < -0.5f)
+            else if (this.Velocity.Y < -2.0f)
                 mFacingRight = true;
 
             mAppearance.FlipHorizontal = mFacingRight;
 
             SetAnimation();
+
+            if (TimeManager.CurrentTime - mStunStart > mStunLimit && mIsStunned)
+            {
+                mIsStunned = false;
+            }
+
+            if (mAppearance.CurrentChainName == "Fall" && this.X - mEnd.X < -mAppearance.ScaleX / 2.0f)
+            {
+                mAppearance.CurrentChainName = "Dead";
+                mCurAnimationState = AnimationState.Dead;
+                this.X = mEnd.X;
+                this.Y = mEnd.Y;
+                this.Acceleration.X = 0.0f;
+                this.Velocity.X = 0.0f;
+            }
         }
 
         public virtual void Destroy()

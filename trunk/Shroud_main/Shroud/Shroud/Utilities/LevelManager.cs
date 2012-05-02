@@ -57,8 +57,7 @@ namespace Shroud.Utilities
 
         public static void Load(string filename)
         {
-            
-            var resource = System.Windows.Application.GetResourceStream(new Uri(@"/Shroud;component/Data/level1.txt", UriKind.Relative));
+            var resource = System.Windows.Application.GetResourceStream(new Uri(@"/Shroud;component/Data/" + filename, UriKind.Relative));
 
             StreamReader streamReader = new StreamReader(resource.Stream);
             //string x = streamReader.ReadToEnd();
@@ -126,8 +125,10 @@ namespace Shroud.Utilities
                             int tile = int.Parse(tokens[3]);
                             int scli = int.Parse(tokens[5]);
                             float scZ = float.Parse(tokens[6]);
+                            bool stealth = bool.Parse(tokens[7]);
 
-                            sc.AddScenery(ground, tile, tokens[4], GetLayer(scli), scZ);
+
+                            sc.AddScenery(ground, tile, tokens[4], GetLayer(scli), scZ, stealth);
                         }
                         else
                         {
@@ -135,8 +136,9 @@ namespace Shroud.Utilities
                             float dy = float.Parse(tokens[2]);
                             int scli = int.Parse(tokens[4]);
                             float scZ = float.Parse(tokens[5]);
+                            bool stealth = bool.Parse(tokens[6]);
 
-                            sc.AddScenery(new Microsoft.Xna.Framework.Vector3(dx, dy, 0.0f), tokens[3], GetLayer(scli), scZ);
+                            sc.AddScenery(new Microsoft.Xna.Framework.Vector3(dx, dy, 0.0f), tokens[3], GetLayer(scli), scZ, stealth);
                         }
 
                         break;
@@ -238,6 +240,14 @@ namespace Shroud.Utilities
                         WorldManager.Target = new Noble("Global", pt, 7.0f, GetLayer(lti));
                         WorldManager.Target.Position = sc.Nodes[ti].Position;
                         WorldManager.Target.MyScene = sc;
+                        break;
+                    case "nj":
+                        int ji = int.Parse(tokens[1]);
+                        int lji = int.Parse(tokens[2]);
+
+                        WorldManager.Ninjas.Add(new Ninja("Global", 9.0f, GetLayer(lji)));
+                        WorldManager.Ninjas[WorldManager.Ninjas.Count - 1].Position = sc.Nodes[ji].Position;
+                        WorldManager.Ninjas[WorldManager.Ninjas.Count - 1].MyScene = sc;
                         break;
                 }
                 

@@ -179,8 +179,8 @@ namespace Shroud.Screens
             mTitle.X = 7.0f;
 
             mBack = new BackButton(ContentManagerName);
-            mBack.X = -7.0f;
-            mBack.Y = 8.0f;
+            mBack.X = -8.0f;
+            mBack.Y = 11.0f;
 			
 			string[] levelStrings = GameProperties.ProfileString.Split(' ');
 
@@ -242,7 +242,7 @@ namespace Shroud.Screens
 
             GestureManager.Update2(0.0f, 0.0f);
 
-            if (GestureManager.CurGesture == GestureManager.Gesture.Tap)
+            if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
             {
                 float x = GestureManager.EndTouchWorld.X;
                 float y = GestureManager.EndTouchWorld.Y;
@@ -251,6 +251,9 @@ namespace Shroud.Screens
                 {
                     if (b.Collision.IsPointInside(x, y))
                     {
+                        GameProperties.HiddenBadge = true;
+                        GameProperties.NoDieBadge = true;
+                        GameProperties.OneKillBadge = true;
                         GameProperties.LevelString = b.LevelString;
                         GameProperties.LevelToken = b.mLevelToken;
                         Destroy();

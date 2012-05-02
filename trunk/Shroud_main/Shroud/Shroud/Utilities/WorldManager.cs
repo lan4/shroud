@@ -27,6 +27,7 @@ namespace Shroud.Utilities
         public static PressButton justFired = null;
         //public static Button FAKE_BUTTON = new Button("Global", "bomb");
         public static List<Soldier> Soldiers;
+        public static List<Ninja> Ninjas;
         public static Noble Target;
 
         #region Main Functions
@@ -40,6 +41,7 @@ namespace Shroud.Utilities
             ManagedSprites = new List<Sprite>();
             //ManagedEnemies = new List<Enemy1>();
             Soldiers = new List<Soldier>();
+            Ninjas = new List<Ninja>();
             //FAKE_BUTTON.Visible = false;
         }
 
@@ -52,6 +54,11 @@ namespace Shroud.Utilities
             foreach (Soldier s in Soldiers)
             {
                 s.Activity();
+            }
+
+            foreach (Ninja n in Ninjas)
+            {
+                n.Activity();
             }
 
             Target.Activity();
@@ -91,6 +98,12 @@ namespace Shroud.Utilities
             }
             Soldiers.Clear();
 
+            foreach (Ninja n in Ninjas)
+            {
+                n.Destroy();
+            }
+            Ninjas.Clear();
+
             PlayerInstance.Destroy();
             Target.Destroy();
             //FAKE_BUTTON.Destroy();
@@ -105,11 +118,6 @@ namespace Shroud.Utilities
         #endregion
 
         #region Helper Functions
-
-        private static void CheckCollisions()
-        {
-
-        }
 
         // NEED TO CHANGE SO IT IS Z-ORIENTED
         // MEANING YOU CHOOSE THE CLOSEST Z
@@ -130,6 +138,11 @@ namespace Shroud.Utilities
                     }
                 }*/
 
+                if (Target.IsAlive && Target.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
+                {
+                    return Target;
+                }
+
                 foreach (Soldier s in Soldiers)
                 {
                     if (s.IsAlive && s.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
@@ -138,9 +151,12 @@ namespace Shroud.Utilities
                     }
                 }
 
-                if (Target.IsAlive && Target.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
+                foreach (Ninja n in Ninjas)
                 {
-                    return Target;
+                    if (n.IsAlive && !n.IsHidden && n.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
+                    {
+                        return n;
+                    }
                 }
 
                 foreach (Trap t in ManagedTraps)

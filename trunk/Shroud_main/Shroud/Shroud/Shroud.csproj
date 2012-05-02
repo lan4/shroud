@@ -120,13 +120,12 @@
     <Compile Include="Screens\ScreenManager.cs" />
     <Compile Include="Screens\StartScreen.cs" />
     <Compile Include="Screens\WinScreen.cs" />
-    <Compile Include="Utilities\BinaryHeap.cs" />
+    <Compile Include="Utilities\HUDManager.cs" />
     <Compile Include="Utilities\LevelManager.cs" />
     <Compile Include="Utilities\Scene.cs" />
     <Compile Include="Utilities\CameraManager.cs" />
     <Compile Include="Utilities\GameProperties.cs" />
     <Compile Include="Utilities\GestureManager.cs" />
-    <Compile Include="Utilities\HUDManager.cs" />
     <Compile Include="Utilities\LayerManager.cs" />
     <Compile Include="Utilities\Node.cs" />
     <Compile Include="Utilities\PlayerProperties.cs" />
@@ -146,6 +145,7 @@
   <ItemGroup>
     <Resource Include="Data\test.txt" />
     <Resource Include="Data\profiles.txt" />
+    <Resource Include="Data\level2.txt" />
     <Resource Include="Data\level1.txt" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />

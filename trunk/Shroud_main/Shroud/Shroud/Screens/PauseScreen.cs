@@ -18,6 +18,7 @@ namespace Shroud.Screens
         private ClickButton mContinue;
         private ClickButton mControls;
         private ClickButton mExit;
+        private ClickButton mLevelSelect;
 
         private class ClickButton : PositionedObject
         {
@@ -83,6 +84,7 @@ namespace Shroud.Screens
             mContinue = new ClickButton(ContentManagerName, "continue", this.Layer);
             mControls = new ClickButton(ContentManagerName, "controls", this.Layer);
             mExit = new ClickButton(ContentManagerName, "quit", this.Layer);
+            mLevelSelect = new ClickButton(ContentManagerName, "lvlSelect", this.Layer);
 
             mCtrls = SpriteManager.AddSprite(@"Content/Menus/Pause/controls_screen", ContentManagerName, this.Layer);
             GameProperties.RescaleSprite(mCtrls);
@@ -99,9 +101,14 @@ namespace Shroud.Screens
             mControls.Y = 8.0f + LevelManager.CurrentScene.WorldAnchor.Y;
             //mControls.Z = 0.01f;
 
-            mExit.X = -5.0f + LevelManager.CurrentScene.WorldAnchor.X;
+            mLevelSelect.X = -5.0f + LevelManager.CurrentScene.WorldAnchor.X;
+            mLevelSelect.Y = 8.0f + LevelManager.CurrentScene.WorldAnchor.Y;
+
+            mExit.X = -8.0f + LevelManager.CurrentScene.WorldAnchor.X;
             mExit.Y = 8.0f + LevelManager.CurrentScene.WorldAnchor.Y;
             //mExit.Z = 0.01f;
+
+            
 			
 			// AddToManagers should be called LAST in this method:
 			if(addToManagers)
@@ -151,6 +158,13 @@ namespace Shroud.Screens
                     {
                         mCtrls.Visible = true;
                     }
+                    else if (mLevelSelect.Collision.IsPointInside(x, y))
+                    {
+                        Destroy();
+                        GameProperties.IsPaused = false;
+                        GameProperties.JumpBack = true;
+                        IsActivityFinished = true;
+                    }
                 }
             }
         }
@@ -162,6 +176,7 @@ namespace Shroud.Screens
             mContinue.Destroy();
             mControls.Destroy();
             mExit.Destroy();
+            mLevelSelect.Destroy();
 
             SpriteManager.RemoveSprite(mBg);
             SpriteManager.RemoveSprite(mCtrls);

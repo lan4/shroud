@@ -115,6 +115,17 @@ namespace Shroud.Utilities
             mPrevious = null;
         }
 
+        public bool IsNeighbor(Node n)
+        {
+            foreach (Node m in mNeighbors)
+            {
+                if (m.Equals(n))
+                    return true;
+            }
+
+            return false;
+        }
+
         public void AddUndirectedEdge(Node n)
         {
             if (!this.mNeighbors.Contains(n))
@@ -381,7 +392,7 @@ namespace Shroud.Utilities
                 return e;
             }
 
-            if ((s.Position - s1.Position).Length() < 0.5f)
+            if ((s.Position - s1.Position).Length() < 0.2f)
             {
                 foreach (Node n in s1.mNeighbors)
                 {
@@ -413,7 +424,7 @@ namespace Shroud.Utilities
 
                 return min;
             }
-            else if ((s.Position - s2.Position).Length() < 0.5f)
+            else if ((s.Position - s2.Position).Length() < 0.2f)
             {
                 //System.Diagnostics.Debug.WriteLine("THERE");
 
@@ -616,6 +627,7 @@ namespace Shroud.Utilities
 
         // METHOD ONLY WORKS IF NEW END IS CLOSE ENOUGH (1 NODE AWAY) TO OLD END
         // RETURNS FALSE IF PATH UNCHANGED, RETURNS TRUE IF PATH CHANGED
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!DEPRECATED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         public static bool ChangePath(Vector3 pos, Node cur, Node end, ref List<Node> path)
         {
             Node last;
@@ -806,6 +818,19 @@ namespace Shroud.Utilities
             }
 
             return closest;
+        }
+
+        public static Node FindFallNode(Node n)
+        {
+            Node l1 = null;
+            Node l2 = null;
+
+            FindClosestLinePoints(n, NodeListToUse, ref l1, ref l2);
+
+            if (l1.X < l2.X)
+                return l1;
+            else
+                return l2;
         }
     }
 }
