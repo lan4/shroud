@@ -1,0 +1,14 @@
+Shroud
+-Fix Ladder behavior so that near top node will be off ladder
+-Add alert indicators for individuals and global
+-Scale down stealth objects so that hiding puts you behind while standing still shows you
+-Add Mountain level
+-Add Sound Effects (SoundManager)
+-Change controls: swipe up (globally) to hide, swipe down (globally) to throw bomb
+-Add indicator for attack range or when attack go as far as possible
+-Improve AI behavior, most notably Noble running away
+-Activity limited when entity is dead (performance tweak)
+-Move HUD Elements to better location (Bomb indicator, pause button and arrow)
+-Scene Transition pauses when moving
+-Fix Patrol Bug (skipping nodes)
+-Bigger collision boxes for enemies so they can be tapped easier
