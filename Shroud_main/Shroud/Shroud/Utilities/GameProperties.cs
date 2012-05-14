@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 
 using FlatRedBall;
+using Microsoft.Devices;
 
 namespace Shroud.Utilities
 {
@@ -136,6 +137,11 @@ namespace Shroud.Utilities
         public static void Quit()
         {
             game.Exit();
+        }
+
+        public static void Vibrate()
+        {
+            VibrateController.Default.Start(TimeSpan.FromSeconds(.05));
         }
     }
 }

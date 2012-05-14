@@ -115,6 +115,7 @@ namespace Shroud.Screens
 
                 if (GestureManager.CurGesture == Gesture.Tap)
                 {
+                    GameProperties.Vibrate();
                     Destroy();
                     MoveToScreen(typeof(Screens.ProfileScreen).FullName);
                 }

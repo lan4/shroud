@@ -131,7 +131,7 @@ namespace Shroud.Screens
                 {
                     if (!mIsPaused)
                     {
-                        this.MoveToScreen(typeof(Screens.LevelScreen).FullName);
+                        GameProperties.JumpBack = true;
                     }
                 }
 
@@ -159,6 +159,7 @@ namespace Shroud.Screens
                         {
                             GameProperties.IsPaused = true;
                             mIsPaused = true;
+                            GameProperties.Vibrate();
                             InstructionManager.PauseEngine();
                             LoadPopup(typeof(PauseScreen).FullName, CameraManager.Pause);
                         }

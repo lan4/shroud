@@ -292,7 +292,7 @@ namespace Shroud.Screens
                     this.MoveToScreen(typeof(Screens.ProfileScreen).FullName);
                 }
 
-                if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
+                if (GestureManager.CurGesture == GestureManager.Gesture.Tap)
                 {
                     float x = GestureManager.EndTouchWorld.X;
                     float y = GestureManager.EndTouchWorld.Y;
@@ -306,6 +306,7 @@ namespace Shroud.Screens
                             GameProperties.OneKillBadge = true;
                             GameProperties.LevelString = b.LevelString;
                             GameProperties.LevelToken = b.mLevelToken;
+                            GameProperties.Vibrate();
                             Destroy();
                             MoveToScreen(typeof(Screens.GameScreen).FullName);
                         }
@@ -313,12 +314,14 @@ namespace Shroud.Screens
 
                     if (mBack.Collision.IsPointInside(x, y))
                     {
+                        GameProperties.Vibrate();
                         Destroy();
                         MoveToScreen(typeof(Screens.ProfileScreen).FullName);
                     }
 
                     if (mDelete.Collision.IsPointInside(x, y))
                     {
+                        GameProperties.Vibrate();
                         GameProperties.Delete();
                         MoveToScreen(typeof(Screens.ProfileScreen).FullName);
                     }

@@ -188,6 +188,7 @@ namespace Shroud.Screens
                     if (mBack.Collision.IsPointInside(x, y))
                     {
                         //IsActivityFinished = true;
+                        GameProperties.Vibrate();
                         GameProperties.IsPaused = false;
                         GameProperties.JumpBack = false;
                         MoveToScreen(typeof(LevelScreen).FullName);
