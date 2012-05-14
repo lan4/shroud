@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Phone.Controls;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
 using FlatRedBall;
 using FlatRedBall.Graphics;
 using FlatRedBall.Math.Geometry;
@@ -129,41 +133,55 @@ namespace Shroud.Screens
 
         public override void Activity(bool firstTimeCalled)
         {
-            base.Activity(firstTimeCalled);
-
-            GestureManager.Update2(0.0f, 0.0f);
-
-            if (GestureManager.CurGesture == GestureManager.Gesture.Tap)
+            if (!firstTimeCalled)
             {
-                float x = GestureManager.EndTouchWorld.X;
-                float y = GestureManager.EndTouchWorld.Y;
+                base.Activity(firstTimeCalled);
 
-                if (mCtrls.Visible)
+                GestureManager.Update2(0.0f, 0.0f);
+
+                if (!mCtrls.Visible && GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+                {
+                    Destroy();
+                    GameProperties.IsPaused = false;
+                    IsActivityFinished = true;
+                }
+                else if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 {
                     mCtrls.Visible = false;
                 }
-                else
+
+                if (GestureManager.CurGesture == GestureManager.Gesture.Tap)
                 {
-                    if (mContinue.Collision.IsPointInside(x, y))
+                    float x = GestureManager.EndTouchWorld.X;
+                    float y = GestureManager.EndTouchWorld.Y;
+
+                    if (mCtrls.Visible)
                     {
-                        Destroy();
-                        GameProperties.IsPaused = false;
-                        IsActivityFinished = true;
+                        mCtrls.Visible = false;
                     }
-                    else if (mExit.Collision.IsPointInside(x, y))
+                    else
                     {
-                        GameProperties.Quit();
-                    }
-                    else if (mControls.Collision.IsPointInside(x, y))
-                    {
-                        mCtrls.Visible = true;
-                    }
-                    else if (mLevelSelect.Collision.IsPointInside(x, y))
-                    {
-                        Destroy();
-                        GameProperties.IsPaused = false;
-                        GameProperties.JumpBack = true;
-                        IsActivityFinished = true;
+                        if (mContinue.Collision.IsPointInside(x, y))
+                        {
+                            Destroy();
+                            GameProperties.IsPaused = false;
+                            IsActivityFinished = true;
+                        }
+                        else if (mExit.Collision.IsPointInside(x, y))
+                        {
+                            GameProperties.Quit();
+                        }
+                        else if (mControls.Collision.IsPointInside(x, y))
+                        {
+                            mCtrls.Visible = true;
+                        }
+                        else if (mLevelSelect.Collision.IsPointInside(x, y))
+                        {
+                            Destroy();
+                            GameProperties.IsPaused = false;
+                            GameProperties.JumpBack = true;
+                            IsActivityFinished = true;
+                        }
                     }
                 }
             }
