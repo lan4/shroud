@@ -18,6 +18,7 @@ namespace Shroud.Screens
         private Sprite mTitle;
         private List<LevelButton> mLevels;
         private BackButton mBack;
+        private DeleteButton mDelete;
 
         private class LevelButton : PositionedObject
         {
@@ -147,6 +148,40 @@ namespace Shroud.Screens
             }
         }
 
+        private class DeleteButton : PositionedObject
+        {
+            private AxisAlignedRectangle mCollision;
+            private Sprite mButton;
+
+            public AxisAlignedRectangle Collision
+            {
+                get { return mCollision; }
+            }
+
+            public DeleteButton(string contentManagerName)
+                : base()
+            {
+                SpriteManager.AddPositionedObject(this);
+
+                mButton = SpriteManager.AddSprite(@"Content/Menus/deleteProfile", contentManagerName);
+                mButton.AttachTo(this, false);
+                GameProperties.RescaleSprite(mButton);
+                mButton.RelativeRotationZ = GameProperties.WorldRotation;
+
+                mCollision = ShapeManager.AddAxisAlignedRectangle();
+                mCollision.ScaleX = mButton.ScaleY;
+                mCollision.ScaleY = mButton.ScaleX;
+                mCollision.AttachTo(this, false);
+            }
+
+            public void Destroy()
+            {
+                SpriteManager.RemovePositionedObject(this);
+                SpriteManager.RemoveSprite(mButton);
+                ShapeManager.Remove(mCollision);
+            }
+        }
+
         #region Methods
         
         #region Constructor and Initialize
@@ -181,6 +216,10 @@ namespace Shroud.Screens
             mBack = new BackButton(ContentManagerName);
             mBack.X = -8.0f;
             mBack.Y = 11.0f;
+
+            mDelete = new DeleteButton(ContentManagerName);
+            mDelete.X = -8.0f;
+            mDelete.Y = -11.0f;
 			
 			string[] levelStrings = GameProperties.ProfileString.Split(' ');
 
@@ -266,6 +305,12 @@ namespace Shroud.Screens
                     Destroy();
                     MoveToScreen(typeof(Screens.ProfileScreen).FullName);
                 }
+
+                if (mDelete.Collision.IsPointInside(x, y))
+                {
+                    GameProperties.Delete();
+                    MoveToScreen(typeof(Screens.ProfileScreen).FullName);
+                }
             }
         }
 
@@ -282,6 +327,7 @@ namespace Shroud.Screens
             }
 
             mBack.Destroy();
+            mDelete.Destroy();
 
             GestureManager.Clean();
         }

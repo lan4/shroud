@@ -352,7 +352,7 @@ namespace Shroud.Entities
                 placedTrap.Activate();
                 placedTrap.Position = this.Position;
                 placedTrap.X += placedTrap.YOffset;
-                WorldManager.ManagedTraps.Add(placedTrap);
+                //WorldManager.ManagedTraps.Add(placedTrap);
                 mTraps.Remove(placedTrap);
             }
         }
@@ -362,7 +362,7 @@ namespace Shroud.Entities
             if (retrievedTrap != null)
             {
                 retrievedTrap.Deactivate();
-                WorldManager.ManagedTraps.Remove(retrievedTrap);
+                //WorldManager.ManagedTraps.Remove(retrievedTrap);
                 mTraps.Add(retrievedTrap);
             }
         }

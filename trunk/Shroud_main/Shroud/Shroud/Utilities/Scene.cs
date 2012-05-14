@@ -390,15 +390,15 @@ namespace Shroud.Utilities
 
         }
 
-        public void AddScenery(Vector3 p, string name, Layer layer, float zOffset, bool UsedForStealth)
+        public void AddScenery(Vector3 p, string name, Layer layer, float zOffset, bool UsedForStealth, float scale)
         {
             Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
-            GameProperties.RescaleSprite(temp);
-            if (name.Substring(0, 3).Equals("pot"))
-            {
-                temp.ScaleX *= .75f;
-                temp.ScaleY *= .75f;
-            }        
+
+            if (scale > 0.0f)
+                GameProperties.RescaleSprite(temp, scale);
+            else
+                GameProperties.RescaleSprite(temp);                         
+
             temp.Position = p;
             temp.X += mAnchor.X;
             temp.Y += mAnchor.Y;
@@ -410,15 +410,13 @@ namespace Shroud.Utilities
                 StealthObjects.Add(temp);
         }
 
-        public void AddScenery(int groundNum, int tileNum, string name, Layer layer, float zOffset, bool UsedForStealth)
+        public void AddScenery(int groundNum, int tileNum, string name, Layer layer, float zOffset, bool UsedForStealth, float scale)
         {
             Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
-            GameProperties.RescaleSprite(temp);
-            if (name.Substring(0, 3).Equals("pot"))
-            {
-                temp.ScaleX *= .75f;
-                temp.ScaleY *= .75f;
-            }
+            if (scale > 0.0f)
+                GameProperties.RescaleSprite(temp, scale);
+            else
+                GameProperties.RescaleSprite(temp);
             temp.Position = Grounds[groundNum].GetTilePosition(tileNum);
             temp.X += Ground.TileHeight / 1.25f;
             temp.Z = mAnchor.Z + zOffset;

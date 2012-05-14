@@ -123,7 +123,7 @@ namespace Shroud.Screens
         {
             base.Activity(firstTimeCalled);
 
-            mPause.X = LevelManager.CurrentScene.WorldAnchor.X + 8.0f;
+            mPause.X = LevelManager.CurrentScene.WorldAnchor.X - 8.0f;
             mPause.Y = LevelManager.CurrentScene.WorldAnchor.Y - 14.0f;
 
             if (GameProperties.JumpBack)

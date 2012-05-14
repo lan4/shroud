@@ -19,7 +19,7 @@ namespace Shroud.Entities
         protected Node mStart;
         protected Node mEnd;
         protected Node mCur;
-        protected bool mFacingRight;
+        public bool mFacingRight;
 
         protected PositionedObject mTarget;
 
@@ -202,8 +202,8 @@ namespace Shroud.Entities
                         index--;
                     }
 
-                    mCur = mPatrolPath[index];
                     mLastPatrolNode = mCur;
+                    mCur = mPatrolPath[index];
                 }
                 else
                 {
@@ -284,7 +284,7 @@ namespace Shroud.Entities
                     this.Velocity.Normalize();
                 }
 
-                this.Velocity *= mSpeed;
+                this.Velocity *= mSpeed * 1.5f;
             }
         }
 

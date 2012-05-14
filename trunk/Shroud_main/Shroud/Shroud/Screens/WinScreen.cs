@@ -85,7 +85,7 @@ namespace Shroud.Screens
                     GameProperties.RescaleSprite(mBadgeH);
                     mBadgeH.RotationZ = GameProperties.WorldRotation;
                     mBadgeH.X = SpriteManager.Camera.X - 2.0f;
-                    mBadgeH.Y = SpriteManager.Camera.Y - 10.0f;
+                    mBadgeH.Y = SpriteManager.Camera.Y + 10.0f;
                     mBadgeH.Z = 0.1f;
 
                     one = false;
@@ -109,7 +109,7 @@ namespace Shroud.Screens
                     GameProperties.RescaleSprite(mBadgeN);
                     mBadgeN.RotationZ = GameProperties.WorldRotation;
                     mBadgeN.X = SpriteManager.Camera.X - 2.0f;
-                    mBadgeN.Y = SpriteManager.Camera.Y + 10.0f;
+                    mBadgeN.Y = SpriteManager.Camera.Y - 10.0f;
                     mBadgeN.Z = 0.1f;
                     
                     one = false;

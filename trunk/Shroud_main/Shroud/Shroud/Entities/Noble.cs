@@ -69,7 +69,7 @@ namespace Shroud.Entities
 
             mCollision = ShapeManager.AddCircle();
             mCollision.AttachTo(this, false);
-            mCollision.Radius = 2.0f;
+            mCollision.Radius = 3.0f;
 
             mDeadStart = TimeManager.CurrentTime;
             mStunStart = TimeManager.CurrentTime;

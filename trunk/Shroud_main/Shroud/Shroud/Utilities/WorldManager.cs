@@ -15,10 +15,10 @@ namespace Shroud.Utilities
     public static class WorldManager
     {
         // Managed Entities
-        public static List<DestructibleObject> ManagedDestructibleObjects;
-        public static List<InteractObject> ManagedInteractObjects;
-        public static List<WorldObject> ManagedWorldObjects;
-        public static List<Trap> ManagedTraps;
+        //public static List<DestructibleObject> ManagedDestructibleObjects;
+        //public static List<InteractObject> ManagedInteractObjects;
+        //public static List<WorldObject> ManagedWorldObjects;
+        //public static List<Trap> ManagedTraps;
         //public static List<Enemy1> ManagedEnemies;
         public static List<Sprite> ManagedSprites;
         public static Player2 PlayerInstance;
@@ -34,10 +34,10 @@ namespace Shroud.Utilities
 
         public static void Initialize()
         {
-            ManagedDestructibleObjects = new List<DestructibleObject>();
-            ManagedInteractObjects = new List<InteractObject>();
-            ManagedWorldObjects = new List<WorldObject>();
-            ManagedTraps = new List<Trap>();
+            //ManagedDestructibleObjects = new List<DestructibleObject>();
+            //ManagedInteractObjects = new List<InteractObject>();
+            //ManagedWorldObjects = new List<WorldObject>();
+            //ManagedTraps = new List<Trap>();
             ManagedSprites = new List<Sprite>();
             //ManagedEnemies = new List<Enemy1>();
             Soldiers = new List<Soldier>();
@@ -68,7 +68,7 @@ namespace Shroud.Utilities
         {
             InteractTarget = null;
 
-            foreach (WorldObject w in ManagedWorldObjects)
+            /*foreach (WorldObject w in ManagedWorldObjects)
             {
                 w.Destroy();
             }
@@ -78,7 +78,7 @@ namespace Shroud.Utilities
             {
                 t.Destroy();
             }
-            ManagedTraps.Clear();
+            ManagedTraps.Clear();*/
 
             /*foreach (Enemy1 e in ManagedEnemies)
             {
@@ -159,21 +159,21 @@ namespace Shroud.Utilities
                     }
                 }
 
-                foreach (Trap t in ManagedTraps)
+                /*foreach (Trap t in ManagedTraps)
                 {
                     if (t.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
                     {
                         return t;
                     }
-                }
+                }*/
 
-                foreach (InteractObject i in ManagedInteractObjects)
+                /*foreach (InteractObject i in ManagedInteractObjects)
                 {
                     if (i.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
                     {
                         return i;
                     }
-                }
+                }*/
 
                 if (PlayerInstance.Collision.IsPointInside(GestureManager.EndTouchWorld.X, GestureManager.EndTouchWorld.Y))
                 {
@@ -208,13 +208,13 @@ namespace Shroud.Utilities
                     }
                 }
 
-                foreach (DestructibleObject d in ManagedDestructibleObjects)
+                /*foreach (DestructibleObject d in ManagedDestructibleObjects)
                 {
                     if (d.Collision.CollideAgainst(GestureManager.DragLine))
                     {
                         return d;
                     }
-                }
+                }*/
             }
 
             return null;
