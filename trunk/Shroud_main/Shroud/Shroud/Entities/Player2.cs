@@ -774,7 +774,7 @@ namespace Shroud.Entities
             }
         }
 
-        private void SwipeDownBehavior()
+        private void SwipeUpBehavior()
         {
             mTarget = WorldManager.InteractTarget;
 
@@ -817,7 +817,7 @@ namespace Shroud.Entities
             }
         }
 
-        private void SwipeUpBehavior()
+        private void SwipeDownBehavior()
         {
             mTarget = WorldManager.InteractTarget;
 
@@ -981,13 +981,13 @@ namespace Shroud.Entities
             }
             else if (GestureManager.CurGesture.Equals(Gesture.SwipeDown))
             {
+                SwipeDownBehavior();
                 mAppearance.Alpha = 1.0f;
                 //SwipeDownBehavior();
                 //mAppearance.Alpha = 1.0f;
             }
             else if (GestureManager.CurGesture.Equals(Gesture.SwipeUp))
             {
-                SwipeUpBehavior();
                 mAppearance.Alpha = 1.0f;
                 //DragBehavior();
                 //mAppearance.Alpha = 1.0f;
@@ -1263,7 +1263,7 @@ namespace Shroud.Entities
                 mStart.Y = this.Y;
                 Vector3 vec = Node.FindLadderTop(mStart);
 
-                if (vec.X - this.X < 1.5f && this.Velocity.X > -1.0f)
+                if (vec.X - this.X < 1.5f && Math.Abs(this.Velocity.X) < 1.0f && !mBusyMoving)
                 {
                     System.Diagnostics.Debug.WriteLine(mCurAnimationState.ToString());
                     this.X = vec.X;
