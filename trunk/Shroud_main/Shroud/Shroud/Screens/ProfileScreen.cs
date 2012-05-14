@@ -332,7 +332,6 @@ namespace Shroud.Screens
                             if (p.NumLevels[1] == '-')
                             {
                                 GameProperties.ProfileString = p.StoredString.Replace(p.NumLevels, "p0");
-
                                 GameProperties.NumLevels = 0;
                             }
                             else
@@ -342,7 +341,7 @@ namespace Shroud.Screens
                             }
 
                             GameProperties.OldProfileString = p.StoredString;
-
+                            GameProperties.Vibrate();
                             GameProperties.Save();
                             Destroy();
                             MoveToScreen(typeof(Screens.LevelScreen).FullName);

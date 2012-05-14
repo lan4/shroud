@@ -158,6 +158,7 @@ namespace Shroud.Screens
                     if (mCtrls.Visible)
                     {
                         mCtrls.Visible = false;
+                        GameProperties.Vibrate();
                     }
                     else
                     {
@@ -165,18 +166,22 @@ namespace Shroud.Screens
                         {
                             Destroy();
                             GameProperties.IsPaused = false;
+                            GameProperties.Vibrate();
                             IsActivityFinished = true;
                         }
                         else if (mExit.Collision.IsPointInside(x, y))
                         {
+                            GameProperties.Vibrate();
                             GameProperties.Quit();
                         }
                         else if (mControls.Collision.IsPointInside(x, y))
                         {
+                            GameProperties.Vibrate();
                             mCtrls.Visible = true;
                         }
                         else if (mLevelSelect.Collision.IsPointInside(x, y))
                         {
+                            GameProperties.Vibrate();
                             Destroy();
                             GameProperties.IsPaused = false;
                             GameProperties.JumpBack = true;
