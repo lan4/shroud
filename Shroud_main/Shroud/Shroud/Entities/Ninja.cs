@@ -71,7 +71,7 @@ namespace Shroud.Entities
 
             mCollision = ShapeManager.AddCircle();
             mCollision.AttachTo(this, false);
-            mCollision.Radius = 2.0f;
+            mCollision.Radius = 3.0f;
 
             mStunStart = TimeManager.CurrentTime;
             mIsStunned = false;
@@ -518,6 +518,7 @@ namespace Shroud.Entities
                 this.Y = mEnd.Y;
                 this.Acceleration.X = 0.0f;
                 this.Velocity.X = 0.0f;
+                GameProperties.OneKillBadge = false;
             }
         }
 

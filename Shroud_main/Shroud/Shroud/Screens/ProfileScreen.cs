@@ -245,9 +245,9 @@ namespace Shroud.Screens
                                     mProfiles[mProfiles.Count - 1].StoredString = line.Trim();
                                     mProfiles[mProfiles.Count - 1].NumLevels = numCom;
                                 }
-                                else if (!mFirstNew)
+                                else
                                 {
-                                    mFirstNew = true;
+                                    //mFirstNew = true;
                                     mProfiles.Add(new ProfileButton());
                                     mProfiles[mProfiles.Count - 1].StoredString = line.Trim();
                                     mProfiles[mProfiles.Count - 1].NumLevels = numCom;

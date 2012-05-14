@@ -126,9 +126,9 @@ namespace Shroud.Utilities
                             int scli = int.Parse(tokens[5]);
                             float scZ = float.Parse(tokens[6]);
                             bool stealth = bool.Parse(tokens[7]);
+                            float scale = float.Parse(tokens[8]);
 
-
-                            sc.AddScenery(ground, tile, tokens[4], GetLayer(scli), scZ, stealth);
+                            sc.AddScenery(ground, tile, tokens[4], GetLayer(scli), scZ, stealth, scale);
                         }
                         else
                         {
@@ -137,8 +137,9 @@ namespace Shroud.Utilities
                             int scli = int.Parse(tokens[4]);
                             float scZ = float.Parse(tokens[5]);
                             bool stealth = bool.Parse(tokens[6]);
+                            float scale = float.Parse(tokens[7]);
 
-                            sc.AddScenery(new Microsoft.Xna.Framework.Vector3(dx, dy, 0.0f), tokens[3], GetLayer(scli), scZ, stealth);
+                            sc.AddScenery(new Microsoft.Xna.Framework.Vector3(dx, dy, 0.0f), tokens[3], GetLayer(scli), scZ, stealth, scale);
                         }
 
                         break;

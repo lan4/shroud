@@ -36,6 +36,13 @@ namespace Shroud.Utilities
             s.ScaleY = .5f * s.Texture.Height / pixelsPerUnit;
         }
 
+        public static void RescaleSprite(Sprite s, float scale)
+        {
+            RescaleSprite(s);
+            s.ScaleX *= scale;
+            s.ScaleY *= scale;
+        }
+
         public static void CreateProfiles()
         {
             IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
@@ -57,6 +64,36 @@ namespace Shroud.Utilities
             myIsolatedStorage.Dispose();
 
             //System.Diagnostics.Debug.WriteLine("HERE" + Read());
+        }
+
+        public static void Delete()
+        {
+            if (ProfileString.Contains('r'))
+            {
+                ProfileString = "p-1 r l1";
+            }
+            else if (ProfileString.Contains('t'))
+            {
+                ProfileString = "p-2 t l1";
+            }
+            else if (ProfileString.Contains('u'))
+            {
+                ProfileString = "p-3 u l1";
+            }
+            else if (ProfileString.Contains('v'))
+            {
+                ProfileString = "p-4 v l1";
+            }
+            else if (ProfileString.Contains('w'))
+            {
+                ProfileString = "p-5 w l1";
+            }
+            else if (ProfileString.Contains('x'))
+            {
+                ProfileString = "p-6 x l1";
+            }
+
+            Save();
         }
 
         public static void Save()

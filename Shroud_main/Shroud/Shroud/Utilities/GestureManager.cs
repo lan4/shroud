@@ -78,7 +78,7 @@ namespace Shroud.Utilities
         };
         public static Gesture CurGesture;
 
-        private static float mMIN_SWIPE_LENGTH = 1.3f;
+        private static float mMIN_SWIPE_LENGTH = 2.0f;
 
         // DEBUG VAR
         private static Circle Touch;

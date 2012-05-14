@@ -832,5 +832,18 @@ namespace Shroud.Utilities
             else
                 return l2;
         }
+
+        public static Vector3 FindLadderTop(Node n)
+        {
+            Node l1 = null;
+            Node l2 = null;
+
+            FindClosestLinePoints(n, NodeListToUse, ref l1, ref l2);
+
+            if (l1.X > l2.X)
+                return l1.Position;
+            else
+                return l2.Position;
+        }
     }
 }
