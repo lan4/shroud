@@ -393,7 +393,12 @@ namespace Shroud.Utilities
         public void AddScenery(Vector3 p, string name, Layer layer, float zOffset, bool UsedForStealth)
         {
             Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
-            GameProperties.RescaleSprite(temp);                        
+            GameProperties.RescaleSprite(temp);
+            if (name.Substring(0, 3).Equals("pot"))
+            {
+                temp.ScaleX *= .75f;
+                temp.ScaleY *= .75f;
+            }        
             temp.Position = p;
             temp.X += mAnchor.X;
             temp.Y += mAnchor.Y;
@@ -409,6 +414,11 @@ namespace Shroud.Utilities
         {
             Sprite temp = SpriteManager.AddSprite(@"Content/Entities/Background/Scenery/" + name, "Global", layer);
             GameProperties.RescaleSprite(temp);
+            if (name.Substring(0, 3).Equals("pot"))
+            {
+                temp.ScaleX *= .75f;
+                temp.ScaleY *= .75f;
+            }
             temp.Position = Grounds[groundNum].GetTilePosition(tileNum);
             temp.X += Ground.TileHeight / 1.25f;
             temp.Z = mAnchor.Z + zOffset;
