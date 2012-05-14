@@ -5,6 +5,10 @@ using System.Text;
 using System.IO;
 using System.IO.IsolatedStorage;
 
+using Microsoft.Phone.Controls;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
 using FlatRedBall;
 
 using Shroud.Utilities;
@@ -97,15 +101,23 @@ namespace Shroud.Screens
 
         public override void Activity(bool firstTimeCalled)
         {
-            base.Activity(firstTimeCalled);
-
-            Fade();
-            GestureManager.Update2(0.0f, 0.0f);
-
-            if (GestureManager.CurGesture == Gesture.Tap)
+            if (!firstTimeCalled)
             {
-                Destroy();
-                MoveToScreen(typeof(Screens.ProfileScreen).FullName);
+                base.Activity(firstTimeCalled);
+
+                Fade();
+                GestureManager.Update2(0.0f, 0.0f);
+
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+                {
+                    GameProperties.Quit();
+                }
+
+                if (GestureManager.CurGesture == Gesture.Tap)
+                {
+                    Destroy();
+                    MoveToScreen(typeof(Screens.ProfileScreen).FullName);
+                }
             }
         }
 

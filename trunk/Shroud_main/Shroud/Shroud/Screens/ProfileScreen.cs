@@ -5,6 +5,10 @@ using System.Text;
 using System.IO;
 using System.IO.IsolatedStorage;
 
+using Microsoft.Phone.Controls;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
 using FlatRedBall;
 using FlatRedBall.Math.Geometry;
 using FlatRedBall.Graphics;
@@ -305,36 +309,44 @@ namespace Shroud.Screens
 
         public override void Activity(bool firstTimeCalled)
         {
-            base.Activity(firstTimeCalled);
-
-            GestureManager.Update2(0.0f, 0.0f);
-
-            if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
+            if (!firstTimeCalled)
             {
-                float x = GestureManager.EndTouchWorld.X;
-                float y = GestureManager.EndTouchWorld.Y;
+                base.Activity(firstTimeCalled);
 
-                foreach (ProfileButton p in mProfiles)
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 {
-                    if (p.Collision.IsPointInside(x, y))
+                    GameProperties.Quit();
+                }
+
+                GestureManager.Update2(0.0f, 0.0f);
+
+                if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
+                {
+                    float x = GestureManager.EndTouchWorld.X;
+                    float y = GestureManager.EndTouchWorld.Y;
+
+                    foreach (ProfileButton p in mProfiles)
                     {
-                        if (p.NumLevels[1] == '-')
+                        if (p.Collision.IsPointInside(x, y))
                         {
-                            GameProperties.ProfileString = p.StoredString.Replace(p.NumLevels, "p0");
-                            
-                            GameProperties.NumLevels = 0;
-                        }
-                        else
-                        {
-                            GameProperties.ProfileString = p.StoredString;
-                            GameProperties.NumLevels = int.Parse(p.NumLevels.Replace("p", ""));
-                        }
+                            if (p.NumLevels[1] == '-')
+                            {
+                                GameProperties.ProfileString = p.StoredString.Replace(p.NumLevels, "p0");
 
-                        GameProperties.OldProfileString = p.StoredString;
+                                GameProperties.NumLevels = 0;
+                            }
+                            else
+                            {
+                                GameProperties.ProfileString = p.StoredString;
+                                GameProperties.NumLevels = int.Parse(p.NumLevels.Replace("p", ""));
+                            }
 
-                        GameProperties.Save();
-                        Destroy();
-                        MoveToScreen(typeof(Screens.LevelScreen).FullName);
+                            GameProperties.OldProfileString = p.StoredString;
+
+                            GameProperties.Save();
+                            Destroy();
+                            MoveToScreen(typeof(Screens.LevelScreen).FullName);
+                        }
                     }
                 }
             }

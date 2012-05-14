@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Phone.Controls;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
 using FlatRedBall;
 using FlatRedBall.Math.Geometry;
 
@@ -277,39 +281,47 @@ namespace Shroud.Screens
 
         public override void Activity(bool firstTimeCalled)
         {
-            base.Activity(firstTimeCalled);
-
-            GestureManager.Update2(0.0f, 0.0f);
-
-            if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
+            if (!firstTimeCalled)
             {
-                float x = GestureManager.EndTouchWorld.X;
-                float y = GestureManager.EndTouchWorld.Y;
+                base.Activity(firstTimeCalled);
 
-                foreach (LevelButton b in mLevels)
+                GestureManager.Update2(0.0f, 0.0f);
+
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 {
-                    if (b.Collision.IsPointInside(x, y))
+                    this.MoveToScreen(typeof(Screens.ProfileScreen).FullName);
+                }
+
+                if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
+                {
+                    float x = GestureManager.EndTouchWorld.X;
+                    float y = GestureManager.EndTouchWorld.Y;
+
+                    foreach (LevelButton b in mLevels)
                     {
-                        GameProperties.HiddenBadge = true;
-                        GameProperties.NoDieBadge = true;
-                        GameProperties.OneKillBadge = true;
-                        GameProperties.LevelString = b.LevelString;
-                        GameProperties.LevelToken = b.mLevelToken;
-                        Destroy();
-                        MoveToScreen(typeof(Screens.GameScreen).FullName);
+                        if (b.Collision.IsPointInside(x, y))
+                        {
+                            GameProperties.HiddenBadge = true;
+                            GameProperties.NoDieBadge = true;
+                            GameProperties.OneKillBadge = true;
+                            GameProperties.LevelString = b.LevelString;
+                            GameProperties.LevelToken = b.mLevelToken;
+                            Destroy();
+                            MoveToScreen(typeof(Screens.GameScreen).FullName);
+                        }
                     }
-                }
 
-                if (mBack.Collision.IsPointInside(x, y))
-                {
-                    Destroy();
-                    MoveToScreen(typeof(Screens.ProfileScreen).FullName);
-                }
+                    if (mBack.Collision.IsPointInside(x, y))
+                    {
+                        Destroy();
+                        MoveToScreen(typeof(Screens.ProfileScreen).FullName);
+                    }
 
-                if (mDelete.Collision.IsPointInside(x, y))
-                {
-                    GameProperties.Delete();
-                    MoveToScreen(typeof(Screens.ProfileScreen).FullName);
+                    if (mDelete.Collision.IsPointInside(x, y))
+                    {
+                        GameProperties.Delete();
+                        MoveToScreen(typeof(Screens.ProfileScreen).FullName);
+                    }
                 }
             }
         }

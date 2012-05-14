@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Phone.Controls;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
 using FlatRedBall;
 using FlatRedBall.Math.Geometry;
 
@@ -162,21 +166,32 @@ namespace Shroud.Screens
 
         public override void Activity(bool firstTimeCalled)
         {
-            base.Activity(firstTimeCalled);
-
-            GestureManager.Update2(0.0f, 0.0f);
-
-            if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
+            if (!firstTimeCalled)
             {
-                float x = GestureManager.EndTouchWorld.X;
-                float y = GestureManager.EndTouchWorld.Y;
+                base.Activity(firstTimeCalled);
 
-                if (mBack.Collision.IsPointInside(x, y))
+                GestureManager.Update2(0.0f, 0.0f);
+
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 {
                     //IsActivityFinished = true;
                     GameProperties.IsPaused = false;
                     GameProperties.JumpBack = false;
                     MoveToScreen(typeof(LevelScreen).FullName);
+                }
+
+                if (GestureManager.CurGesture == GestureManager.Gesture.Tap && !firstTimeCalled)
+                {
+                    float x = GestureManager.EndTouchWorld.X;
+                    float y = GestureManager.EndTouchWorld.Y;
+
+                    if (mBack.Collision.IsPointInside(x, y))
+                    {
+                        //IsActivityFinished = true;
+                        GameProperties.IsPaused = false;
+                        GameProperties.JumpBack = false;
+                        MoveToScreen(typeof(LevelScreen).FullName);
+                    }
                 }
             }
         }
