@@ -72,6 +72,7 @@ namespace Shroud.Utilities
         #endregion
 
         public Node Link;
+        public bool IsALink;
 
         #region Constructors
 
@@ -833,7 +834,7 @@ namespace Shroud.Utilities
                 return l2;
         }
 
-        public static Vector3 FindLadderTop(Node n)
+        public static Vector3 FindLadderTop(Node n, ref bool IsLink)
         {
             Node l1 = null;
             Node l2 = null;
@@ -841,9 +842,15 @@ namespace Shroud.Utilities
             FindClosestLinePoints(n, NodeListToUse, ref l1, ref l2);
 
             if (l1.X > l2.X)
+            {
+                IsLink = l1.IsLink;
                 return l1.Position;
+            }
             else
+            {
+                IsLink = l2.IsLink;
                 return l2.Position;
+            }
         }
     }
 }
