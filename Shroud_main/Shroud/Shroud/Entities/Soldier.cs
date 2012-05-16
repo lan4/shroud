@@ -273,7 +273,7 @@ namespace Shroud.Entities
                     mAppearance.CurrentChainName = "SheatheWeapon";
                     break;
                 case AnimationState.Chasing:
-                    if (this.XVelocity > 1.0f || this.XVelocity < -1.0f)
+                    if (this.XVelocity > 7.0f || this.XVelocity < -7.0f)
                     {
                         mAppearance.CurrentChainName = "Climbing";
                     }

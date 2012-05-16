@@ -574,7 +574,7 @@ namespace Shroud.Entities
                     break;
                 case AnimationState.Chasing:
                 case AnimationState.Moving:
-                    if (this.XVelocity > 1.0f || this.XVelocity < -1.0f)
+                    if (this.XVelocity > 7.0f || this.XVelocity < -7.0f)
                     {
                         mAppearance.CurrentChainName = "Climbing";
                     }
