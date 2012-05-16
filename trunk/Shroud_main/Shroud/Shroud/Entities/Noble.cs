@@ -242,7 +242,8 @@ namespace Shroud.Entities
 
         private void IdleBehavior()
         {
-            //mCurAnimationState = AnimationState.Patrolling;
+            mPatrolling = false;
+            mCurAnimationState = AnimationState.Patrolling;
         }
 
         private void PatrollingBehavior()
