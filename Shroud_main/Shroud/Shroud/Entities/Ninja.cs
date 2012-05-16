@@ -56,7 +56,7 @@ namespace Shroud.Entities
 
         private double mStunStart;
         private static double mStunLimit = 1.5;
-        private bool mIsStunned;
+        public bool mIsStunned;
 
         private PositionedObject mHidePoint;
 

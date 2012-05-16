@@ -206,13 +206,16 @@ namespace Shroud.Screens
             // Set the screen up here instead of in the Constructor to avoid
             // exceptions occurring during the constructor.
 
+            SpriteManager.Camera.X = 0.0f;
+            SpriteManager.Camera.Y = 0.0f;
+
             mLevels = new List<LevelButton>();
 
             mBg = SpriteManager.AddSprite(@"Content/Menus/bg", ContentManagerName);
             GameProperties.RescaleSprite(mBg);
             mBg.RotationZ = GameProperties.WorldRotation;
 
-            mTitle = SpriteManager.AddSprite(@"Content/Menus/lvlSelect", ContentManagerName);
+            mTitle = SpriteManager.AddSprite(@"Content/Menus/lvl_Select", ContentManagerName);
             GameProperties.RescaleSprite(mTitle);
             mTitle.RotationZ = GameProperties.WorldRotation;
             mTitle.X = 7.0f;

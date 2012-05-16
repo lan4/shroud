@@ -510,6 +510,11 @@ namespace Shroud.Entities
 
             Node n = Node.FindFallNode(mStart);
             mEnd.Position = n.Position;
+            mEnd.Link = n.Link;
+            if (n.Link != null)
+                mEnd.IsALink = true;
+            else
+                mEnd.IsALink = false;
         }
 
         #endregion
@@ -668,6 +673,8 @@ namespace Shroud.Entities
                     float xDiff = mTarget.X - this.X;
                     float yDiff = mTarget.Y - this.Y;
 
+                    this.Velocity.Y = 0.0f;
+
                     //System.Diagnostics.Debug.WriteLine(xDiff + ", " + yDiff);
 
                     Soldier e = null;
@@ -695,6 +702,8 @@ namespace Shroud.Entities
                     {
                         if (Math.Abs(yDiff) < 10.0f && Math.Abs(xDiff) < 1.0f)
                         {
+                            //System.Diagnostics.Debug.WriteLine(yDiff);
+
                             if (yDiff > 0)
                             {
                                 this.Y = mTarget.Y - PlayerProperties.WeaponRange;
@@ -706,6 +715,7 @@ namespace Shroud.Entities
                                 mFacingRight = false;
                             }
                             //this.X = mTarget.X;
+                            firstHit = false;
                             mCurAnimationState = AnimationState.Attacking;
                         }
                         else
@@ -989,10 +999,13 @@ namespace Shroud.Entities
             else if (GestureManager.CurGesture.Equals(Gesture.SwipeUp))
             {
                 mAppearance.Alpha = 1.0f;
+                SwipeDownBehavior();
                 //DragBehavior();
                 //mAppearance.Alpha = 1.0f;
             }
         }
+
+        private bool firstHit = false;
 
         private void AttackingBehavior()
         {
@@ -1003,7 +1016,7 @@ namespace Shroud.Entities
                 ResetAttack();
                 mCurAnimationState = AnimationState.Idle;
             }
-            else if (mAppearance.CurrentFrameIndex > 1 || mAppearance.CurrentFrameIndex < 4)
+            else if (mAppearance.CurrentFrameIndex >= 1 && mAppearance.CurrentFrameIndex <= 4)
             {
                 Attack();
                 bool facingEachOther = false;
@@ -1023,6 +1036,8 @@ namespace Shroud.Entities
                             s.Stunned();
                         else
                             s.Die();
+
+                        firstHit = true;
                     }
                 }
                 else if (mTarget.GetType().Equals(typeof(Noble)))
@@ -1032,6 +1047,8 @@ namespace Shroud.Entities
                     if (s.Collision.CollideAgainst(this.mAttackCollision))
                     {
                         s.Die();
+
+                        firstHit = true;
                     }
                 }
                 else if (mTarget.GetType().Equals(typeof(Ninja)))
@@ -1045,6 +1062,8 @@ namespace Shroud.Entities
                             s.Stunned();
                         else
                             s.Die();
+
+                        firstHit = true;
                     }
                 }
             }
@@ -1062,6 +1081,8 @@ namespace Shroud.Entities
             {
                 mFlash.Pop(this.X - mAppearance.ScaleX, this.Y, this.Z + 0.1f);
                 mScreenFlash.Visible = true;
+                mScreenFlash.X = LevelManager.CurrentScene.WorldAnchor.X;
+                mScreenFlash.Y = LevelManager.CurrentScene.WorldAnchor.Y;
                 mScreenFlash.AlphaRate = -7.0f;
 
                 foreach (Soldier s in WorldManager.Soldiers)
@@ -1261,11 +1282,12 @@ namespace Shroud.Entities
                 LadderCheck();
                 mStart.X = this.X;
                 mStart.Y = this.Y;
-                Vector3 vec = Node.FindLadderTop(mStart);
+                bool link = false;
+                Vector3 vec = Node.FindLadderTop(mStart, ref link);
 
-                if (vec.X - this.X < 1.5f && Math.Abs(this.Velocity.X) < 1.0f && !mBusyMoving)
+                if (vec.X - this.X < 1.5f && Math.Abs(this.Velocity.X) < 1.0f && !mBusyMoving && !link)
                 {
-                    System.Diagnostics.Debug.WriteLine(mCurAnimationState.ToString());
+                    //System.Diagnostics.Debug.WriteLine(mCurAnimationState.ToString());
                     this.X = vec.X;
                     this.Velocity.Y = 0.0f;
                     mAppearance.Animate = true;
@@ -1327,13 +1349,23 @@ namespace Shroud.Entities
                 mIsStunned = false;
             }
 
-            if (mAppearance.CurrentChainName == "Fall" && this.X - mEnd.X < -mAppearance.ScaleX / 2.0f)
+            //System.Diagnostics.Debug.WriteLine(mAppearance.CurrentChainName + ", " + mEnd.IsALink + ", " + (this.X - mEnd.X) + " < " + -mAppearance.ScaleX / 2.0f);
+
+            if (mAppearance.CurrentChainName == "Fall" && this.X - mEnd.X < -mAppearance.ScaleX / 2.0f && !mEnd.IsALink)
             {
                 mAppearance.CurrentChainName = "Idle";
                 this.X = mEnd.X;
                 this.Y = mEnd.Y;
                 this.Acceleration.X = 0.0f;
                 this.Velocity.X = 0.0f;
+            }
+            else if (mAppearance.CurrentChainName == "Fall" && mEnd.IsALink && this.X - mEnd.X < -7.0f)
+            {
+                System.Diagnostics.Debug.WriteLine("HERE");
+                this.Acceleration.X = 0.0f;
+                this.Velocity.X = 0.0f;
+                mAppearance.CurrentChainName = "Idle";
+                Die();
             }
 
             if (mScreenFlash.Alpha <= 0.0f)

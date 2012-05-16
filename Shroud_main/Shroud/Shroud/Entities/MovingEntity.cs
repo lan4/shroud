@@ -217,6 +217,7 @@ namespace Shroud.Entities
             if (mLastPatrolNode != null)
             {
                 mPatrolling = true;
+                mPatrolReady = false;
                 StartMoving();
             }
         }
