@@ -494,50 +494,83 @@ namespace Shroud.Utilities
                 return Create();
 
             Scene baseScene;
+            Scene newScene = null;
 
             baseScene = Scene.Find(x - 1, y, z);
             if (baseScene != null)
             {
-                baseScene.Right = Create();
-                return baseScene.Right;
+                if (newScene == null)
+                {
+                    baseScene.Right = Create();
+                    newScene = baseScene.Right;
+                }
+                else
+                {
+                    baseScene.Right = newScene;
+                }
+                //return baseScene.Right;
             }
             
             baseScene = Scene.Find(x + 1, y, z);
             if (baseScene != null)
             {
-                baseScene.Left = Create();
-                return baseScene.Left;
+                if (newScene == null)
+                {
+                    baseScene.Left = Create();
+                    newScene = baseScene.Left;
+                }
+                else
+                {
+                    baseScene.Left = newScene;
+                }
+                //return baseScene.Left;
             }
             
             baseScene = Scene.Find(x, y - 1, z);
             if (baseScene != null)
             {
-                baseScene.Up = Create();
-                return baseScene.Up;
+                if (newScene == null)
+                {
+                    baseScene.Up = Create();
+                    newScene = baseScene.Up;
+                }
+                else
+                {
+                    baseScene.Up = newScene;
+                }
+                //return baseScene.Up;
             }
             
             baseScene = Scene.Find(x, y + 1, z);
             if (baseScene != null)
             {
-                baseScene.Down = Create();
-                return baseScene.Down;
+                if (newScene == null)
+                {
+                    baseScene.Down = Create();
+                    newScene = baseScene.Down;
+                }
+                else
+                {
+                    baseScene.Down = newScene;
+                }
+                //return baseScene.Down;
             }
             
-            baseScene = Scene.Find(x, y, z - 1);
+            /*baseScene = Scene.Find(x, y, z - 1);
             if (baseScene != null)
             {
                 baseScene.Back = Create();
-                return baseScene.Back;
+                //return baseScene.Back;
             }
             
             baseScene = Scene.Find(x, y, z + 1);
             if (baseScene != null)
             {
                 baseScene.Front = Create();
-                return baseScene.Front;
-            }
+                //return baseScene.Front;
+            }*/
 
-            return null;
+            return newScene;
         }
 
         public static void Clear()
